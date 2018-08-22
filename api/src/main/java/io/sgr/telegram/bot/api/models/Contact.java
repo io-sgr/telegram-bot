@@ -17,6 +17,7 @@ package io.sgr.telegram.bot.api.models;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,24 +36,29 @@ public class Contact {
     private final String firstName;
     private final String lastName;
     private final Long userId;
+    private final String vCard;
 
     /**
      * @param phoneNumber Contact's phone number
      * @param firstName   Contact's first name
      * @param lastName    Optional. Contact's last name
      * @param userId      Optional. Contact's user identifier in Telegram
+     * @param vCard       Optional. Additional data about the contact in the form of a vCard.
      */
+    @JsonCreator
     public Contact(
             @JsonProperty("phone_number") String phoneNumber,
             @JsonProperty("first_name") String firstName,
             @JsonProperty("last_name") String lastName,
-            @JsonProperty("user_id") Long userId) {
+            @JsonProperty("user_id") Long userId,
+            @JsonProperty("vcard") final String vCard) {
         notEmptyString(phoneNumber, "Phone number should be provided.");
         this.phoneNumber = phoneNumber;
         notEmptyString(phoneNumber, "First name should be provided.");
         this.firstName = firstName;
         this.lastName = lastName;
         this.userId = userId;
+        this.vCard = vCard;
     }
 
     @JsonProperty("phone_number")
@@ -73,6 +79,11 @@ public class Contact {
     @JsonProperty("user_id")
     public Long getUserId() {
         return userId;
+    }
+
+    @JsonProperty("vcard")
+    public String getVCard() {
+        return vCard;
     }
 
     public String toJSON() {
