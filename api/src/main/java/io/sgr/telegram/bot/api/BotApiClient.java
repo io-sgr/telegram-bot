@@ -28,6 +28,7 @@ import io.sgr.telegram.bot.api.models.http.AnswerCallbackQueryPayload;
 import io.sgr.telegram.bot.api.models.http.AnswerInlineQueryPayload;
 import io.sgr.telegram.bot.api.models.http.ApiErrorResponse;
 import io.sgr.telegram.bot.api.models.http.ApiResponse;
+import io.sgr.telegram.bot.api.models.http.DeleteMessagePayload;
 import io.sgr.telegram.bot.api.models.http.EditMessageCaptionPayload;
 import io.sgr.telegram.bot.api.models.http.EditMessageReplyMarkupPayload;
 import io.sgr.telegram.bot.api.models.http.EditMessageTextPayload;
@@ -116,6 +117,12 @@ public class BotApiClient implements Closeable {
     public CompletableFuture<Message> editMessageReplyMarkup(final String botApiToken, final EditMessageReplyMarkupPayload payload) {
         CompletableFuture<Message> fut = new CompletableFuture<>();
         this.botApi.editMessageReplyMarkup(botApiToken, payload).enqueue(this.prepareCallback(fut));
+        return fut;
+    }
+
+    public CompletableFuture<Boolean> deleteMessage(final String botApiToken, final DeleteMessagePayload payload) {
+        CompletableFuture<Boolean> fut = new CompletableFuture<>();
+        this.botApi.deleteMessage(botApiToken, payload).enqueue(this.prepareCallback(fut));
         return fut;
     }
 

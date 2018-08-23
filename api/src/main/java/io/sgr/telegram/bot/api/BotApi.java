@@ -28,6 +28,7 @@ import io.sgr.telegram.bot.api.models.game.http.SetGameScorePayload;
 import io.sgr.telegram.bot.api.models.http.AnswerCallbackQueryPayload;
 import io.sgr.telegram.bot.api.models.http.AnswerInlineQueryPayload;
 import io.sgr.telegram.bot.api.models.http.ApiResponse;
+import io.sgr.telegram.bot.api.models.http.DeleteMessagePayload;
 import io.sgr.telegram.bot.api.models.http.EditMessageCaptionPayload;
 import io.sgr.telegram.bot.api.models.http.EditMessageReplyMarkupPayload;
 import io.sgr.telegram.bot.api.models.http.EditMessageTextPayload;
@@ -71,6 +72,9 @@ public interface BotApi {
 
     @POST("/bot{apiToken}/editMessageReplyMarkup")
     Call<ApiResponse<Message>> editMessageReplyMarkup(@Path("apiToken") final String apiToken, @Body final EditMessageReplyMarkupPayload payload);
+
+    @POST("/bot{apiToken}/deleteMessage")
+    Call<ApiResponse<Boolean>> deleteMessage(@Path("apiToken") final String apiToken, @Body final DeleteMessagePayload payload);
 
     @POST("/bot{apiToken}/answerInlineQuery")
     Call<ApiResponse<Boolean>> answerInlineQuery(@Path("apiToken") final String apiToken, @Body final AnswerInlineQueryPayload payload);
