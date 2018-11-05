@@ -1,5 +1,5 @@
 # Telegram Bot Library
-[![Build Status](https://travis-ci.org/sgr-io/telegram-bot.svg?branch=master)](https://travis-ci.org/sgr-io/telegram-bot) [![codecov](https://codecov.io/gh/sgr-io/telegram-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/sgr-io/telegram-bot)
+[![Build Status](https://travis-ci.org/io-sgr/telegram-bot.svg?branch=master)](https://travis-ci.org/io-sgr/telegram-bot) [![codecov](https://codecov.io/gh/io-sgr/telegram-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/io-sgr/telegram-bot)
 
 非常简单易用的 Telegram Bot 工具库。
 
