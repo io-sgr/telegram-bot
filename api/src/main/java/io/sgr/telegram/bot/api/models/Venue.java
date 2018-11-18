@@ -52,7 +52,6 @@ public class Venue {
         this.location = location;
         notEmptyString(title, "Title should be provided");
         this.title = title;
-        notEmptyString(address, "Address should be provided");
         this.address = address;
         this.foursquareId = foursquareId;
     }
