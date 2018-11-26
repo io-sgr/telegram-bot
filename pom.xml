@@ -14,13 +14,14 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>io.sgr</groupId>
         <artifactId>io.sgr</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
 
     <groupId>io.sgr.telegram</groupId>
@@ -39,11 +40,11 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:sgr-io/telegram-bot.git</connection>
-        <developerConnection>scm:git:git@github.com:sgr-io/telegram-bot.git</developerConnection>
+        <connection>scm:git:git@github.com:io-sgr/telegram-bot.git</connection>
+        <developerConnection>scm:git:git@github.com:io-sgr/telegram-bot.git</developerConnection>
         <url>https://github.com/sgr-io/telegram-bot</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <developers>
         <developer>
             <id>sgralpha</id>
@@ -75,6 +76,10 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
