@@ -20,7 +20,7 @@
     <parent>
         <groupId>io.sgr.telegram</groupId>
         <artifactId>telegram-bot</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
 
     <groupId>io.sgr.telegram.bot.examples</groupId>
