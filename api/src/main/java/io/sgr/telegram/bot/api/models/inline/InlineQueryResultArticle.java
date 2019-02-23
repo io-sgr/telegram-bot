@@ -151,12 +151,12 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
         return this.thumbHeight;
     }
 
-    @JsonProperty("input_message_content")
+    @JsonProperty("reply_markup")
     @Override public InlineKeyboardMarkup getReplyMarkup() {
         return this.replyMarkup;
     }
 
-    @JsonProperty("reply_markup")
+    @JsonProperty("input_message_content")
     @Override public InputMessageContent getInputMessageContent() {
         return this.inputMessageContent;
     }
