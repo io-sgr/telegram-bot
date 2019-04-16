@@ -44,6 +44,7 @@ public class ChatMember {
     private final Boolean canRestrictMembers;
     private final Boolean canPinMessage;
     private final Boolean canPromoteMembers;
+    private final Boolean isMember;
     private final Boolean canSendMessage;
     private final Boolean canSendMediaMessage;
     private final Boolean canSendOtherMessage;
@@ -51,7 +52,8 @@ public class ChatMember {
 
     /**
      * @param user                  Information about the user
-     * @param status                The member's status in the chat. Can be 'creator', 'administrator', 'member', 'left'
+     * @param status                The isMember's status in the chat. Can be 'creator', 'administrator', 'isMember',
+     *                              'left'
      *                              or 'kicked'
      * @param untilDate             Optional. Restricted and kicked only. Date when restrictions will be lifted for this
      *                              user, unix time.
@@ -74,6 +76,8 @@ public class ChatMember {
      * @param canPromoteMembers     Optional. Administrators only. True, if the administrator can add new administrators
      *                              with a subset of his own privileges or demote administrators that he has promoted,
      *                              directly or indirectly (promoted by administrators that were appointed by the user)
+     * @param isMember              Optional. Restricted only. True, if the user is a isMember of the chat at the moment
+     *                              of the request.
      * @param canSendMessage        Optional. Restricted only. True, if the user can send text messages, contacts,
      *                              locations and venues.
      * @param canSendMediaMessage   Optional. Restricted only. True, if the user can send audios, documents, photos,
@@ -81,29 +85,30 @@ public class ChatMember {
      * @param canSendOtherMessage   Optional. Restricted only. True, if the user can send animations, games, stickers
      *                              and use inline bots, implies can_send_media_messages.
      * @param canAddWebPagePreviews Optional. Restricted only. True, if user may add web page previews to his messages,
-     *                              implies can_send_media_messages.
      */
     @JsonCreator
     public ChatMember(
-            @JsonProperty("user") User user,
-            @JsonProperty("status") ChatMemberStatus status,
-            @JsonProperty("until_date") Long untilDate,
-            @JsonProperty("can_be_edited") Boolean canBeEdited,
-            @JsonProperty("can_change_info") Boolean canChangeInfo,
-            @JsonProperty("can_post_messages") Boolean canPostMessage,
-            @JsonProperty("can_edit_messages") Boolean canEditMessage,
-            @JsonProperty("can_delete_messages") Boolean canDeleteMessage,
-            @JsonProperty("can_invite_users") Boolean canInviteUsers,
-            @JsonProperty("can_restrict_members") Boolean canRestrictMembers,
-            @JsonProperty("can_pin_messages") Boolean canPinMessage,
-            @JsonProperty("can_promote_members") Boolean canPromoteMembers,
-            @JsonProperty("can_send_messages") Boolean canSendMessage,
-            @JsonProperty("can_send_media_messages") Boolean canSendMediaMessage,
-            @JsonProperty("can_send_other_messages") Boolean canSendOtherMessage,
-            @JsonProperty("can_add_web_page_previews") Boolean canAddWebPagePreviews) {
+            @JsonProperty("user") final User user,
+            @JsonProperty("status") final ChatMemberStatus status,
+            @JsonProperty("until_date") final Long untilDate,
+            @JsonProperty("can_be_edited") final Boolean canBeEdited,
+            @JsonProperty("can_change_info") final Boolean canChangeInfo,
+            @JsonProperty("can_post_messages") final Boolean canPostMessage,
+            @JsonProperty("can_edit_messages") final Boolean canEditMessage,
+            @JsonProperty("can_delete_messages") final Boolean canDeleteMessage,
+            @JsonProperty("can_invite_users") final Boolean canInviteUsers,
+            @JsonProperty("can_restrict_members") final Boolean canRestrictMembers,
+            @JsonProperty("can_pin_messages") final Boolean canPinMessage,
+            @JsonProperty("can_promote_members") final Boolean canPromoteMembers,
+            @JsonProperty("is_member") final Boolean isMember,
+            @JsonProperty("can_send_messages") final Boolean canSendMessage,
+            @JsonProperty("can_send_media_messages") final Boolean canSendMediaMessage,
+            @JsonProperty("can_send_other_messages") final Boolean canSendOtherMessage,
+            @JsonProperty("can_add_web_page_previews") final Boolean canAddWebPagePreviews) {
+        this.isMember = isMember;
         notNull(user, "User should be provided.");
         this.user = user;
-        notNull(status, "Chat member status should be provided.");
+        notNull(status, "Chat isMember status should be provided.");
         this.status = status;
         this.untilDate = untilDate;
         this.canBeEdited = canBeEdited;
@@ -179,6 +184,11 @@ public class ChatMember {
     @JsonProperty("can_promote_members")
     public Boolean canPromoteMembers() {
         return canPromoteMembers;
+    }
+
+    @JsonProperty("is_members")
+    public Boolean getMember() {
+        return isMember;
     }
 
     @JsonProperty("can_send_messages")

@@ -18,7 +18,6 @@ package io.sgr.telegram.bot.api.models;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 /**
  * @author SgrAlpha

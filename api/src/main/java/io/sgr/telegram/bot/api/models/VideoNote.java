@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 /**
  * @author SgrAlpha

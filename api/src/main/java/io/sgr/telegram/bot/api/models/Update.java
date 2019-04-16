@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.models.inline.ChosenInlineResult;
 import io.sgr.telegram.bot.api.models.inline.InlineQuery;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 /**
  * This object represents an incoming update.
@@ -43,6 +42,7 @@ public class Update {
     private final InlineQuery inlineQuery;
     private final ChosenInlineResult chosenInlineResult;
     private final CallbackQuery callbackQuery;
+    private final Poll poll;
 
     /**
      * @param id                 The update's unique identifier. Update identifiers start from a certain positive number
@@ -55,6 +55,8 @@ public class Update {
      * @param chosenInlineResult Optional. The result of a inline query that was chosen by a user and sent to their chat
      *                           partner.
      * @param callbackQuery      Optional. New incoming callback query.
+     * @param poll               Optional. New poll state. Bots receive only updates about stopped polls and polls,
+     *                           which are sent by the bot.
      */
     @JsonCreator
     public Update(
@@ -65,7 +67,8 @@ public class Update {
             @JsonProperty("edited_channel_post") final Message editedChannelPost,
             @JsonProperty("inline_query") final InlineQuery inlineQuery,
             @JsonProperty("chosen_inline_result") final ChosenInlineResult chosenInlineResult,
-            @JsonProperty("callback_query") final CallbackQuery callbackQuery) {
+            @JsonProperty("callback_query") final CallbackQuery callbackQuery,
+            @JsonProperty("poll") final Poll poll) {
         notNull(id, "Update ID should be provided.");
         this.id = id;
         this.message = message;
@@ -75,6 +78,7 @@ public class Update {
         this.inlineQuery = inlineQuery;
         this.chosenInlineResult = chosenInlineResult;
         this.callbackQuery = callbackQuery;
+        this.poll = poll;
     }
 
     @JsonProperty("update_id")
@@ -115,6 +119,11 @@ public class Update {
     @JsonProperty("callback_query")
     public final CallbackQuery getCallbackQuery() {
         return callbackQuery;
+    }
+
+    @JsonProperty("poll")
+    public Poll getPoll() {
+        return poll;
     }
 
     public String toJSON() {

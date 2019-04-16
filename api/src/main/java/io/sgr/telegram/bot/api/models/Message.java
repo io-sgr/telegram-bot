@@ -44,6 +44,7 @@ public class Message {
     private final Chat forwardFromChat;
     private final Long forwardFromMessageId;
     private final String forwardSignature;
+    private final String forwardSenderName;
     private final Long forwardDate;
     private final Message replyTo;
     private final Long editDate;
@@ -64,6 +65,7 @@ public class Message {
     private final Contact contact;
     private final Location location;
     private final Venue venue;
+    private final Poll poll;
     private final List<User> newChatMembers;
     private final User leftChatMember;
     private final String newChatTitle;
@@ -89,6 +91,8 @@ public class Message {
      *                              channel.
      * @param forwardSignature      Optional. For messages forwarded from channels, signature of the post author if
      *                              present.
+     * @param forwardSenderName     Optional. Sender's name for messages forwarded from users who disallow adding a link
+     *                              to their account in forwarded messages.
      * @param forwardDate           Optional. For forwarded messages, date the original message was sent in Unix time
      * @param replyTo               Optional. For replies, the original message. Note that the Message object in this
      *                              field will not contain further reply_to_message fields even if it itself is a
@@ -113,6 +117,7 @@ public class Message {
      * @param contact               Optional. Message is a shared contact, information about the contact
      * @param location              Optional. Message is a shared location, information about the location
      * @param venue                 Optional. Message is a venue, information about the venue.
+     * @param poll                  Optional. Message is a native poll, information about the poll.
      * @param newChatMembers        Optional. New members that were added to the group or supergroup and information
      *                              about them (the bot itself may be one of these members)
      * @param leftChatMember        Optional. A member was removed from the group, information about them (this member
@@ -145,48 +150,47 @@ public class Message {
      */
     public Message(
             @JsonProperty("message_id") Long id,
-            @JsonProperty("from") User from,
-            @JsonProperty("date") Long date,
-            @JsonProperty("chat") Chat chat,
-            @JsonProperty("forward_from") User forwardFrom,
-            @JsonProperty("forward_from_chat") Chat forwardFromChat,
-            @JsonProperty("forward_from_message_id") Long forwardFromMessageId,
-            @JsonProperty("forward_signature") String forwardSignature,
-            @JsonProperty("forward_date") Long forwardDate,
-            @JsonProperty("reply_to_message") Message replyTo,
-            @JsonProperty("edit_date") Long editDate,
+            @JsonProperty("from") final User from,
+            @JsonProperty("date") final Long date,
+            @JsonProperty("chat") final Chat chat,
+            @JsonProperty("forward_from") final User forwardFrom,
+            @JsonProperty("forward_from_chat") final Chat forwardFromChat,
+            @JsonProperty("forward_from_message_id") final Long forwardFromMessageId,
+            @JsonProperty("forward_signature") final String forwardSignature,
+            @JsonProperty("forward_sender_name") final String forwardSenderName,
+            @JsonProperty("forward_date") final Long forwardDate,
+            @JsonProperty("reply_to_message") final Message replyTo,
+            @JsonProperty("edit_date") final Long editDate,
             @JsonProperty("media_group_id") final String mediaGroupId,
-            @JsonProperty("author_signature") String authorSignature,
-            @JsonProperty("text") String text,
-            @JsonProperty("entities") List<MessageEntity> entities,
+            @JsonProperty("author_signature") final String authorSignature,
+            @JsonProperty("text") final String text,
+            @JsonProperty("entities") final List<MessageEntity> entities,
             @JsonProperty("caption_entities") final List<MessageEntity> captionEntities,
-            @JsonProperty("audio") Audio audio,
-            @JsonProperty("document") Document document,
-            @JsonProperty("game") Game game,
-            @JsonProperty("photo") List<PhotoSize> photo,
-            @JsonProperty("sticker") Sticker sticker,
-            @JsonProperty("video") Video video,
-            @JsonProperty("voice") Voice voice,
-            @JsonProperty("video_note") VideoNote videoNote,
-            @JsonProperty("caption") String caption,
-            @JsonProperty("contact") Contact contact,
-            @JsonProperty("location") Location location,
-            @JsonProperty("venue") Venue venue,
-            @JsonProperty("new_chat_members") List<User> newChatMembers,
-            @JsonProperty("left_chat_member") User leftChatMember,
-            @JsonProperty("new_chat_title") String newChatTitle,
-            @JsonProperty("new_chat_photo") List<PhotoSize> newChatPhoto,
-            @JsonProperty("delete_chat_photo") Boolean deleteChatPhoto,
-            @JsonProperty("group_chat_created") Boolean groupChatCreated,
-            @JsonProperty("supergroup_chat_created") Boolean superGroupChatCreated,
-            @JsonProperty("channel_chat_created") Boolean channelChatCreated,
-            @JsonProperty("migrate_to_chat_id") Long migrateToChatId,
-            @JsonProperty("migrate_from_chat_id") Long migrateFromChatId,
-            @JsonProperty("pinned_message") Message pinned,
+            @JsonProperty("audio") final Audio audio,
+            @JsonProperty("document") final Document document,
+            @JsonProperty("game") final Game game,
+            @JsonProperty("photo") final List<PhotoSize> photo,
+            @JsonProperty("sticker") final Sticker sticker,
+            @JsonProperty("video") final Video video,
+            @JsonProperty("voice") final Voice voice,
+            @JsonProperty("video_note") final VideoNote videoNote,
+            @JsonProperty("caption") final String caption,
+            @JsonProperty("contact") final Contact contact,
+            @JsonProperty("location") final Location location,
+            @JsonProperty("venue") final Venue venue,
+            @JsonProperty("poll") final Poll poll,
+            @JsonProperty("new_chat_members") final List<User> newChatMembers,
+            @JsonProperty("left_chat_member") final User leftChatMember,
+            @JsonProperty("new_chat_title") final String newChatTitle,
+            @JsonProperty("new_chat_photo") final List<PhotoSize> newChatPhoto,
+            @JsonProperty("delete_chat_photo") final Boolean deleteChatPhoto,
+            @JsonProperty("group_chat_created") final Boolean groupChatCreated,
+            @JsonProperty("supergroup_chat_created") final Boolean superGroupChatCreated,
+            @JsonProperty("channel_chat_created") final Boolean channelChatCreated,
+            @JsonProperty("migrate_to_chat_id") final Long migrateToChatId,
+            @JsonProperty("migrate_from_chat_id") final Long migrateFromChatId,
+            @JsonProperty("pinned_message") final Message pinned,
             @JsonProperty("connected_website") final String connectedWebsite) {
-        this.mediaGroupId = mediaGroupId;
-        this.captionEntities = captionEntities;
-        this.connectedWebsite = connectedWebsite;
         notNull(id, "Message ID should be provided.");
         this.id = id;
         this.from = from;
@@ -197,12 +201,15 @@ public class Message {
         this.forwardFromChat = forwardFromChat;
         this.forwardFromMessageId = forwardFromMessageId;
         this.forwardSignature = forwardSignature;
+        this.forwardSenderName = forwardSenderName;
         this.forwardDate = forwardDate;
         this.replyTo = replyTo;
         this.editDate = editDate;
+        this.mediaGroupId = mediaGroupId;
         this.authorSignature = authorSignature;
         this.text = text;
         this.entities = entities;
+        this.captionEntities = captionEntities;
         this.audio = audio;
         this.document = document;
         this.game = game;
@@ -211,6 +218,7 @@ public class Message {
         this.video = video;
         this.voice = voice;
         this.videoNote = videoNote;
+        this.poll = poll;
         this.newChatMembers = newChatMembers;
         this.caption = caption == null ? null : caption.length() <= 200 ? caption : caption.substring(0, 200);
         this.contact = contact;
@@ -226,6 +234,7 @@ public class Message {
         this.migrateToChatId = migrateToChatId;
         this.migrateFromChatId = migrateFromChatId;
         this.pinned = pinned;
+        this.connectedWebsite = connectedWebsite;
     }
 
     @JsonProperty("message_id")
@@ -266,6 +275,11 @@ public class Message {
     @JsonProperty("forward_signature")
     public String getForwardSignature() {
         return forwardSignature;
+    }
+
+    @JsonProperty("forward_sender_name")
+    public String getForwardSenderName() {
+        return forwardSenderName;
     }
 
     @JsonProperty("forward_date")
@@ -366,6 +380,11 @@ public class Message {
     @JsonProperty("venue")
     public Venue getVenue() {
         return venue;
+    }
+
+    @JsonProperty("poll")
+    public Poll getPoll() {
+        return poll;
     }
 
     @JsonProperty("new_chat_members")
