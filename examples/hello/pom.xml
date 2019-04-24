@@ -20,7 +20,7 @@
     <parent>
         <groupId>io.sgr.telegram.bot.examples</groupId>
         <artifactId>telegram-bot.examples</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>telegram-bot.examples.hello</artifactId>
@@ -32,6 +32,12 @@
         <dependency>
             <groupId>io.sgr.telegram</groupId>
             <artifactId>telegram-bot.engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

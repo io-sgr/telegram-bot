@@ -16,17 +16,23 @@
 
 package io.sgr.telegram.bot.examples.hello;
 
-import io.sgr.telegram.bot.api.BotApiClient;
+import io.sgr.telegram.bot.api.BotApi;
+import io.sgr.telegram.bot.api.BotApiBuilder;
+import io.sgr.telegram.bot.api.exceptions.ApiCallException;
 import io.sgr.telegram.bot.api.models.Update;
+import io.sgr.telegram.bot.api.models.http.ApiErrorResponse;
 import io.sgr.telegram.bot.api.models.http.SendMessagePayload;
 import io.sgr.telegram.bot.engine.BotEngine;
+
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 public class HelloTelegramBot {
 
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApiClient botApiClient = BotApiClient.newBuilder().setSkipRetry(true).build();
-        final BotEngine engine = new BotEngine(botApiClient, botApiToken, (Update update) -> {
+        final BotApi botApi = new BotApiBuilder().build();
+        final BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
             if (update == null) {
                 return false;
             }
@@ -36,8 +42,13 @@ public class HelloTelegramBot {
             }
             try {
                 final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-                botApiClient.sendMessage(botApiToken, payload);
-            } catch (Exception e) {
+                botApi.sendMessage(botApiToken, payload).get();
+            } catch (ExecutionException e) {
+                if (e.getCause() instanceof ApiCallException) {
+                    Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
+                    error.ifPresent(apiErrorResponse -> System.err.println(apiErrorResponse.getDescription()));
+                }
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return true;

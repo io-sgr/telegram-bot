@@ -27,6 +27,7 @@ public interface BotUpdateProcessor {
      * Handle update.
      *
      * @param update The update to handle with.
+     *
      * @return Whether or not the update has been handled successfully.
      */
     boolean handleUpdate(final Update update);

@@ -19,7 +19,8 @@ import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
-import io.sgr.telegram.bot.api.BotApiClient;
+import io.sgr.telegram.bot.api.BotApi;
+import io.sgr.telegram.bot.api.BotApiBuilder;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.models.WebhookInfo;
 import io.sgr.telegram.bot.api.models.http.GetUpdatesPayload;
@@ -50,7 +51,7 @@ public class BotEngine implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BotEngine.class);
 
-    private final BotApiClient botApiClient;
+    private final BotApi botApi;
     private final String botApiToken;
 
     private Integer limit;
@@ -70,17 +71,17 @@ public class BotEngine implements Runnable {
      * @param botUpdateProcessor Handler of update.
      */
     public BotEngine(final String botApiToken, final BotUpdateProcessor botUpdateProcessor) {
-        this(BotApiClient.newBuilder().build(), botApiToken, botUpdateProcessor);
+        this(new BotApiBuilder().setLogger(LOGGER).build(), botApiToken, botUpdateProcessor);
     }
 
     /**
-     * @param botApiClient       Telegram bot API client.
+     * @param botApi             Telegram bot API client.
      * @param botApiToken        The token of Telegram bot API.
      * @param botUpdateProcessor Handler of update.
      */
-    public BotEngine(final BotApiClient botApiClient, final String botApiToken, final BotUpdateProcessor botUpdateProcessor) {
-        notNull(botApiClient, "Telegram bot API should be specified");
-        this.botApiClient = botApiClient;
+    public BotEngine(final BotApi botApi, final String botApiToken, final BotUpdateProcessor botUpdateProcessor) {
+        notNull(botApi, "Telegram bot API should be specified");
+        this.botApi = botApi;
         notEmptyString(botApiToken, "Telegram bot API token should be specified");
         this.botApiToken = botApiToken;
         this.setGetUpdatesLimit(DEFAULT_GET_UPDATES_LIMIT);
@@ -102,7 +103,7 @@ public class BotEngine implements Runnable {
         this.setStopped(false); // This allows you to start / stop one bot engine multiple times.
         WebhookInfo hookInfo = null;
         try {
-            hookInfo = botApiClient.getWebhookInfo(botApiToken).get(1, TimeUnit.MINUTES);
+            hookInfo = botApi.getWebhookInfo(botApiToken).get(1, TimeUnit.MINUTES);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -122,7 +123,7 @@ public class BotEngine implements Runnable {
             final GetUpdatesPayload payload = new GetUpdatesPayload(this.offset, this.limit, this.timeout, this.allowedUpdates);
             List<Update> received;
             try {
-                received = this.botApiClient.getUpdates(this.botApiToken, payload).get(30, TimeUnit.SECONDS);
+                received = this.botApi.getUpdates(this.botApiToken, payload).get(30, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 if (this.needToStop()) {
                     break;
@@ -213,6 +214,7 @@ public class BotEngine implements Runnable {
     /**
      * @param limit Optional. Limits the number of updates to be retrieved. Values between 1—100 are accepted. NULL or
      *              not in range will use Telegram's defaults, which is 100.
+     *
      * @return The bot engine.
      */
     public BotEngine setGetUpdatesLimit(final Integer limit) {
@@ -223,6 +225,7 @@ public class BotEngine implements Runnable {
     /**
      * @param timeout Optional. Timeout in seconds for long polling, should be greater than 0. Set to negative value
      *                will use {@link #DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC}
+     *
      * @return The bot engine.
      */
     public BotEngine setGetUpdatesTimeoutInSec(final int timeout) {
@@ -233,6 +236,7 @@ public class BotEngine implements Runnable {
     /**
      * @param allowedUpdates Optional. List the types of updates you want your bot to receive. Set to NULL will use
      *                       Telegram's default, which will accept all types.
+     *
      * @return The bot engine.
      */
     public BotEngine setAllowedUpdateTypes(final String... allowedUpdates) {
@@ -242,6 +246,7 @@ public class BotEngine implements Runnable {
 
     /**
      * @param requestTimeoutBackOff Optional. Default to {@link #DEFAULT_REQUEST_TIMEOUT_BACK_OFF}
+     *
      * @return The bot engine.
      */
     public BotEngine setRequestTimeoutBackOff(final BackOff requestTimeoutBackOff) {
@@ -251,6 +256,7 @@ public class BotEngine implements Runnable {
 
     /**
      * @param noUpdateBackOff Optional. Default to {@link #DEFAULT_NO_UPDATE_BACK_OFF}
+     *
      * @return The bot engine.
      */
     public BotEngine setNoUpdateBackOff(final BackOff noUpdateBackOff) {
@@ -260,6 +266,7 @@ public class BotEngine implements Runnable {
 
     /**
      * @param botUpdateProcessor Optional. Set to NULL will use {@link #DEFAULT_BOT_UPDATE_PROCESSOR}
+     *
      * @return The bot engine.
      */
     public BotEngine setBotUpdateProcessor(final BotUpdateProcessor botUpdateProcessor) {

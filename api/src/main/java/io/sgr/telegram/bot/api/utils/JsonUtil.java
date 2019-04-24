@@ -15,9 +15,12 @@
  */
 package io.sgr.telegram.bot.api.utils;
 
+import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
 /**
  * @author SgrAlpha
@@ -26,6 +29,9 @@ public class JsonUtil {
 
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(JSON_FACTORY);
+    static {
+        OBJECT_MAPPER.registerModule(new Jdk8Module());
+    }
 
     /**
      * Get the JsonFactory
@@ -54,7 +60,7 @@ public class JsonUtil {
      * @throws IllegalArgumentException if the object is null
      */
     public static <T> String toJson(T object) {
-        Preconditions.notNull(object, "Cannot convert NULL object!");
+        notNull(object, "Cannot convert NULL object!");
         try {
             return getObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {

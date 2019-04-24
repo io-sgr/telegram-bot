@@ -11,8 +11,8 @@ public class HelloTelegramBot {
 
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApiClient botApiClient = BotApiClient.newBuilder().setSkipRetry(true).build();
-        BotEngine engine = new BotEngine(botApiClient, botApiToken, (Update update) -> {
+        final BotApi botApi = new BotApiBuilder().build();
+        BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
             if (update == null) {
                 return false;
             }
@@ -22,8 +22,13 @@ public class HelloTelegramBot {
             }
             try {
                 SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-                botApiClient.sendMessage(botApiToken, payload);
-            } catch (Exception e) {
+                botApi.sendMessage(botApiToken, payload).get();
+            } catch (ExecutionException e) {
+                if (e.getCause() instanceof ApiCallException) {
+                    Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
+                    error.ifPresent(apiErrorResponse -> System.err.println(apiErrorResponse.getDescription()));
+                }
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return true;
