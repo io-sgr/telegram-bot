@@ -23,15 +23,19 @@ import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.models.http.ApiErrorResponse;
 import io.sgr.telegram.bot.api.models.http.SendMessagePayload;
 import io.sgr.telegram.bot.engine.BotEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class HelloTelegramBot {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloTelegramBot.class);
+
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = new BotApiBuilder().build();
+        final BotApi botApi = new BotApiBuilder().setLogger(LOGGER).build();
         final BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
             if (update == null) {
                 return false;
@@ -45,11 +49,11 @@ public class HelloTelegramBot {
                 botApi.sendMessage(botApiToken, payload).get();
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof ApiCallException) {
-                    Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
-                    error.ifPresent(apiErrorResponse -> System.err.println(apiErrorResponse.getDescription()));
+                    final Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
+                    error.ifPresent(apiErrorResponse -> LOGGER.error(apiErrorResponse.getDescription().orElse("Unknown error!")));
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
             return true;
         });

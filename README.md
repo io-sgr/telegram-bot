@@ -6,13 +6,16 @@ A java library which help you build Telegram Bots in a fashion way.
 *Read this in other languages: [English](README.md), [简体中文](README.zh-cn.md).*
 
 ## CUT THE CRAP AND SHOW ME THE CODE!!!
+[HelloTelegramBot.java](examples/hello/src/main/java/io/sgr/telegram/bot/examples/hello/HelloTelegramBot.java)
 ```java
 public class HelloTelegramBot {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloTelegramBot.class);
+
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = new BotApiBuilder().build();
-        BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
+        final BotApi botApi = new BotApiBuilder().setLogger(LOGGER).build();
+        final BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
             if (update == null) {
                 return false;
             }
@@ -21,15 +24,15 @@ public class HelloTelegramBot {
                 return true;
             }
             try {
-                SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
+                final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
                 botApi.sendMessage(botApiToken, payload).get();
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof ApiCallException) {
-                    Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
-                    error.ifPresent(apiErrorResponse -> System.err.println(apiErrorResponse.getDescription()));
+                    final Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
+                    error.ifPresent(apiErrorResponse -> LOGGER.error(apiErrorResponse.getDescription().orElse("Unknown error!")));
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
             return true;
         });
