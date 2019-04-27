@@ -20,7 +20,10 @@ import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.engine.BotUpdateProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,9 +34,18 @@ public class UpdateController implements BotUpdateProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateController.class);
 
-    @PostMapping(path = "/update/${bot.apiToken}")
+    private final String botAndApiToken;
+
+    public UpdateController(@Value("${bot.apiToken}") final String botAndApiToken) {
+        this.botAndApiToken = botAndApiToken;
+    }
+
+    @PostMapping(path = "/update/{botAndApiToken}")
     @ResponseBody
-    public ResponseEntity receiveUpdate(@RequestBody final Update update) {
+    public ResponseEntity receiveUpdate(@PathVariable("botAndApiToken") final String botAndApiToken, @RequestBody final Update update) {
+        if (!this.botAndApiToken.equalsIgnoreCase(botAndApiToken)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         if (handleUpdate(update)) {
             return ResponseEntity.ok().build();
         }

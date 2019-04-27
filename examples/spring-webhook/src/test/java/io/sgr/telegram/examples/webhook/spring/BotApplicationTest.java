@@ -69,6 +69,11 @@ public class BotApplicationTest {
                 .content(JsonUtil.toJson(update))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        mvc.perform(post("/update/something_else")  // Good update with unsupported bot
+                .content(JsonUtil.toJson(update))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
