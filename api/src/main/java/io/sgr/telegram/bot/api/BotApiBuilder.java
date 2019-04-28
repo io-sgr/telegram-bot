@@ -1,6 +1,8 @@
 package io.sgr.telegram.bot.api;
 
+import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static io.sgr.telegram.bot.api.utils.TelegramUtils.verifyToken;
 
 import io.sgr.telegram.bot.api.exceptions.ApiCallException;
 import io.sgr.telegram.bot.api.models.http.ApiErrorResponse;
@@ -22,16 +24,23 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class BotApiBuilder {
 
-    private static final String BASE_URL = "https://api.telegram.org/";
+    private static final String BASE_URL_FORMAT = "https://api.telegram.org/bot%s";
 
+    private final String botApiToken;
     private boolean retry = false;
     private Logger logger;
+
+    public BotApiBuilder(final String botApiToken) {
+        verifyToken(botApiToken);
+        this.botApiToken = botApiToken;
+    }
 
     /**
      * Enable retry
@@ -58,7 +67,7 @@ public class BotApiBuilder {
      */
     public BotApi build() {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(String.format(Locale.ENGLISH, BASE_URL_FORMAT, botApiToken))
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create(JsonUtil.getObjectMapper()))
                 .addCallAdapterFactory(new DefaultCallAdapterFactory(retry, logger));

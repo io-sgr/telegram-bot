@@ -15,7 +15,7 @@
  */
 package io.sgr.telegram.bot.api.utils;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
+import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
 import java.util.regex.Pattern;
 
@@ -27,18 +27,27 @@ public class TelegramUtils {
     private static final Pattern TOKEN_PATTERN = Pattern.compile("^\\d+:\\w+$");
 
     /**
-     * Parse bot ID from a full token string
+     * Verify if the given token is valid.
      *
-     * @param token The token to parse
-     * @return Bot ID
+     * @param token
+     *         The token to verify.
      */
-    public static String parseBotIDFromToken(final String token) {
-        if (isEmptyString(token)) {
-            throw new IllegalArgumentException("Cannot parse valid bot ID from null or empty token!");
-        }
+    public static void verifyToken(final String token) {
+        notEmptyString(token, "Token can not be null or empty string!");
         if (!TOKEN_PATTERN.matcher(token).matches()) {
             throw new IllegalArgumentException("Invalid token: " + token);
         }
+    }
+
+    /**
+     * Parse bot ID from a full token string.
+     *
+     * @param token
+     *         The token to parse bot ID from.
+     * @return Bot ID
+     */
+    public static String parseBotIDFromToken(final String token) {
+        verifyToken(token);
         return token.split(":", 2)[0];
     }
 

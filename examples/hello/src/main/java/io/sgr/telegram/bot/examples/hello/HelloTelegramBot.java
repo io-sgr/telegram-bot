@@ -35,8 +35,8 @@ public class HelloTelegramBot {
 
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = new BotApiBuilder().setLogger(LOGGER).build();
-        final BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
+        final BotApi botApi = new BotApiBuilder(botApiToken).setLogger(LOGGER).build();
+        final BotEngine engine = new BotEngine(botApi, (Update update) -> {
             if (update == null) {
                 return false;
             }
@@ -46,7 +46,7 @@ public class HelloTelegramBot {
             }
             try {
                 final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-                botApi.sendMessage(botApiToken, payload).get();
+                botApi.sendMessage(payload).get();
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof ApiCallException) {
                     final Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();

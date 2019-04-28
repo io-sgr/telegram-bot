@@ -16,7 +16,6 @@
 package io.sgr.telegram.bot.engine;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
 import io.sgr.telegram.bot.api.BotApi;
@@ -52,7 +51,6 @@ public class BotEngine implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(BotEngine.class);
 
     private final BotApi botApi;
-    private final String botApiToken;
 
     private Integer limit;
     private Integer timeout;
@@ -71,19 +69,16 @@ public class BotEngine implements Runnable {
      * @param botUpdateProcessor Handler of update.
      */
     public BotEngine(final String botApiToken, final BotUpdateProcessor botUpdateProcessor) {
-        this(new BotApiBuilder().setLogger(LOGGER).build(), botApiToken, botUpdateProcessor);
+        this(new BotApiBuilder(botApiToken).setLogger(LOGGER).build(), botUpdateProcessor);
     }
 
     /**
      * @param botApi             Telegram bot API client.
-     * @param botApiToken        The token of Telegram bot API.
      * @param botUpdateProcessor Handler of update.
      */
-    public BotEngine(final BotApi botApi, final String botApiToken, final BotUpdateProcessor botUpdateProcessor) {
+    public BotEngine(final BotApi botApi, final BotUpdateProcessor botUpdateProcessor) {
         notNull(botApi, "Telegram bot API should be specified");
         this.botApi = botApi;
-        notEmptyString(botApiToken, "Telegram bot API token should be specified");
-        this.botApiToken = botApiToken;
         this.setGetUpdatesLimit(DEFAULT_GET_UPDATES_LIMIT);
         this.setGetUpdatesTimeoutInSec(DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC);
         this.setAllowedUpdateTypes(DEFAULT_ALLOWED_UPDATE_TYPE);
@@ -103,7 +98,7 @@ public class BotEngine implements Runnable {
         this.setStopped(false); // This allows you to start / stop one bot engine multiple times.
         WebhookInfo hookInfo = null;
         try {
-            hookInfo = botApi.getWebhookInfo(botApiToken).get(1, TimeUnit.MINUTES);
+            hookInfo = botApi.getWebhookInfo().get(1, TimeUnit.MINUTES);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -123,7 +118,7 @@ public class BotEngine implements Runnable {
             final GetUpdatesPayload payload = new GetUpdatesPayload(this.offset, this.limit, this.timeout, this.allowedUpdates);
             List<Update> received;
             try {
-                received = this.botApi.getUpdates(this.botApiToken, payload).get(30, TimeUnit.SECONDS);
+                received = this.botApi.getUpdates(payload).get(30, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 if (this.needToStop()) {
                     break;

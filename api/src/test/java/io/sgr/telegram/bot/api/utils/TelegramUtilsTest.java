@@ -16,6 +16,7 @@
 package io.sgr.telegram.bot.api.utils;
 
 import static io.sgr.telegram.bot.api.utils.TelegramUtils.parseBotIDFromToken;
+import static io.sgr.telegram.bot.api.utils.TelegramUtils.verifyToken;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -27,61 +28,71 @@ import org.junit.Test;
 public class TelegramUtilsTest {
 
     @Test
+    public void testVerifyToken() {
+        try {
+            verifyToken(null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("\n");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken(":");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken(":aa");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("aa:");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("aa:bb");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("aa: bb");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("aa :bb");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("aa::bb");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+        try {
+            verifyToken("00:bb\n");
+            fail();
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    @Test
     public void testParseBotIdFromToken() {
-        try {
-            parseBotIDFromToken(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken("\n");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken(":");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken(":aa");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken("aa:");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken("aa:bb");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken("aa: bb");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken("aa :bb");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-        try {
-            parseBotIDFromToken("aa::bb");
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
         assertEquals("000", parseBotIDFromToken("000:bb"));
     }
 
