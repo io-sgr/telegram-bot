@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.http;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -45,7 +46,7 @@ public class SendMessagePayload {
      * @param text   Text of the message to be sent.
      */
     public SendMessagePayload(long chatId, String text) {
-        this("" + chatId, text, null, null, null, null, null);
+        this(String.valueOf(chatId), text, null, null, null, null, null);
     }
 
     /**
@@ -55,7 +56,7 @@ public class SendMessagePayload {
      * @param replyTo ID of the original message.
      */
     public SendMessagePayload(long chatId, String text, long replyTo) {
-        this("" + chatId, text, null, null, null, replyTo, null);
+        this(String.valueOf(chatId), text, null, null, null, replyTo, null);
     }
 
     /**
@@ -72,8 +73,10 @@ public class SendMessagePayload {
      *                            keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a
      *                            reply from the user.
      */
-    public SendMessagePayload(long chatId, String text, ParseMode parseMode, Boolean disablePreview, Boolean disableNotification, Long replyTo, ReplyMarkup replyMarkup) {
-        this("" + chatId, text, parseMode, disablePreview, disableNotification, replyTo, replyMarkup);
+    public SendMessagePayload(long chatId, String text, ParseMode parseMode,
+                              Boolean disablePreview, Boolean disableNotification,
+                              Long replyTo, ReplyMarkup replyMarkup) {
+        this(String.valueOf(chatId), text, parseMode, disablePreview, disableNotification, replyTo, replyMarkup);
     }
 
     /**

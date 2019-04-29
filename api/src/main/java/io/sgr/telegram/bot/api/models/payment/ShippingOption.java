@@ -68,12 +68,12 @@ public class ShippingOption {
         return prices == null ? null : Collections.unmodifiableList(prices);
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

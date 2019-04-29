@@ -18,6 +18,8 @@ package io.sgr.telegram.bot.engine;
 
 import io.sgr.telegram.bot.api.models.Update;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author SgrAlpha
  */
@@ -30,6 +32,6 @@ public interface BotUpdateProcessor {
      *
      * @return Whether or not the update has been handled successfully.
      */
-    boolean handleUpdate(final Update update);
+    boolean handleUpdate(@Nonnull final Update update);
 
 }

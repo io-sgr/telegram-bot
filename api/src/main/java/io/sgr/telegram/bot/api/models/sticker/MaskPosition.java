@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.sticker;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -21,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.models.PointType;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
+
+import java.util.Locale;
 
 /**
  * This object describes the position on faces where a mask should be placed by default.
@@ -53,9 +56,9 @@ public class MaskPosition {
             @JsonProperty("zoom") float zoom) {
         try {
             PointType type = PointType.valueOf(point);
-            this.point = type.name().toLowerCase();
+            this.point = type.name().toLowerCase(Locale.ENGLISH);
         } catch (Exception e) {
-            throw new IllegalArgumentException(String.format("Point should be one of 'forehead”, 'eyes”, 'mouth”, or 'chin”, but got: %s", point));
+            throw new IllegalArgumentException(String.format("Point should be one of 'forehead”, 'eyes”, 'mouth”, or 'chin”, but got: %s", point), e);
         }
         this.xShift = xShift;
         this.yShift = yShift;
@@ -85,12 +88,12 @@ public class MaskPosition {
         return zoom;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

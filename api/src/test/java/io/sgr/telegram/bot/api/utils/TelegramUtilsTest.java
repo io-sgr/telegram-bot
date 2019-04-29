@@ -15,7 +15,7 @@
  */
 package io.sgr.telegram.bot.api.utils;
 
-import static io.sgr.telegram.bot.api.utils.TelegramUtils.parseBotIDFromToken;
+import static io.sgr.telegram.bot.api.utils.TelegramUtils.parseBotIdFromToken;
 import static io.sgr.telegram.bot.api.utils.TelegramUtils.verifyToken;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -93,7 +93,7 @@ public class TelegramUtilsTest {
 
     @Test
     public void testParseBotIdFromToken() {
-        assertEquals("000", parseBotIDFromToken("000:bb"));
+        assertEquals("000", parseBotIdFromToken("000:bb"));
     }
 
 }

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.http;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -51,7 +52,7 @@ public class EditMessageTextPayload {
      * @param replyMarkup    A JSON-serialized object for an inline keyboard.
      */
     public EditMessageTextPayload(long chatId, Long messageId, String text, ParseMode parseMode, Boolean disablePreview, ReplyMarkup replyMarkup) {
-        this("" + chatId, messageId, text, parseMode, disablePreview, replyMarkup);
+        this(String.valueOf(chatId), messageId, text, parseMode, disablePreview, replyMarkup);
     }
 
     /**

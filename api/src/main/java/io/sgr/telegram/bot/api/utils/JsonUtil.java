@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.utils;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
@@ -28,7 +29,9 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 public class JsonUtil {
 
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(JSON_FACTORY);
+
     static {
         OBJECT_MAPPER.registerModule(new Jdk8Module());
     }

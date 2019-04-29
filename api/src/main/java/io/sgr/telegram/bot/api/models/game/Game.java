@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.game;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -26,6 +27,9 @@ import io.sgr.telegram.bot.api.models.MessageEntity;
 import io.sgr.telegram.bot.api.models.PhotoSize;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * This object represents a game. Use BotFather to create and edit games, their short names will act as unique
  * identifiers.
@@ -38,9 +42,9 @@ public class Game {
 
     private final String title;
     private final String description;
-    private final PhotoSize[] photo;
+    private final List<PhotoSize> photo;
     private final String text;
-    private final MessageEntity[] textEntities;
+    private final List<MessageEntity> textEntities;
     private final Animation animation;
 
     /**
@@ -58,9 +62,9 @@ public class Game {
     public Game(
             @JsonProperty("title") String title,
             @JsonProperty("description") String description,
-            @JsonProperty("photo") PhotoSize[] photo,
+            @JsonProperty("photo") List<PhotoSize> photo,
             @JsonProperty("text") String text,
-            @JsonProperty("text_entities") MessageEntity[] textEntities,
+            @JsonProperty("text_entities") List<MessageEntity> textEntities,
             @JsonProperty("animation") Animation animation) {
         notEmptyString(title, "Title should be provided");
         this.title = title;
@@ -84,8 +88,8 @@ public class Game {
     }
 
     @JsonProperty("photo")
-    public PhotoSize[] getPhoto() {
-        return photo;
+    public List<PhotoSize> getPhoto() {
+        return Collections.unmodifiableList(photo);
     }
 
     @JsonProperty("text")
@@ -94,8 +98,8 @@ public class Game {
     }
 
     @JsonProperty("text_entities")
-    public MessageEntity[] getTextEntities() {
-        return textEntities;
+    public List<MessageEntity> getTextEntities() {
+        return Collections.unmodifiableList(textEntities);
     }
 
     @JsonProperty("animation")
@@ -103,12 +107,12 @@ public class Game {
         return animation;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

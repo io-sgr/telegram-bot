@@ -13,9 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.http;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author SgrAlpha
@@ -25,7 +29,7 @@ public class GetUpdatesPayload {
     private final Long offset;
     private final Integer limit;
     private final Integer timeout;
-    private final String[] allowedUpdates;
+    private final List<String> allowedUpdates;
 
     /**
      * @param offset         Optional. Identifier of the first update to be returned. Must be greater by one than the
@@ -43,7 +47,7 @@ public class GetUpdatesPayload {
      *                       receive all updates regardless of type (default). If not specified, the previous setting
      *                       will be used.
      */
-    public GetUpdatesPayload(Long offset, Integer limit, Integer timeout, String[] allowedUpdates) {
+    public GetUpdatesPayload(Long offset, Integer limit, Integer timeout, List<String> allowedUpdates) {
         this.offset = offset;
         if (limit != null) {
             if (limit < 1 || limit > 100) {
@@ -88,8 +92,8 @@ public class GetUpdatesPayload {
      * @return the allowedUpdates
      */
     @JsonProperty("allowed_updates")
-    public String[] getAllowedUpdates() {
-        return this.allowedUpdates;
+    public List<String> getAllowedUpdates() {
+        return Collections.unmodifiableList(this.allowedUpdates);
     }
 
 }

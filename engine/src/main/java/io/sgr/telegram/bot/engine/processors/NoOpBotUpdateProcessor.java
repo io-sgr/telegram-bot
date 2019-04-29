@@ -19,6 +19,8 @@ package io.sgr.telegram.bot.engine.processors;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.engine.BotUpdateProcessor;
 
+import javax.annotation.Nonnull;
+
 /**
  * An update handler which exactly does nothing.
  *
@@ -32,7 +34,7 @@ public class NoOpBotUpdateProcessor implements BotUpdateProcessor {
         return INST;
     }
 
-    @Override public boolean handleUpdate(final Update update) {
+    @Override public boolean handleUpdate(@Nonnull final Update update) {
         return true;
     }
 

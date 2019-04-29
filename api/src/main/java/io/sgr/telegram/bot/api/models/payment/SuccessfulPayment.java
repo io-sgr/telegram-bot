@@ -104,12 +104,12 @@ public class SuccessfulPayment {
         return providerPaymentChargeId;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

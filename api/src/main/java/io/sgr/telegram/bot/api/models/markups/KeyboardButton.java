@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.markups;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -71,12 +72,12 @@ public class KeyboardButton {
         return requestLocation;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.inline;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -36,7 +37,7 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
 
     private final String title;
     private final String url;
-    private final Boolean hideURL;
+    private final Boolean hideUrl;
     private final String description;
 
     private final String id;
@@ -60,11 +61,11 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
      * @param title               Title of the result.
      * @param inputMessageContent Content of the message to be sent.
      * @param url                 Optional. URL of the result
-     * @param hideURL             Optional. Pass True, if you don't want the URL to be shown in the message.
+     * @param hideUrl             Optional. Pass True, if you don't want the URL to be shown in the message.
      * @param description         Optional. Short description of the result.
      */
-    public InlineQueryResultArticle(String id, String title, InputMessageContent inputMessageContent, String url, boolean hideURL, String description) {
-        this(id, title, inputMessageContent, null, url, hideURL, description, null, null, null);
+    public InlineQueryResultArticle(String id, String title, InputMessageContent inputMessageContent, String url, boolean hideUrl, String description) {
+        this(id, title, inputMessageContent, null, url, hideUrl, description, null, null, null);
     }
 
     /**
@@ -73,7 +74,7 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
      * @param inputMessageContent Content of the message to be sent.
      * @param replyMarkup         Optional. Inline keyboard attached to the message.
      * @param url                 Optional. URL of the result.
-     * @param hideURL             Optional. Pass True, if you don't want the URL to be shown in the message.
+     * @param hideUrl             Optional. Pass True, if you don't want the URL to be shown in the message.
      * @param description         Optional. Short description of the result.
      * @param thumbUrl            Optional. Url of the thumbnail for the result.
      * @param thumbWidth          Optional. Thumbnail width.
@@ -86,7 +87,7 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
             @JsonProperty("input_message_content") InputMessageContent inputMessageContent,
             @JsonProperty("reply_markup") InlineKeyboardMarkup replyMarkup,
             @JsonProperty("url") String url,
-            @JsonProperty("hide_url") Boolean hideURL,
+            @JsonProperty("hide_url") Boolean hideUrl,
             @JsonProperty("description") String description,
             @JsonProperty("thumb_url") String thumbUrl,
             @JsonProperty("thumb_url") Integer thumbWidth,
@@ -99,7 +100,7 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
         this.inputMessageContent = inputMessageContent;
         this.replyMarkup = replyMarkup;
         this.url = url;
-        this.hideURL = hideURL;
+        this.hideUrl = hideUrl;
         this.description = description;
         this.thumbUrl = thumbUrl;
         this.thumbWidth = thumbWidth;
@@ -117,8 +118,8 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
     }
 
     @JsonProperty("hide_url")
-    public Boolean getHideURL() {
-        return hideURL;
+    public Boolean getHideUrl() {
+        return hideUrl;
     }
 
     @JsonProperty("description")
@@ -161,12 +162,12 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
         return this.inputMessageContent;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

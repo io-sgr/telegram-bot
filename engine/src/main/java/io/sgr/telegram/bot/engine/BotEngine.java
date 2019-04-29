@@ -31,6 +31,7 @@ import io.sgr.telegram.bot.engine.utils.SteadyBackOff;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +55,7 @@ public class BotEngine implements Runnable {
 
     private Integer limit;
     private Integer timeout;
-    private String[] allowedUpdates;
+    private List<String> allowedUpdates;
 
     private BotUpdateProcessor botUpdateProcessor;
 
@@ -235,7 +236,7 @@ public class BotEngine implements Runnable {
      * @return The bot engine.
      */
     public BotEngine setAllowedUpdateTypes(final String... allowedUpdates) {
-        this.allowedUpdates = allowedUpdates;
+        this.allowedUpdates = Arrays.asList(allowedUpdates);
         return this;
     }
 

@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Nonnull;
+
 @RestController
 public class UpdateController implements BotUpdateProcessor {
 
@@ -52,8 +54,8 @@ public class UpdateController implements BotUpdateProcessor {
         return ResponseEntity.badRequest().build();
     }
 
-    @Override public boolean handleUpdate(final Update update) {
-        LOGGER.info(update.toJSON());
+    @Override public boolean handleUpdate(@Nonnull final Update update) {
+        LOGGER.info(update.toJson());
         return true;
     }
 }

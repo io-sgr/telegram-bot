@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models;
+
+import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 /**
  * @author SgrAlpha
@@ -43,9 +45,9 @@ public class TelegramError {
             @JsonProperty("ok") Boolean ok,
             @JsonProperty("error_code") Integer errorCode,
             @JsonProperty("description") String description) {
-        Preconditions.notNull(ok, "Status should be provided.");
+        notNull(ok, "Status should be provided.");
         this.ok = ok;
-        Preconditions.notNull(ok, "Error code should be provided.");
+        notNull(ok, "Error code should be provided.");
         this.errorCode = errorCode;
         this.description = description;
     }
@@ -74,12 +76,12 @@ public class TelegramError {
         return this.description;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

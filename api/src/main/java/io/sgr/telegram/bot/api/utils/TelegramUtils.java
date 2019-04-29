@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.utils;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -46,7 +47,7 @@ public class TelegramUtils {
      *         The token to parse bot ID from.
      * @return Bot ID
      */
-    public static String parseBotIDFromToken(final String token) {
+    public static String parseBotIdFromToken(final String token) {
         verifyToken(token);
         return token.split(":", 2)[0];
     }

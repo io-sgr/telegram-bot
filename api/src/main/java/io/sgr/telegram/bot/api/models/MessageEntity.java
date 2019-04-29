@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
@@ -48,7 +49,7 @@ public class MessageEntity {
      * @param user   Optional. For “text_mention” only, the mentioned user.
      */
     @JsonCreator
-    private MessageEntity(
+    public MessageEntity(
             @JsonProperty("type") String type,
             @JsonProperty("offset") Integer offset,
             @JsonProperty("length") Integer length,
@@ -89,12 +90,12 @@ public class MessageEntity {
         return user;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

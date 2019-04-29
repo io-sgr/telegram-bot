@@ -1,6 +1,21 @@
+/*
+ * Copyright 2017-2019 SgrAlpha
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.sgr.telegram.bot.api;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 import static io.sgr.telegram.bot.api.utils.TelegramUtils.verifyToken;
 
@@ -28,6 +43,8 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
 
 public class BotApiBuilder {
 
@@ -91,12 +108,13 @@ public class BotApiBuilder {
         }
 
         @Override
-        public CallAdapter<?, ?> get(final Type returnType, final Annotation[] annotations, final Retrofit retrofit) {
+        public CallAdapter<?, ?> get(@Nonnull final Type returnType, @Nonnull final Annotation[] annotations, @Nonnull final Retrofit retrofit) {
             if (getRawType(returnType) != CompletableFuture.class) {
                 return null;
             }
             if (!(returnType instanceof ParameterizedType)) {
-                throw new IllegalStateException("CompletableFuture return type must be parameterized as CompletableFuture<Foo> or CompletableFuture<? extends Foo>");
+                throw new IllegalStateException("CompletableFuture return type must be parameterized as"
+                        + " CompletableFuture<Foo> or CompletableFuture<? extends Foo>");
             }
             final Type innerType = getParameterUpperBound(0, (ParameterizedType) returnType);
             return new DefaultCallAdapter<>(new ApiResponseType(innerType), retry, logger);
@@ -154,7 +172,7 @@ public class BotApiBuilder {
             };
             call.enqueue(new Callback<ApiResponse<T>>() {
                 @Override
-                public void onResponse(final Call<ApiResponse<T>> call, final Response<ApiResponse<T>> response) {
+                public void onResponse(@Nonnull final Call<ApiResponse<T>> call, @Nonnull final Response<ApiResponse<T>> response) {
                     if (response.isSuccessful()) {
                         final ApiResponse<T> rawBody = response.body();
                         if (rawBody == null) {
@@ -180,7 +198,7 @@ public class BotApiBuilder {
                             return;
                         }
                         if (response.code() == 429) {
-                            int index = errDesc.lastIndexOf(" ");
+                            int index = errDesc.lastIndexOf(' ');
                             int time;
                             try {
                                 time = Integer.parseInt(errDesc.substring(index));
@@ -209,7 +227,7 @@ public class BotApiBuilder {
                     call.clone().enqueue(this);
                 }
 
-                @Override public void onFailure(final Call<ApiResponse<T>> call, final Throwable t) {
+                @Override public void onFailure(@Nonnull final Call<ApiResponse<T>> call, @Nonnull final Throwable t) {
                     if (!retry) {
                         fut.completeExceptionally(t);
                         return;

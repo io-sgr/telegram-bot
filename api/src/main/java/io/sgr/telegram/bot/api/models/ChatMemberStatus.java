@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Locale;
 
 /**
  * @author SgrAlpha
@@ -39,9 +42,9 @@ public enum ChatMemberStatus {
      * @return An instance of ChatMemberStatus
      */
     @JsonCreator
-    public static ChatMemberStatus fromString(String str) {
+    public static ChatMemberStatus fromString(final String str) {
         notEmptyString(str, "Cannot parse ChatMemberStatus from null or empty string!");
-        return ChatMemberStatus.valueOf(str.toUpperCase());
+        return ChatMemberStatus.valueOf(str.toUpperCase(Locale.ENGLISH));
     }
 
 }

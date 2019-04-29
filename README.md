@@ -14,22 +14,20 @@ public class HelloTelegramBot {
 
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = new BotApiBuilder().setLogger(LOGGER).build();
-        final BotEngine engine = new BotEngine(botApi, botApiToken, (Update update) -> {
-            if (update == null) {
-                return false;
-            }
+        final BotApi botApi = new BotApiBuilder(botApiToken).setLogger(LOGGER).build();
+        final BotEngine engine = new BotEngine(botApi, (Update update) -> {
             if (update.getMessage() == null) {
                 // Not what we want, but still mark as handled.
                 return true;
             }
             try {
                 final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-                botApi.sendMessage(botApiToken, payload).get();
+                botApi.sendMessage(payload).get();
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof ApiCallException) {
-                    final Optional<ApiErrorResponse> error = ((ApiCallException) e.getCause()).getErrorResponse();
-                    error.ifPresent(apiErrorResponse -> LOGGER.error(apiErrorResponse.getDescription().orElse("Unknown error!")));
+                    ((ApiCallException) e.getCause())
+                            .getErrorResponse()
+                            .ifPresent(apiErrorResponse -> LOGGER.error(apiErrorResponse.getDescription().orElse("Unknown error!")));
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e.getMessage(), e);

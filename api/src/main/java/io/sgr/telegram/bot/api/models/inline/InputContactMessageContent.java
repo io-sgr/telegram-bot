@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.inline;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -60,12 +61,12 @@ public class InputContactMessageContent implements InputMessageContent {
         return lastName;
     }
 
-    public String toJSON() {
+    public String toJson() {
         return JsonUtil.toJson(this);
     }
 
     @Override public String toString() {
-        return this.toJSON();
+        return this.toJson();
     }
 
 }

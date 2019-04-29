@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api.models.http;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;

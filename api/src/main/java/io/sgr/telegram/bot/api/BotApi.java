@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.api;
 
 import io.sgr.telegram.bot.api.models.Chat;
@@ -54,162 +55,174 @@ public interface BotApi {
     CompletableFuture<WebhookInfo> getWebhookInfo();
 
     @POST("getUpdates")
-    CompletableFuture<List<Update>> getUpdates(@Body final GetUpdatesPayload payload);
+    CompletableFuture<List<Update>> getUpdates(@Body GetUpdatesPayload payload);
 
     @POST("sendMessage")
-    CompletableFuture<Message> sendMessage(@Body final SendMessagePayload payload);
+    CompletableFuture<Message> sendMessage(@Body SendMessagePayload payload);
 
     @POST("forwardMessage")
-    CompletableFuture<Message> forwardMessage(@Body final ForwardMessagePayload payload);
+    CompletableFuture<Message> forwardMessage(@Body ForwardMessagePayload payload);
 
     @POST("editMessageText")
-    CompletableFuture<Message> editMessageText(@Body final EditMessageTextPayload payload);
+    CompletableFuture<Message> editMessageText(@Body EditMessageTextPayload payload);
 
     @POST("editMessageCaption")
-    CompletableFuture<Message> editMessageCaption(@Body final EditMessageCaptionPayload payload);
+    CompletableFuture<Message> editMessageCaption(@Body EditMessageCaptionPayload payload);
 
     @POST("editMessageReplyMarkup")
-    CompletableFuture<Message> editMessageReplyMarkup(@Body final EditMessageReplyMarkupPayload payload);
+    CompletableFuture<Message> editMessageReplyMarkup(@Body EditMessageReplyMarkupPayload payload);
 
     @POST("deleteMessage")
-    CompletableFuture<Boolean> deleteMessage(@Body final DeleteMessagePayload payload);
+    CompletableFuture<Boolean> deleteMessage(@Body DeleteMessagePayload payload);
 
     @POST("answerInlineQuery")
-    CompletableFuture<Boolean> answerInlineQuery(@Body final AnswerInlineQueryPayload payload);
+    CompletableFuture<Boolean> answerInlineQuery(@Body AnswerInlineQueryPayload payload);
 
     @FormUrlEncoded
     @POST("kickChatMember")
-    CompletableFuture<Boolean> kickChatMember(@Field("chat_id") final String chatId, @Field("user_id") final long userId);
+    CompletableFuture<Boolean> kickChatMember(@Field("chat_id") String chatId, @Field("user_id") long userId);
 
     @FormUrlEncoded
     @POST("kickChatMember")
-    CompletableFuture<Boolean> kickChatMember(@Field("chat_id") final long chatId, @Field("user_id") final long userId);
+    CompletableFuture<Boolean> kickChatMember(@Field("chat_id") long chatId, @Field("user_id") long userId);
 
     @FormUrlEncoded
     @POST("unbanChatMember")
-    CompletableFuture<Boolean> unbanChatMember(@Field("chat_id") final String chatId, @Field("user_id") final long userId);
+    CompletableFuture<Boolean> unbanChatMember(@Field("chat_id") String chatId, @Field("user_id") long userId);
 
     @FormUrlEncoded
     @POST("unbanChatMember")
-    CompletableFuture<Boolean> unbanChatMember(@Field("chat_id") final long chatId, @Field("user_id") final long userId);
+    CompletableFuture<Boolean> unbanChatMember(@Field("chat_id") long chatId, @Field("user_id") long userId);
 
     @FormUrlEncoded
     @POST("restrictChatMember")
-    CompletableFuture<Boolean> restrictChatMember(@Field("chat_id") final String chatId, @Field("user_id") final long userId, @Field("until_date") final long untilDate, @Field("can_send_messages") final Boolean canSendMessage, @Field("can_send_media_messages") final Boolean canSendMediaMessage, @Field("can_send_other_messages") final Boolean canSendOtherMessage, @Field("can_add_web_page_previews") final Boolean canAddWebPagePreviews);
+    CompletableFuture<Boolean> restrictChatMember(@Field("chat_id") String chatId, @Field("user_id") long userId, @Field("until_date") long untilDate,
+            @Field("can_send_messages") Boolean canSendMessage, @Field("can_send_media_messages") Boolean canSendMediaMessage,
+            @Field("can_send_other_messages") Boolean canSendOtherMessage, @Field("can_add_web_page_previews") Boolean canAddWebPagePreviews);
 
     @FormUrlEncoded
     @POST("restrictChatMember")
-    CompletableFuture<Boolean> restrictChatMember(@Field("chat_id") final long chatId, @Field("user_id") final long userId, @Field("until_date") final long untilDate, @Field("can_send_messages") final Boolean canSendMessage, @Field("can_send_media_messages") final Boolean canSendMediaMessage, @Field("can_send_other_messages") final Boolean canSendOtherMessage, @Field("can_add_web_page_previews") final Boolean canAddWebPagePreviews);
+    CompletableFuture<Boolean> restrictChatMember(@Field("chat_id") long chatId, @Field("user_id") long userId, @Field("until_date") long untilDate,
+            @Field("can_send_messages") Boolean canSendMessage, @Field("can_send_media_messages") Boolean canSendMediaMessage,
+            @Field("can_send_other_messages") Boolean canSendOtherMessage, @Field("can_add_web_page_previews") Boolean canAddWebPagePreviews);
 
     @FormUrlEncoded
     @POST("promoteChatMember")
-    CompletableFuture<Boolean> promoteChatMember(@Field("chat_id") final String chatId, @Field("user_id") final long userId, @Field("can_change_info") final Boolean canChangeInfo, @Field("can_post_messages") final Boolean canPostMessage, @Field("can_edit_messages") final Boolean canEditMessage, @Field("can_delete_messages") final Boolean canDeleteMessage, @Field("can_invite_users") final Boolean canInviteUsers, @Field("can_restrict_members") final Boolean canRestrictMembers, @Field("can_pin_messages") final Boolean canPinMessage, @Field("can_promote_members") final Boolean canPromoteMembers);
+    CompletableFuture<Boolean> promoteChatMember(@Field("chat_id") String chatId, @Field("user_id") long userId,
+            @Field("can_change_info") Boolean canChangeInfo, @Field("can_post_messages") Boolean canPostMessage,
+            @Field("can_edit_messages") Boolean canEditMessage, @Field("can_delete_messages") Boolean canDeleteMessage,
+            @Field("can_invite_users") Boolean canInviteUsers, @Field("can_restrict_members") Boolean canRestrictMembers,
+            @Field("can_pin_messages") Boolean canPinMessage, @Field("can_promote_members") Boolean canPromoteMembers);
 
     @FormUrlEncoded
     @POST("promoteChatMember")
-    CompletableFuture<Boolean> promoteChatMember(@Field("chat_id") final long chatId, @Field("user_id") final long userId, @Field("can_change_info") final Boolean canChangeInfo, @Field("can_post_messages") final Boolean canPostMessage, @Field("can_edit_messages") final Boolean canEditMessage, @Field("can_delete_messages") final Boolean canDeleteMessage, @Field("can_invite_users") final Boolean canInviteUsers, @Field("can_restrict_members") final Boolean canRestrictMembers, @Field("can_pin_messages") final Boolean canPinMessage, @Field("can_promote_members") final Boolean canPromoteMembers);
+    CompletableFuture<Boolean> promoteChatMember(@Field("chat_id") long chatId, @Field("user_id") long userId,
+            @Field("can_change_info") Boolean canChangeInfo, @Field("can_post_messages") Boolean canPostMessage,
+            @Field("can_edit_messages") Boolean canEditMessage, @Field("can_delete_messages") Boolean canDeleteMessage,
+            @Field("can_invite_users") Boolean canInviteUsers, @Field("can_restrict_members") Boolean canRestrictMembers,
+            @Field("can_pin_messages") Boolean canPinMessage, @Field("can_promote_members") Boolean canPromoteMembers);
 
     @FormUrlEncoded
     @POST("exportChatInviteLink")
-    CompletableFuture<String> exportChatInviteLink(@Field("chat_id") final String chatId);
+    CompletableFuture<String> exportChatInviteLink(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("exportChatInviteLink")
-    CompletableFuture<String> exportChatInviteLink(@Field("chat_id") final long chatId);
+    CompletableFuture<String> exportChatInviteLink(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("deleteChatPhoto")
-    CompletableFuture<Boolean> deleteChatPhoto(@Field("chat_id") final String chatId);
+    CompletableFuture<Boolean> deleteChatPhoto(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("deleteChatPhoto")
-    CompletableFuture<Boolean> deleteChatPhoto(@Field("chat_id") final long chatId);
+    CompletableFuture<Boolean> deleteChatPhoto(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("setChatTitle")
-    CompletableFuture<Boolean> setChatTitle(@Field("chat_id") final String chatId, @Field("title") final String title);
+    CompletableFuture<Boolean> setChatTitle(@Field("chat_id") String chatId, @Field("title") String title);
 
     @FormUrlEncoded
     @POST("setChatTitle")
-    CompletableFuture<Boolean> setChatTitle(@Field("chat_id") final long chatId, @Field("title") final String title);
+    CompletableFuture<Boolean> setChatTitle(@Field("chat_id") long chatId, @Field("title") String title);
 
     @FormUrlEncoded
     @POST("setChatDescription")
-    CompletableFuture<Boolean> setChatDescription(@Field("chat_id") final String chatId, @Field("description") final String description);
+    CompletableFuture<Boolean> setChatDescription(@Field("chat_id") String chatId, @Field("description") String description);
 
     @FormUrlEncoded
     @POST("setChatDescription")
-    CompletableFuture<Boolean> setChatDescription(@Field("chat_id") final long chatId, @Field("description") final String description);
+    CompletableFuture<Boolean> setChatDescription(@Field("chat_id") long chatId, @Field("description") String description);
 
     @FormUrlEncoded
     @POST("pinChatMessage")
-    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") final String chatId, @Field("message_id") final long messageId);
+    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") String chatId, @Field("message_id") long messageId);
 
     @FormUrlEncoded
     @POST("pinChatMessage")
-    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") final long chatId, @Field("message_id") final long messageId);
+    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") long chatId, @Field("message_id") long messageId);
 
     @FormUrlEncoded
     @POST("unpinChatMessage")
-    CompletableFuture<Boolean> unpinChatMessage(@Field("chat_id") final String chatId);
+    CompletableFuture<Boolean> unpinChatMessage(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("unpinChatMessage")
-    CompletableFuture<Boolean> unpinChatMessage(@Field("chat_id") final long chatId);
+    CompletableFuture<Boolean> unpinChatMessage(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("leaveChat")
-    CompletableFuture<Boolean> leaveChat(@Field("chat_id") final String chatId);
+    CompletableFuture<Boolean> leaveChat(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("leaveChat")
-    CompletableFuture<Boolean> leaveChat(@Field("chat_id") final long chatId);
+    CompletableFuture<Boolean> leaveChat(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("getChat")
-    CompletableFuture<Chat> getChat(@Field("chat_id") final String chatId);
+    CompletableFuture<Chat> getChat(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("getChat")
-    CompletableFuture<Chat> getChat(@Field("chat_id") final long chatId);
+    CompletableFuture<Chat> getChat(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("getChatAdministrators")
-    CompletableFuture<List<ChatMember>> getChatAdministrators(@Field("chat_id") final String chatId);
+    CompletableFuture<List<ChatMember>> getChatAdministrators(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("getChatAdministrators")
-    CompletableFuture<List<ChatMember>> getChatAdministrators(@Field("chat_id") final long chatId);
+    CompletableFuture<List<ChatMember>> getChatAdministrators(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("getChatMembersCount")
-    CompletableFuture<Integer> getChatMembersCount(@Field("chat_id") final String chatId);
+    CompletableFuture<Integer> getChatMembersCount(@Field("chat_id") String chatId);
 
     @FormUrlEncoded
     @POST("getChatMembersCount")
-    CompletableFuture<Integer> getChatMembersCount(@Field("chat_id") final long chatId);
+    CompletableFuture<Integer> getChatMembersCount(@Field("chat_id") long chatId);
 
     @FormUrlEncoded
     @POST("getChatMember")
-    CompletableFuture<ChatMember> getChatMember(@Field("chat_id") final String chatId, @Field("user_id") final long userId);
+    CompletableFuture<ChatMember> getChatMember(@Field("chat_id") String chatId, @Field("user_id") long userId);
 
     @FormUrlEncoded
     @POST("getChatMember")
-    CompletableFuture<ChatMember> getChatMember(@Field("chat_id") final long chatId, @Field("user_id") final long userId);
+    CompletableFuture<ChatMember> getChatMember(@Field("chat_id") long chatId, @Field("user_id") long userId);
 
     @POST("answerCallbackQuery")
-    CompletableFuture<Boolean> answerCallbackQuery(@Body final AnswerCallbackQueryPayload payload);
+    CompletableFuture<Boolean> answerCallbackQuery(@Body AnswerCallbackQueryPayload payload);
 
     @POST("sendGame")
-    CompletableFuture<Message> sendGame(@Body final SendGamePayload payload);
+    CompletableFuture<Message> sendGame(@Body SendGamePayload payload);
 
     @POST("setGameScore")
-    CompletableFuture<Message> setGameScoreByBot(@Body final SetGameScorePayload payload);
+    CompletableFuture<Message> setGameScoreByBot(@Body SetGameScorePayload payload);
 
     @POST("setGameScore")
-    CompletableFuture<Boolean> setGameScore(@Body final SetGameScorePayload payload);
+    CompletableFuture<Boolean> setGameScore(@Body SetGameScorePayload payload);
 
     @POST("getGameHighScores")
-    CompletableFuture<List<GameHighScore>> getGameHighScores(@Body final GetGameScorePayload payload);
+    CompletableFuture<List<GameHighScore>> getGameHighScores(@Body GetGameScorePayload payload);
 
 }

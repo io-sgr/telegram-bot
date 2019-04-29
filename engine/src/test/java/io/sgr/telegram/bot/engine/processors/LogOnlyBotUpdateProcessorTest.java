@@ -18,7 +18,6 @@ package io.sgr.telegram.bot.engine.processors;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -43,14 +42,6 @@ public class LogOnlyBotUpdateProcessorTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInitWithNullLogger() {
         new LogOnlyBotUpdateProcessor(null);
-    }
-
-    @Test
-    public void testHandleNullUpdate() {
-        final BotUpdateProcessor processor = new LogOnlyBotUpdateProcessor(mockLogger);
-        final boolean handled = processor.handleUpdate(null);
-        assertTrue(handled);
-        verify(mockLogger, times(1)).info(eq("NULL"));
     }
 
     @Test
