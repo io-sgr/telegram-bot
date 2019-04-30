@@ -32,6 +32,6 @@ public interface BotUpdateProcessor {
      *
      * @return Whether or not the update has been handled successfully.
      */
-    boolean handleUpdate(@Nonnull final Update update);
+    boolean handleUpdate(@Nonnull Update update);
 
 }

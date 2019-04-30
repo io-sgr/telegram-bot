@@ -46,6 +46,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
+/**
+ * @author SgrAlpha
+ */
 public class BotApiBuilder {
 
     private static final String BASE_URL_FORMAT = "https://api.telegram.org/bot%s";

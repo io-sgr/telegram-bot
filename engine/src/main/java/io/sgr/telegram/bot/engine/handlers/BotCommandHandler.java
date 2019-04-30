@@ -25,6 +25,6 @@ public interface BotCommandHandler {
 
     String getCommandName();
 
-    void handle(final String argument, final Message oriMsg);
+    void handle(String argument, Message oriMsg);
 
 }

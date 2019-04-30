@@ -59,7 +59,7 @@
         <dep.okhttp.version>3.14.0</dep.okhttp.version>
         <dep.slf4j.version>1.7.26</dep.slf4j.version>
         <dep.junit.version>4.12</dep.junit.version>
-        <dep.mockito.version>2.25.1</dep.mockito.version>
+        <dep.mockito.version>2.17.0</dep.mockito.version>
     </properties>
 
     <modules>

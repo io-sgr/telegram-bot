@@ -23,6 +23,6 @@ import io.sgr.telegram.bot.api.models.Message;
  */
 public interface BotMessageHandler {
 
-    void handle(final Message oriMsg);
+    void handle(Message oriMsg);
 
 }

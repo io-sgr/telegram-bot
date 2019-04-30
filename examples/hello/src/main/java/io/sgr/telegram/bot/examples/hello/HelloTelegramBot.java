@@ -27,6 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author SgrAlpha
+ */
 public class HelloTelegramBot {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloTelegramBot.class);
@@ -34,7 +37,7 @@ public class HelloTelegramBot {
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
         final BotApi botApi = new BotApiBuilder(botApiToken).setLogger(LOGGER).build();
-        final BotEngine engine = new BotEngine(botApi, (Update update) -> {
+        final BotEngine engine = new BotEngine(botApi).setBotUpdateProcessor((Update update) -> {
             if (update.getMessage() == null) {
                 // Not what we want, but still mark as handled.
                 return true;

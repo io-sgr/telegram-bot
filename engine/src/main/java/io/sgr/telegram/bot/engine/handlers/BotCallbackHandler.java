@@ -23,6 +23,6 @@ import io.sgr.telegram.bot.api.models.CallbackQuery;
  */
 public interface BotCallbackHandler {
 
-    void handle(final CallbackQuery query);
+    void handle(CallbackQuery query);
 
 }

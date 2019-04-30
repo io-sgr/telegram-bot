@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.engine;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static java.util.Objects.isNull;
 
 import io.sgr.telegram.bot.api.BotApi;
 import io.sgr.telegram.bot.api.BotApiBuilder;
@@ -32,7 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -42,50 +46,41 @@ import java.util.concurrent.TimeoutException;
  */
 public class BotEngine implements Runnable {
 
-    public static final Integer DEFAULT_GET_UPDATES_LIMIT = null;
-    public static final int DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC = 60;
-    public static final String[] DEFAULT_ALLOWED_UPDATE_TYPE = null;
-    public static final BackOff DEFAULT_REQUEST_TIMEOUT_BACK_OFF = ExponentialBackOff.getDefault();
-    public static final BackOff DEFAULT_NO_UPDATE_BACK_OFF = SteadyBackOff.getDefault();
-    public static final NoOpBotUpdateProcessor DEFAULT_BOT_UPDATE_PROCESSOR = NoOpBotUpdateProcessor.getDefault();
+    private static final Integer DEFAULT_GET_UPDATES_LIMIT = null;
+    private static final int DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC = 60;
+    private static final List<String> DEFAULT_ALLOWED_UPDATE_TYPE = null;
+    private static final BackOff DEFAULT_REQUEST_TIMEOUT_BACK_OFF = ExponentialBackOff.getDefault();
+    private static final BackOff DEFAULT_NO_UPDATE_BACK_OFF = SteadyBackOff.getDefault();
+    private static final NoOpBotUpdateProcessor DEFAULT_BOT_UPDATE_PROCESSOR = NoOpBotUpdateProcessor.getDefault();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BotEngine.class);
 
     private final BotApi botApi;
 
-    private Integer limit;
-    private Integer timeout;
-    private List<String> allowedUpdates;
+    private Integer limit = DEFAULT_GET_UPDATES_LIMIT;
+    private Integer timeout = DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC;
+    private List<String> allowedUpdates = DEFAULT_ALLOWED_UPDATE_TYPE;
+    private BackOff requestTimeoutBackOff = DEFAULT_REQUEST_TIMEOUT_BACK_OFF;
+    private BackOff noUpdateBackOff = DEFAULT_NO_UPDATE_BACK_OFF;
 
     private BotUpdateProcessor botUpdateProcessor;
-
-    private BackOff requestTimeoutBackOff;
-    private BackOff noUpdateBackOff;
 
     private Long offset = null;
     private volatile boolean stopped = false;
 
     /**
      * @param botApiToken        The token of Telegram bot API.
-     * @param botUpdateProcessor Handler of update.
      */
-    public BotEngine(final String botApiToken, final BotUpdateProcessor botUpdateProcessor) {
-        this(new BotApiBuilder(botApiToken).setLogger(LOGGER).build(), botUpdateProcessor);
+    public BotEngine(final String botApiToken) {
+        this(new BotApiBuilder(botApiToken).setLogger(LOGGER).build());
     }
 
     /**
      * @param botApi             Telegram bot API client.
-     * @param botUpdateProcessor Handler of update.
      */
-    public BotEngine(final BotApi botApi, final BotUpdateProcessor botUpdateProcessor) {
+    public BotEngine(final BotApi botApi) {
         notNull(botApi, "Telegram bot API should be specified");
         this.botApi = botApi;
-        this.setGetUpdatesLimit(DEFAULT_GET_UPDATES_LIMIT);
-        this.setGetUpdatesTimeoutInSec(DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC);
-        this.setAllowedUpdateTypes(DEFAULT_ALLOWED_UPDATE_TYPE);
-        this.setRequestTimeoutBackOff(DEFAULT_REQUEST_TIMEOUT_BACK_OFF);
-        this.setNoUpdateBackOff(DEFAULT_NO_UPDATE_BACK_OFF);
-        this.setBotUpdateProcessor(botUpdateProcessor);
     }
 
     @Override public void run() {
@@ -110,7 +105,7 @@ public class BotEngine implements Runnable {
         }
         LOGGER.info("The given API token has been verified successfully.");
         if (!isEmptyString(hookInfo.getUrl())) {
-            LOGGER.error(String.format("Conflict detected! Webhook has been enabled and set to '%s', remove it before start engine! Details: %s", hookInfo.getUrl(), hookInfo));
+            LOGGER.error("Conflict detected! Webhook has been set to '{}', remove it before start engine! Details: {}", hookInfo.getUrl(), hookInfo);
             this.setStopped(true);
             return;
         }
@@ -120,19 +115,7 @@ public class BotEngine implements Runnable {
             List<Update> received;
             try {
                 received = this.botApi.getUpdates(payload).get(30, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                if (this.needToStop()) {
-                    break;
-                }
-                long wait = requestTimeoutBackOff.getNextBackOffInMilli();
-                LOGGER.warn(String.format("Interrupted when getting updates, wait for %d milliseconds to retry.", wait));
-                try {
-                    TimeUnit.MILLISECONDS.sleep(wait);
-                } catch (InterruptedException e1) {
-                    LOGGER.debug("Interrupted when waiting to retry a interrupted / failed get update request.");
-                }
-                continue;
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 if (this.needToStop()) {
                     break;
                 }
@@ -142,18 +125,8 @@ public class BotEngine implements Runnable {
                     TimeUnit.MILLISECONDS.sleep(wait);
                 } catch (InterruptedException e1) {
                     LOGGER.debug("Interrupted when waiting to retry a interrupted / failed get update request.");
-                }
-                continue;
-            } catch (TimeoutException e) {
-                if (this.needToStop()) {
+                    setStopped(true);
                     break;
-                }
-                long wait = requestTimeoutBackOff.getNextBackOffInMilli();
-                LOGGER.warn(String.format("Timeout when getting updates from Telegram server, wait for %d milliseconds.", wait));
-                try {
-                    TimeUnit.MILLISECONDS.sleep(wait);
-                } catch (InterruptedException e1) {
-                    LOGGER.debug("Interrupted when waiting for Telegram server to get updates.");
                 }
                 continue;
             }
@@ -162,27 +135,29 @@ public class BotEngine implements Runnable {
                     break;
                 }
                 long wait = noUpdateBackOff.getNextBackOffInMilli();
-                LOGGER.debug(String.format("No new update available, wait for %d milliseconds.", wait));
+                LOGGER.debug("No new update available, wait for {} milliseconds.", wait);
                 try {
                     TimeUnit.MILLISECONDS.sleep(wait);
                 } catch (InterruptedException e) {
                     LOGGER.debug("Interrupted when waiting to get updates.");
+                    setStopped(true);
+                    break;
                 }
                 continue;
             }
             noUpdateBackOff.reset();
-            LOGGER.debug(String.format("Received %d new update(s)", received.size()));
+            LOGGER.debug("Received {} new update(s)", received.size());
             for (final Update update : received) {
                 if (update == null) {
                     continue;
                 }
-                if (this.botUpdateProcessor.handleUpdate(update)) {
-                    offset = update.getId() + 1;
-                    continue;
+                boolean success = this.botUpdateProcessor.handleUpdate(update);
+                if (!success) {
+                    LOGGER.error("Failed to handle update: {}", JsonUtil.toJson(update));
+                    setStopped(true);
+                    break;
                 }
-                offset = update.getId();
-                LOGGER.error(String.format("Failed to handle update: %s", JsonUtil.toJson(update)));
-                break;
+                offset = update.getId() + 1;
             }
         }
         LOGGER.info("Bot engine stopped.");
@@ -236,7 +211,7 @@ public class BotEngine implements Runnable {
      * @return The bot engine.
      */
     public BotEngine setAllowedUpdateTypes(final String... allowedUpdates) {
-        this.allowedUpdates = Arrays.asList(allowedUpdates);
+        this.allowedUpdates = isNull(allowedUpdates) ? Collections.emptyList() : Arrays.asList(allowedUpdates);
         return this;
     }
 
@@ -246,7 +221,7 @@ public class BotEngine implements Runnable {
      * @return The bot engine.
      */
     public BotEngine setRequestTimeoutBackOff(final BackOff requestTimeoutBackOff) {
-        this.requestTimeoutBackOff = requestTimeoutBackOff == null ? DEFAULT_REQUEST_TIMEOUT_BACK_OFF : requestTimeoutBackOff;
+        this.requestTimeoutBackOff = Optional.ofNullable(requestTimeoutBackOff).orElse(DEFAULT_REQUEST_TIMEOUT_BACK_OFF);
         return this;
     }
 
@@ -256,7 +231,7 @@ public class BotEngine implements Runnable {
      * @return The bot engine.
      */
     public BotEngine setNoUpdateBackOff(final BackOff noUpdateBackOff) {
-        this.noUpdateBackOff = noUpdateBackOff == null ? DEFAULT_NO_UPDATE_BACK_OFF : noUpdateBackOff;
+        this.noUpdateBackOff = Optional.ofNullable(noUpdateBackOff).orElse(DEFAULT_NO_UPDATE_BACK_OFF);
         return this;
     }
 
@@ -266,7 +241,7 @@ public class BotEngine implements Runnable {
      * @return The bot engine.
      */
     public BotEngine setBotUpdateProcessor(final BotUpdateProcessor botUpdateProcessor) {
-        this.botUpdateProcessor = botUpdateProcessor == null ? DEFAULT_BOT_UPDATE_PROCESSOR : botUpdateProcessor;
+        this.botUpdateProcessor = Optional.ofNullable(botUpdateProcessor).orElse(DEFAULT_BOT_UPDATE_PROCESSOR);
         return this;
     }
 

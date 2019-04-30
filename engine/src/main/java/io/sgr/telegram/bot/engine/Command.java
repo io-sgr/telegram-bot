@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.engine;
 
-import io.sgr.telegram.bot.api.utils.Preconditions;
+import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+
+import java.util.Locale;
 
 /**
  * @author SgrAlpha
@@ -31,11 +34,9 @@ public class Command {
      * @param toBot    The robot which send command to
      * @param argument argument for command
      */
-    public Command(String type, String toBot, String argument) {
-        if (Preconditions.isEmptyString(type)) {
-            throw new IllegalArgumentException("Command type cannot be null or empty string!");
-        }
-        this.type = type.toLowerCase();
+    public Command(final String type, final String toBot, final String argument) {
+        notEmptyString(type, "Command type cannot be null or empty string!");
+        this.type = type.toLowerCase(Locale.ENGLISH);
         this.toBot = toBot;
         this.argument = argument;
     }
