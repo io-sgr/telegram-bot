@@ -33,12 +33,19 @@
     <dependencies>
         <dependency>
             <groupId>io.sgr.telegram</groupId>
+            <artifactId>telegram-bot.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.sgr.telegram</groupId>
             <artifactId>telegram-bot.engine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>

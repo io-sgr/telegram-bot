@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.ext.db.mysql;
 
 import io.sgr.telegram.bot.api.models.User;
@@ -44,7 +45,7 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
                     ResultSet rs = ps.executeQuery();
             ) {
                 if (rs.next()) {
-                    return new User(rs.getLong("user_id"), false, rs.getString("user_first_name"), rs.getString("user_last_name"), rs.getString("user_username"), null);
+                    return buildUserFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
@@ -66,7 +67,7 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
                     ResultSet rs = ps.executeQuery();
             ) {
                 if (rs.next()) {
-                    return new User(rs.getLong("user_id"), false, rs.getString("user_first_name"), rs.getString("user_last_name"), rs.getString("user_username"), null);
+                    return buildUserFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
@@ -77,7 +78,8 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
 
     @Override
     public User getActiveUser(long botId, long userId) {
-        String sql = "SELECT user_id, user_first_name, user_last_name, user_username FROM " + getTableName() + " WHERE bot_id = ? AND user_id = ? AND is_active = true";
+        String sql = "SELECT user_id, user_first_name, user_last_name, user_username FROM " + getTableName()
+                + " WHERE bot_id = ? AND user_id = ? AND is_active = true";
         try (
                 Connection conn = this.getDataSource().getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)
@@ -88,7 +90,7 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
                     ResultSet rs = ps.executeQuery();
             ) {
                 if (rs.next()) {
-                    return new User(rs.getLong("user_id"), false, rs.getString("user_first_name"), rs.getString("user_last_name"), rs.getString("user_username"), null);
+                    return buildUserFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
@@ -99,7 +101,8 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
 
     @Override
     public User getActiveUser(long botId, String username) {
-        String sql = "SELECT user_id, user_first_name, user_last_name, user_username FROM " + getTableName() + " WHERE bot_id = ? AND user_username = ? AND is_active = true";
+        String sql = "SELECT user_id, user_first_name, user_last_name, user_username FROM " + getTableName()
+                + " WHERE bot_id = ? AND user_username = ? AND is_active = true";
         try (
                 Connection conn = this.getDataSource().getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)
@@ -110,7 +113,7 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
                     ResultSet rs = ps.executeQuery();
             ) {
                 if (rs.next()) {
-                    return new User(rs.getLong("user_id"), false, rs.getString("user_first_name"), rs.getString("user_last_name"), rs.getString("user_username"), null);
+                    return buildUserFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
@@ -173,6 +176,12 @@ public abstract class MySqlBasedUserRegistryDbWithMultiBotsSupport implements Us
             getLogger().error(e.getMessage(), e);
         }
         return false;
+    }
+
+    private User buildUserFromResultSet(final ResultSet rs) throws SQLException {
+        return new User(rs.getLong("user_id"), false,
+                rs.getString("user_first_name"), rs.getString("user_last_name"), rs.getString("user_username"),
+                null);
     }
 
     protected abstract DataSource getDataSource();

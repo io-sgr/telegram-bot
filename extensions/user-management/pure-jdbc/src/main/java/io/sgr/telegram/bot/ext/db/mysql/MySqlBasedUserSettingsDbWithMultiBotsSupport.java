@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sgr.telegram.bot.ext.db.mysql;
 
 import io.sgr.telegram.bot.api.utils.Preconditions;
@@ -38,7 +39,8 @@ public abstract class MySqlBasedUserSettingsDbWithMultiBotsSupport implements Us
         if (Preconditions.isEmptyString(propKey) || Preconditions.isEmptyString(propValue)) {
             return;
         }
-        String sql = "INSERT INTO " + getTableName() + "(bot_id, user_id, prop_key, prop_value) VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE prop_value = VALUES(prop_value)";
+        String sql = "INSERT INTO " + getTableName() + "(bot_id, user_id, prop_key, prop_value)"
+                + " VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE prop_value = VALUES(prop_value)";
         try (
                 Connection conn = this.getDataSource().getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)
