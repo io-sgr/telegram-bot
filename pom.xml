@@ -59,7 +59,8 @@
         <dep.okhttp.version>3.14.0</dep.okhttp.version>
         <dep.slf4j.version>1.7.26</dep.slf4j.version>
         <dep.junit.version>4.12</dep.junit.version>
-        <dep.mockito.version>2.17.0</dep.mockito.version>
+        <dep.mockito.version>2.27.0</dep.mockito.version>
+        <dep.spring-boot.version>2.1.4.RELEASE</dep.spring-boot.version>
     </properties>
 
     <modules>
@@ -81,6 +82,7 @@
                 <artifactId>telegram-bot.engine</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
@@ -88,6 +90,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>com.squareup.retrofit2</groupId>
                 <artifactId>retrofit</artifactId>
@@ -108,6 +111,7 @@
                 <artifactId>okhttp</artifactId>
                 <version>${dep.okhttp.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -118,12 +122,34 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${dep.slf4j.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${dep.spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson</groupId>
+                        <artifactId>jackson-bom</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>3.0.2</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+                <scope>provided</scope>
+            </dependency>
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -218,6 +244,28 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${dep.spring-boot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.basepom.maven</groupId>
+                    <artifactId>duplicate-finder-maven-plugin</artifactId>
+                    <version>1.3.0</version>
+                    <configuration>
+                        <ignoredDependencies>
+                            <dependency>
+                                <groupId>net.bytebuddy</groupId>
+                                <artifactId>byte-buddy</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>net.bytebuddy</groupId>
+                                <artifactId>byte-buddy-agent</artifactId>
+                            </dependency>
+                        </ignoredDependencies>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

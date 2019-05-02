@@ -1,2 +1,13 @@
+server:
+  port: 9000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          health,info
+      base-path: /internal/management
+
 bot:
   apiToken: "bot_token"

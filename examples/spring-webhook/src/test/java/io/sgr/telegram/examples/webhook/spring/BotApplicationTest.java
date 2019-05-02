@@ -40,7 +40,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(classes = BotApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(
-        locations = "classpath:application.yaml")
+        locations = "classpath:application-test.yaml")
 public class BotApplicationTest {
 
     @Value("${bot.apiToken}")
