@@ -160,11 +160,15 @@ public class BotApiBuilder {
             this.logger = logger;
         }
 
-        @Override public Type responseType() {
+        @Nonnull
+        @Override
+        public Type responseType() {
             return responseType;
         }
 
-        @Override public CompletableFuture<T> adapt(final Call<ApiResponse<T>> call) {
+        @Nonnull
+        @Override
+        public CompletableFuture<T> adapt(@Nonnull final Call<ApiResponse<T>> call) {
             final CompletableFuture<T> fut = new CompletableFuture<T>() {
                 @Override public boolean cancel(final boolean mayInterruptIfRunning) {
                     if (mayInterruptIfRunning) {
