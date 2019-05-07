@@ -17,21 +17,27 @@ public class HelloTelegramBot {
         final BotApi botApi = new BotApiBuilder(botApiToken).setLogger(LOGGER).build();
         final BotEngine engine = new BotEngine(botApi).setBotUpdateProcessor((Update update) -> {
             if (update.getMessage() == null) {
-                // Not what we want, but still mark as handled.
+                // Not what we want, ignored, but still send a success signal so it can deal with the next update.
                 return true;
             }
-            try {
-                final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-                botApi.sendMessage(payload).get();
-            } catch (ExecutionException e) {
-                if (e.getCause() instanceof ApiCallException) {
-                    ((ApiCallException) e.getCause())
-                            .getErrorResponse()
-                            .ifPresent(apiErrorResponse -> LOGGER.error(apiErrorResponse.getDescription().orElse("Unknown error!")));
-                }
-            } catch (InterruptedException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
+            final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
+            botApi.sendMessage(payload) // Send response message asynchronously without blocking next incoming update.
+                    .exceptionally(e -> {
+                        // Something wrong when sending message, you might want to at least log it.
+                        final Throwable cause = e.getCause();
+                        if (cause instanceof ApiCallException) {
+                            final String message = ((ApiCallException) cause).getErrorResponse()
+                                    .flatMap(ApiErrorResponse::getDescription)
+                                    .orElse(cause.getMessage());
+                            LOGGER.error(message, e);
+                        } else {
+                            LOGGER.error(e.getMessage(), e);
+                        }
+                        return null;    // Return null because no message been sent.
+                    })
+                    .thenAccept(message -> {
+                        // Nullable. Do anything you want with sent message here, or ignore it directly.
+                    });
             return true;
         });
         engine.start();
