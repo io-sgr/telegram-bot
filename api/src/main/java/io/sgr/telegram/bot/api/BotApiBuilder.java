@@ -51,7 +51,7 @@ import javax.annotation.Nonnull;
  */
 public class BotApiBuilder {
 
-    private static final String BASE_URL_FORMAT = "https://api.telegram.org/bot%s";
+    private static final String BASE_URL_FORMAT = "https://api.telegram.org/bot%s/";
 
     private final String botApiToken;
     private boolean retry = false;
