@@ -49,7 +49,7 @@ public class BotEngine implements Runnable {
     private static final Integer DEFAULT_GET_UPDATES_LIMIT = null;
     private static final int DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC = 60;
     private static final List<String> DEFAULT_ALLOWED_UPDATE_TYPE = null;
-    private static final BackOff DEFAULT_REQUEST_TIMEOUT_BACK_OFF = ExponentialBackOff.getDefault();
+    private static final BackOff DEFAULT_RETRY_BACK_OFF = ExponentialBackOff.getDefault();
     private static final BackOff DEFAULT_NO_UPDATE_BACK_OFF = SteadyBackOff.getDefault();
     private static final NoOpBotUpdateProcessor DEFAULT_BOT_UPDATE_PROCESSOR = NoOpBotUpdateProcessor.getDefault();
 
@@ -60,7 +60,7 @@ public class BotEngine implements Runnable {
     private Integer limit = DEFAULT_GET_UPDATES_LIMIT;
     private Integer timeout = DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC;
     private List<String> allowedUpdates = DEFAULT_ALLOWED_UPDATE_TYPE;
-    private BackOff requestTimeoutBackOff = DEFAULT_REQUEST_TIMEOUT_BACK_OFF;
+    private BackOff retryBackOff = DEFAULT_RETRY_BACK_OFF;
     private BackOff noUpdateBackOff = DEFAULT_NO_UPDATE_BACK_OFF;
 
     private BotUpdateProcessor botUpdateProcessor;
@@ -119,8 +119,8 @@ public class BotEngine implements Runnable {
                 if (this.needToStop()) {
                     break;
                 }
-                long wait = requestTimeoutBackOff.getNextBackOffInMilli();
-                LOGGER.error(String.format("Hit '%s' when getting updates, wait for %d milliseconds to retry.", e.getMessage(), wait), e);
+                long wait = retryBackOff.getNextBackOffInMilli();
+                LOGGER.error(String.format("Hit %s(message:'%s') when getting updates, wait for %d milliseconds to retry.", e.getClass(), e.getMessage(), wait), e);
                 try {
                     TimeUnit.MILLISECONDS.sleep(wait);
                 } catch (InterruptedException e1) {
@@ -216,12 +216,12 @@ public class BotEngine implements Runnable {
     }
 
     /**
-     * @param requestTimeoutBackOff Optional. Default to {@link #DEFAULT_REQUEST_TIMEOUT_BACK_OFF}
+     * @param retryBackOff Optional. Default to {@link #DEFAULT_RETRY_BACK_OFF}
      *
      * @return The bot engine.
      */
-    public BotEngine setRequestTimeoutBackOff(final BackOff requestTimeoutBackOff) {
-        this.requestTimeoutBackOff = Optional.ofNullable(requestTimeoutBackOff).orElse(DEFAULT_REQUEST_TIMEOUT_BACK_OFF);
+    public BotEngine setRetryBackOff(final BackOff retryBackOff) {
+        this.retryBackOff = Optional.ofNullable(retryBackOff).orElse(DEFAULT_RETRY_BACK_OFF);
         return this;
     }
 
