@@ -47,10 +47,10 @@ import java.util.concurrent.TimeoutException;
 public class BotEngine implements Runnable {
 
     private static final Integer DEFAULT_GET_UPDATES_LIMIT = null;
-    private static final int DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC = 60;
+    private static final int DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC = (int) TimeUnit.MINUTES.toSeconds(1);
     private static final List<String> DEFAULT_ALLOWED_UPDATE_TYPE = null;
-    private static final BackOff DEFAULT_RETRY_BACK_OFF = ExponentialBackOff.getDefault();
-    private static final BackOff DEFAULT_NO_UPDATE_BACK_OFF = SteadyBackOff.getDefault();
+    private static final BackOff DEFAULT_RETRY_BACK_OFF = ExponentialBackOff.newInstance();
+    private static final BackOff DEFAULT_NO_UPDATE_BACK_OFF = SteadyBackOff.newInstance();
     private static final NoOpBotUpdateProcessor DEFAULT_BOT_UPDATE_PROCESSOR = NoOpBotUpdateProcessor.getDefault();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BotEngine.class);
@@ -58,7 +58,7 @@ public class BotEngine implements Runnable {
     private final BotApi botApi;
 
     private Integer limit = DEFAULT_GET_UPDATES_LIMIT;
-    private Integer timeout = DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC;
+    private int timeout = DEFAULT_GET_UPDATES_TIMEOUT_IN_SEC;
     private List<String> allowedUpdates = DEFAULT_ALLOWED_UPDATE_TYPE;
     private BackOff retryBackOff = DEFAULT_RETRY_BACK_OFF;
     private BackOff noUpdateBackOff = DEFAULT_NO_UPDATE_BACK_OFF;
@@ -94,7 +94,7 @@ public class BotEngine implements Runnable {
         this.setStopped(false); // This allows you to start / stop one bot engine multiple times.
         WebhookInfo hookInfo = null;
         try {
-            hookInfo = botApi.getWebhookInfo().get(1, TimeUnit.MINUTES);
+            hookInfo = botApi.getWebhookInfo().get(timeout, TimeUnit.SECONDS);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -114,7 +114,8 @@ public class BotEngine implements Runnable {
             final GetUpdatesPayload payload = new GetUpdatesPayload(this.offset, this.limit, this.timeout, this.allowedUpdates);
             List<Update> received;
             try {
-                received = this.botApi.getUpdates(payload).get(30, TimeUnit.SECONDS);
+                received = this.botApi.getUpdates(payload).get(timeout, TimeUnit.SECONDS);
+                retryBackOff.reset();
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 if (this.needToStop()) {
                     break;
@@ -125,7 +126,7 @@ public class BotEngine implements Runnable {
                     TimeUnit.MILLISECONDS.sleep(wait);
                 } catch (InterruptedException e1) {
                     LOGGER.debug("Interrupted when waiting to retry a interrupted / failed get update request.");
-                    setStopped(true);
+                    this.stop();
                     break;
                 }
                 continue;
@@ -140,7 +141,7 @@ public class BotEngine implements Runnable {
                     TimeUnit.MILLISECONDS.sleep(wait);
                 } catch (InterruptedException e) {
                     LOGGER.debug("Interrupted when waiting to get updates.");
-                    setStopped(true);
+                    this.stop();
                     break;
                 }
                 continue;
@@ -154,7 +155,7 @@ public class BotEngine implements Runnable {
                 boolean success = this.botUpdateProcessor.handleUpdate(update);
                 if (!success) {
                     LOGGER.error("Failed to handle update: {}", JsonUtil.toJson(update));
-                    setStopped(true);
+                    this.stop();
                     break;
                 }
                 offset = update.getId() + 1;
@@ -172,6 +173,8 @@ public class BotEngine implements Runnable {
      */
     public void stop() {
         this.setStopped(true);
+        retryBackOff.reset();
+        noUpdateBackOff.reset();
     }
 
     private boolean isStopped() {

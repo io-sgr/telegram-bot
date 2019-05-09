@@ -56,7 +56,7 @@ public class ExponentialBackOff implements BackOff {
         this.currentInterval = initialIntervalInMilli;
     }
 
-    public static ExponentialBackOff getDefault() {
+    public static ExponentialBackOff newInstance() {
         return new ExponentialBackOff(DEFAULT_INITIAL_INTERVAL_IN_MILLI, DEFAULT_MULTIPLIER, DEFAULT_RANDOMIZATION_FACTOR, DEFAULT_MAX_INTERVAL_IN_MILLI);
     }
 
@@ -68,6 +68,8 @@ public class ExponentialBackOff implements BackOff {
 
         if (currentInterval >= maxIntervalInMilli / multiplier) {
             currentInterval = maxIntervalInMilli;
+        } else {
+            currentInterval *= multiplier;
         }
         return nextInterval;
     }

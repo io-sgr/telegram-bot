@@ -32,7 +32,7 @@ public class SteadyBackOff implements BackOff {
         this.interval = interval;
     }
 
-    public static SteadyBackOff getDefault() {
+    public static SteadyBackOff newInstance() {
         return new SteadyBackOff(DEFAULT_INTERVAL_IN_MILLI);
     }
 
