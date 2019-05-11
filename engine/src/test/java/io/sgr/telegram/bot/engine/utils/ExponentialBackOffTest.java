@@ -33,7 +33,9 @@ public class ExponentialBackOffTest {
             if (lastInterval != backOff.getMaxIntervalInMilli()) {
                 assertTrue(String.format("Round %d, last interval is %d but next back off is %d", round, lastInterval, nextBackOff), nextBackOff > lastInterval);
             }
-            assertEquals(currentInterval, nextBackOff, currentInterval * backOff.getRandomizationFactor());
+            double delta = currentInterval * backOff.getRandomizationFactor();
+            assertTrue(nextBackOff > currentInterval - delta);
+            assertTrue(nextBackOff < currentInterval + delta);
             lastInterval = currentInterval;
             round--;
         }
