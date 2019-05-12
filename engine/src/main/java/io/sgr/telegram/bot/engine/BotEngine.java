@@ -21,7 +21,6 @@ import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 import static java.util.Objects.isNull;
 
 import io.sgr.telegram.bot.api.BotApi;
-import io.sgr.telegram.bot.api.BotApiBuilder;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.models.WebhookInfo;
 import io.sgr.telegram.bot.api.models.http.GetUpdatesPayload;
@@ -72,7 +71,7 @@ public class BotEngine implements Runnable {
      * @param botApiToken        The token of Telegram bot API.
      */
     public BotEngine(final String botApiToken) {
-        this(new BotApiBuilder(botApiToken).setLogger(LOGGER).build());
+        this(new BotApi.BotApiBuilder(botApiToken).setLogger(LOGGER).build());
     }
 
     /**

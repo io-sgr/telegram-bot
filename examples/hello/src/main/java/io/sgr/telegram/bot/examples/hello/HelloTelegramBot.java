@@ -17,7 +17,6 @@
 package io.sgr.telegram.bot.examples.hello;
 
 import io.sgr.telegram.bot.api.BotApi;
-import io.sgr.telegram.bot.api.BotApiBuilder;
 import io.sgr.telegram.bot.api.exceptions.ApiCallException;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.models.http.ApiErrorResponse;
@@ -35,7 +34,7 @@ public class HelloTelegramBot {
 
     public static void main(String... args) {
         final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = new BotApiBuilder(botApiToken).setLogger(LOGGER).build();
+        final BotApi botApi = BotApi.newBuilder(botApiToken).setLogger(LOGGER).build();
         final BotEngine engine = new BotEngine(botApi).setBotUpdateProcessor((Update update) -> {
             if (update.getMessage() == null) {
                 // Not what we want, ignored, but still send a success signal so it can deal with the next update.

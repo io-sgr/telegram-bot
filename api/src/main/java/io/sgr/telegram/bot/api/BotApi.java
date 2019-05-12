@@ -16,6 +16,9 @@
 
 package io.sgr.telegram.bot.api;
 
+import static io.sgr.telegram.bot.api.utils.TelegramUtils.verifyToken;
+
+import io.sgr.telegram.bot.api.http.DefaultCallAdapterFactory;
 import io.sgr.telegram.bot.api.models.Chat;
 import io.sgr.telegram.bot.api.models.ChatMember;
 import io.sgr.telegram.bot.api.models.Message;
@@ -35,13 +38,23 @@ import io.sgr.telegram.bot.api.models.http.EditMessageTextPayload;
 import io.sgr.telegram.bot.api.models.http.ForwardMessagePayload;
 import io.sgr.telegram.bot.api.models.http.GetUpdatesPayload;
 import io.sgr.telegram.bot.api.models.http.SendMessagePayload;
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author SgrAlpha
@@ -224,5 +237,65 @@ public interface BotApi {
 
     @POST("getGameHighScores")
     CompletableFuture<List<GameHighScore>> getGameHighScores(@Body GetGameScorePayload payload);
+
+    static BotApiBuilder newBuilder(String botApiToken) {
+        return new BotApiBuilder(botApiToken);
+    }
+
+    /**
+     * @author SgrAlpha
+     */
+    class BotApiBuilder {
+
+        private static final String BASE_URL_FORMAT = "https://api.telegram.org/bot%s/";
+
+        private final String botApiToken;
+        private boolean retry = false;
+        private Logger logger;
+
+        BotApiBuilder(final String botApiToken) {
+            verifyToken(botApiToken);
+            this.botApiToken = botApiToken;
+        }
+
+        /**
+         * Enable retry
+         *
+         * @return the builder
+         */
+        public BotApiBuilder enableRetry() {
+            this.retry = true;
+            return this;
+        }
+
+        /**
+         * @param logger the logger
+         *
+         * @return the builder
+         */
+        public BotApiBuilder setLogger(final Logger logger) {
+            this.logger = logger;
+            return this;
+        }
+
+        /**
+         * @return the bot API client
+         */
+        public BotApi build() {
+            Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                    .baseUrl(String.format(Locale.ENGLISH, BASE_URL_FORMAT, botApiToken))
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(JacksonConverterFactory.create(JsonUtil.getObjectMapper()))
+                    .addCallAdapterFactory(new DefaultCallAdapterFactory(retry, Optional.ofNullable(logger).orElse(LoggerFactory.getLogger(BotApi.class))));
+            OkHttpClient.Builder clientBuilder = new OkHttpClient().newBuilder()
+                    .retryOnConnectionFailure(true)
+                    .connectTimeout(5, TimeUnit.MINUTES)
+                    .readTimeout(5, TimeUnit.MINUTES)
+                    .writeTimeout(5, TimeUnit.MINUTES);
+            retrofitBuilder.client(clientBuilder.build());
+            return retrofitBuilder.build().create(BotApi.class);
+        }
+
+    }
 
 }
