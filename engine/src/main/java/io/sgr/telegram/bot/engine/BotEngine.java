@@ -71,7 +71,7 @@ public class BotEngine implements Runnable {
      * @param botApiToken        The token of Telegram bot API.
      */
     public BotEngine(final String botApiToken) {
-        this(new BotApi.BotApiBuilder(botApiToken).setLogger(LOGGER).build());
+        this(BotApi.newBuilder(botApiToken).setLogger(LOGGER).build());
     }
 
     /**
