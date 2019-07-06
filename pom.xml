@@ -30,7 +30,7 @@
 
     <name>Telegram Bot Library</name>
     <description>A java library which help you build Telegram Bots in a fashion way.</description>
-    <url>https://github.com/sgr-io/telegram-bot</url>
+    <url>https://github.com/io-sgr/telegram-bot</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -41,7 +41,7 @@
     <scm>
         <connection>scm:git:git@github.com:io-sgr/telegram-bot.git</connection>
         <developerConnection>scm:git:git@github.com:io-sgr/telegram-bot.git</developerConnection>
-        <url>https://github.com/sgr-io/telegram-bot</url>
+        <url>https://github.com/io-sgr/telegram-bot</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
