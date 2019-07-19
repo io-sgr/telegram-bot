@@ -53,6 +53,7 @@
 
     <properties>
         <project.build.targetJdk>1.8</project.build.targetJdk>
+        <dep.spring-boot.version>2.1.6.RELEASE</dep.spring-boot.version>
     </properties>
 
     <modules>
@@ -84,5 +85,17 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${dep.spring-boot.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
