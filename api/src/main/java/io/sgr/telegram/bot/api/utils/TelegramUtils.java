@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public class TelegramUtils {
 
-    private static final Pattern TOKEN_PATTERN = Pattern.compile("^\\d+:\\w+$");
+    private static final Pattern TOKEN_PATTERN = Pattern.compile("^\\d+:[\\w-]+$");
 
     /**
      * Verify if the given token is valid.
