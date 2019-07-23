@@ -26,7 +26,7 @@
 
     <groupId>io.sgr.telegram</groupId>
     <artifactId>telegram-bot</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Telegram Bot Library</name>
@@ -43,7 +43,7 @@
         <connection>scm:git:git@github.com:io-sgr/telegram-bot.git</connection>
         <developerConnection>scm:git:git@github.com:io-sgr/telegram-bot.git</developerConnection>
         <url>https://github.com/io-sgr/telegram-bot</url>
-        <tag>v1.1.1</tag>
+        <tag>HEAD</tag>
     </scm>
     <developers>
         <developer>
