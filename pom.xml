@@ -54,6 +54,8 @@
 
     <properties>
         <project.build.targetJdk>1.8</project.build.targetJdk>
+
+        <dep.commons-dependencies.version>1.0.0</dep.commons-dependencies.version>
         <dep.spring-boot.version>2.1.6.RELEASE</dep.spring-boot.version>
     </properties>
 
@@ -80,7 +82,7 @@
             <dependency>
                 <groupId>io.sgr</groupId>
                 <artifactId>common-dependencies</artifactId>
-                <version>1.0.0</version>
+                <version>${dep.commons-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
