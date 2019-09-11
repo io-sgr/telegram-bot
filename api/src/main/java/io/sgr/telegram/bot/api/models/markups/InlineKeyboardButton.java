@@ -19,12 +19,13 @@ package io.sgr.telegram.bot.api.models.markups;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
 
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+import io.sgr.telegram.bot.api.utils.Preconditions;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 /**
  * This object represents one button of an inline keyboard.

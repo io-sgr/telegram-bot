@@ -20,13 +20,14 @@ package io.sgr.telegram.bot.api.models.inline;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
+import io.sgr.telegram.bot.api.models.Location;
+import io.sgr.telegram.bot.api.models.User;
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.models.Location;
-import io.sgr.telegram.bot.api.models.User;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * This object represents an incoming inline query. When the user sends an empty query, your bot could return some

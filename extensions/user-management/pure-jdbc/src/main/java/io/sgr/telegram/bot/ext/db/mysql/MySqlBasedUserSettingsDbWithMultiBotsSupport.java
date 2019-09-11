@@ -19,6 +19,7 @@ package io.sgr.telegram.bot.ext.db.mysql;
 
 import io.sgr.telegram.bot.api.utils.Preconditions;
 import io.sgr.telegram.bot.ext.db.UserSettingsWithMultiBotsSupport;
+
 import org.slf4j.Logger;
 
 import java.sql.Connection;

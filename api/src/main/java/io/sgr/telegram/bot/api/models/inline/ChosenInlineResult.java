@@ -19,13 +19,14 @@ package io.sgr.telegram.bot.api.models.inline;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
+import io.sgr.telegram.bot.api.models.Location;
+import io.sgr.telegram.bot.api.models.User;
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.models.Location;
-import io.sgr.telegram.bot.api.models.User;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * Represents a result of an inline query that was chosen by the user and sent to their chat partner.

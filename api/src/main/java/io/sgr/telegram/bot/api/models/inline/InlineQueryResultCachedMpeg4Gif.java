@@ -20,11 +20,12 @@ package io.sgr.telegram.bot.api.models.inline;
 import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By

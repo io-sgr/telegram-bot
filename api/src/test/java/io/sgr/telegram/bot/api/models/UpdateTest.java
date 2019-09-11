@@ -16,8 +16,9 @@
  */
 package io.sgr.telegram.bot.api.models;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 /**

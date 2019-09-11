@@ -22,6 +22,7 @@ import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 import io.sgr.telegram.bot.engine.BotUpdateProcessor;
+
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;

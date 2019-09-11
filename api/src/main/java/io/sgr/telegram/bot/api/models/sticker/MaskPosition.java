@@ -17,12 +17,13 @@
 
 package io.sgr.telegram.bot.api.models.sticker;
 
+import io.sgr.telegram.bot.api.models.PointType;
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.models.PointType;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 import java.util.Locale;
 

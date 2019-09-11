@@ -17,10 +17,11 @@
 
 package io.sgr.telegram.bot.api.models.markups;
 
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the

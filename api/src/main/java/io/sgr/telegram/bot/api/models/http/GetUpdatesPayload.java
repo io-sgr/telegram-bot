@@ -17,8 +17,6 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static java.util.Objects.isNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;

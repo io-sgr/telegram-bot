@@ -20,6 +20,7 @@ package io.sgr.telegram.bot.api.http;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
 import io.sgr.telegram.bot.api.models.http.ApiResponse;
+
 import org.slf4j.Logger;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;

@@ -19,13 +19,14 @@ package io.sgr.telegram.bot.api.models;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
+import io.sgr.telegram.bot.api.models.inline.ChosenInlineResult;
+import io.sgr.telegram.bot.api.models.inline.InlineQuery;
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.models.inline.ChosenInlineResult;
-import io.sgr.telegram.bot.api.models.inline.InlineQuery;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * This object represents an incoming update.

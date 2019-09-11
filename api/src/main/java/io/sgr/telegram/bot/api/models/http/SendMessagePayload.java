@@ -19,13 +19,14 @@ package io.sgr.telegram.bot.api.models.http;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
+import io.sgr.telegram.bot.api.models.ParseMode;
+import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.sgr.telegram.bot.api.models.ParseMode;
-import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * @author SgrAlpha

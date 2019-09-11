@@ -19,6 +19,7 @@ package io.sgr.telegram.bot.examples.webhook.spring;
 
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.engine.BotUpdateProcessor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

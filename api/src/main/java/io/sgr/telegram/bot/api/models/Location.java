@@ -17,10 +17,11 @@
 
 package io.sgr.telegram.bot.api.models;
 
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * This object represents a point on the map.

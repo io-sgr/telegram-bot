@@ -17,9 +17,10 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 /**
  * Represents the content of a location message to be sent as the result of an inline query.

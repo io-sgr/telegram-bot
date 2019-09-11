@@ -17,12 +17,13 @@
 
 package io.sgr.telegram.bot.api.models.payment.http;
 
+import io.sgr.telegram.bot.api.models.User;
+import io.sgr.telegram.bot.api.models.payment.ShippingAddress;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.sgr.telegram.bot.api.models.User;
-import io.sgr.telegram.bot.api.models.payment.ShippingAddress;
 
 /**
  * This object contains information about an incoming shipping query.

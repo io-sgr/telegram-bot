@@ -26,6 +26,7 @@ import io.sgr.telegram.bot.api.models.Message;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 import io.sgr.telegram.bot.examples.webhook.spring.BotApplication;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

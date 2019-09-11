@@ -20,11 +20,12 @@ package io.sgr.telegram.bot.api.models.inline;
 import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a link to a voice recording in an .ogg container encoded with OPUS. By default, this voice recording will

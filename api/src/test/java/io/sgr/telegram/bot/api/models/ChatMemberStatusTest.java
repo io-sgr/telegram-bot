@@ -16,10 +16,11 @@
  */
 package io.sgr.telegram.bot.api.models;
 
+import io.sgr.telegram.bot.api.utils.JsonUtil;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.sgr.telegram.bot.api.utils.JsonUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

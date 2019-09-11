@@ -17,10 +17,11 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 import io.sgr.telegram.bot.api.utils.Preconditions;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents the content of a contact message to be sent as the result of an inline query.

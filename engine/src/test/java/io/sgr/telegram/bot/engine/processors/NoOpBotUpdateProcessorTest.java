@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.engine.BotUpdateProcessor;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;

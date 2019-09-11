@@ -19,12 +19,13 @@ package io.sgr.telegram.bot.api.models;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.sgr.telegram.bot.api.models.game.Game;
 import io.sgr.telegram.bot.api.models.sticker.Sticker;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;

@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import io.sgr.telegram.bot.engine.Command;
+
 import org.junit.Test;
 
 public class CommandUtilTest {

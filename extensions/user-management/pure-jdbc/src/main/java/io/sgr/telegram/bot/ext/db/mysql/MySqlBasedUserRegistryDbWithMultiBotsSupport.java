@@ -19,6 +19,7 @@ package io.sgr.telegram.bot.ext.db.mysql;
 
 import io.sgr.telegram.bot.api.models.User;
 import io.sgr.telegram.bot.ext.db.UserRegistryWithMultiBotsSupport;
+
 import org.slf4j.Logger;
 
 import java.sql.Connection;
