@@ -65,7 +65,7 @@ public class BotApplicationTest {
                 null, null, null, null,
                 null, null, null, null, null,
                 null, null, null, null,
-                null, null, null, null);
+                null, null, null, null, null);
         final Update update = new Update(0L, message, null, null, null, null, null, null, null);
         mvc.perform(post("/update/" + botApiToken)
                 .content(JsonUtil.toJson(update))

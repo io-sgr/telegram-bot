@@ -18,7 +18,9 @@
 package io.sgr.telegram.bot.api.models.markups;
 
 import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
+import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 
+import io.sgr.telegram.bot.api.models.LoginUrl;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 import io.sgr.telegram.bot.api.utils.Preconditions;
 
@@ -38,41 +40,40 @@ public class InlineKeyboardButton {
 
     private final String text;
     private final String url;
+    private final LoginUrl loginUrl;
     private final String callbackData;
     private final String switchInlineQuery;
     private final String switchInlineQueryCurrentChat;
 
     /**
-     * @param text         Label text on the button.
+     * @param text Label text on the button.
      * @param callbackData Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes.
      */
     public InlineKeyboardButton(String text, String callbackData) {
-        this(text, null, callbackData, null, null);
+        this(text, null, null, callbackData, null, null);
     }
 
     /**
-     * @param text                         Label text on the button.
-     * @param url                          Optional. HTTP url to be opened when button is pressed.
-     * @param callbackData                 Optional. Data to be sent in a callback query to the bot when button is
-     *                                     pressed, 1-64 bytes.
-     * @param switchInlineQuery            Optional. If set, pressing the button will prompt the user to select one of
-     *                                     their chats, open that chat and insert the bot‘s username and the specified
-     *                                     inline query in the input field. Can be empty, in which case just the bot’s
-     *                                     username will be inserted.
-     * @param switchInlineQueryCurrentChat Optional. If set, pressing the button will insert the bot‘s username and the
-     *                                     specified inline query in the current chat's input field. Can be empty, in
-     *                                     which case only the bot’s username will be inserted. This offers a quick way
-     *                                     for the user to open your bot in inline mode in the same chat – good for
-     *                                     selecting something from multiple options.
+     * @param text Label text on the button.
+     * @param url Optional. HTTP or tg:// url to be opened when button is pressed.
+     * @param loginUrl Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
+     * @param callbackData Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes.
+     * @param switchInlineQuery Optional. If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot‘s
+     * username and the specified inline query in the input field. Can be empty, in which case just the bot’s username will be inserted.
+     * @param switchInlineQueryCurrentChat Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in the current
+     * chat's input field. Can be empty, in which case only the bot’s username will be inserted. This offers a quick way for the user to open your bot in inline
+     * mode in the same chat – good for
      */
     @JsonCreator
     public InlineKeyboardButton(
-            @JsonProperty("text") String text,
-            @JsonProperty("url") String url,
-            @JsonProperty("callback_data") String callbackData,
-            @JsonProperty("switch_inline_query") String switchInlineQuery,
-            @JsonProperty("switch_inline_query_current_chat") String switchInlineQueryCurrentChat) {
-        Preconditions.notEmptyString(text, "Text should be provided.");
+            @JsonProperty("text") final String text,
+            @JsonProperty("url") final String url,
+            @JsonProperty("login_url") final LoginUrl loginUrl,
+            @JsonProperty("callback_data") final String callbackData,
+            @JsonProperty("switch_inline_query") final String switchInlineQuery,
+            @JsonProperty("switch_inline_query_current_chat") final String switchInlineQueryCurrentChat) {
+        this.loginUrl = loginUrl;
+        notEmptyString(text, "Text should be provided.");
         this.text = text;
         int optionalFieldCnt = 0;
         if (!isEmptyString(url)) {
@@ -109,6 +110,11 @@ public class InlineKeyboardButton {
         return url;
     }
 
+    @JsonProperty("login_url")
+    public LoginUrl getLoginUrl() {
+        return loginUrl;
+    }
+
     @JsonProperty("callback_data")
     public String getCallbackData() {
         return callbackData;
@@ -128,7 +134,8 @@ public class InlineKeyboardButton {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

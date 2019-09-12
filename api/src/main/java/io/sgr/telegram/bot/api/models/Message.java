@@ -20,6 +20,8 @@ package io.sgr.telegram.bot.api.models;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
 import io.sgr.telegram.bot.api.models.game.Game;
+import io.sgr.telegram.bot.api.models.markups.InlineKeyboardButton;
+import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.models.sticker.Sticker;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -81,75 +83,63 @@ public class Message {
     private final Long migrateFromChatId;
     private final Message pinned;
     private final String connectedWebsite;
+    private final InlineKeyboardMarkup replyMarkup;
 
     /**
-     * @param id                    Unique message identifier
-     * @param from                  Optional. Sender, can be empty for messages sent to channels
-     * @param date                  Date the message was sent in Unix time
-     * @param chat                  Conversation the message belongs to
-     * @param forwardFrom           Optional. For forwarded messages, sender of the original message
-     * @param forwardFromChat       Optional. For messages forwarded from a channel, information about the original
-     *                              channel.
-     * @param forwardFromMessageId  Optional. For forwarded channel posts, identifier of the original message in the
-     *                              channel.
-     * @param forwardSignature      Optional. For messages forwarded from channels, signature of the post author if
-     *                              present.
-     * @param forwardSenderName     Optional. Sender's name for messages forwarded from users who disallow adding a link
-     *                              to their account in forwarded messages.
-     * @param forwardDate           Optional. For forwarded messages, date the original message was sent in Unix time
-     * @param replyTo               Optional. For replies, the original message. Note that the Message object in this
-     *                              field will not contain further reply_to_message fields even if it itself is a
-     *                              reply.
-     * @param editDate              Optional. Date the message was last edited in Unix time
-     * @param mediaGroupId          Optional. The unique identifier of a media message group this message belongs to.
-     * @param authorSignature       Optional. Signature of the post author for messages in channels
-     * @param text                  Optional. For text messages, the actual UTF-8 text of the message
-     * @param entities              Optional. Optional. For text messages, special entities like usernames, URLs, bot
-     *                              commands, etc. that appear in the text
-     * @param captionEntities       Optional. For messages with a caption, special entities like usernames, URLs, bot
-     *                              commands, etc. that appear in the caption.
-     * @param audio                 Optional. Message is an audio file, information about the file
-     * @param document              Optional. Message is a general file, information about the file
-     * @param game                  Optional. Message is a game, information about the game.
-     * @param photo                 Optional. Message is a photo, available sizes of the photo.
-     * @param sticker               Optional. Message is a sticker, information about the sticker.
-     * @param video                 Optional. Message is a video, information about the video.
-     * @param voice                 Optional. Message is a voice message, information about the file
-     * @param videoNote             Optional. Message is a video note, information about the video message
-     * @param caption               Optional. Caption for the document, photo or video, 0-200 characters
-     * @param contact               Optional. Message is a shared contact, information about the contact
-     * @param location              Optional. Message is a shared location, information about the location
-     * @param venue                 Optional. Message is a venue, information about the venue.
-     * @param poll                  Optional. Message is a native poll, information about the poll.
-     * @param newChatMembers        Optional. New members that were added to the group or supergroup and information
-     *                              about them (the bot itself may be one of these members)
-     * @param leftChatMember        Optional. A member was removed from the group, information about them (this member
-     *                              may be the bot itself)
-     * @param newChatTitle          Optional. A chat title was changed to this value
-     * @param newChatPhoto          Optional. A chat photo was change to this value
-     * @param deleteChatPhoto       Optional. Optional. Service message: the chat photo was deleted
-     * @param groupChatCreated      Optional. Optional. Service message: the group has been created
-     * @param superGroupChatCreated Optional. Optional. Service message: the supergroup has been created. This field
-     *                              can‘t be received in a message coming through updates, because bot can’t be a member
-     *                              of a supergroup when it is created. It can only be found in reply_to_message if
-     *                              someone replies to a very first message in a directly created supergroup.
-     * @param channelChatCreated    Optional. Optional. Service message: the channel has been created. This field can‘t
-     *                              be received in a message coming through updates, because bot can’t be a member of a
-     *                              channel when it is created. It can only be found in reply_to_message if someone
-     *                              replies to a very first message in a channel.
-     * @param migrateToChatId       Optional. The group has been migrated to a supergroup with the specified identifier.
-     *                              This number may be greater than 32 bits and some programming languages may have
-     *                              difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a
-     *                              signed 64 bit integer or double-precision float type are safe for storing this
-     *                              identifier.
-     * @param migrateFromChatId     Optional. The supergroup has been migrated from a group with the specified
-     *                              identifier. This number may be greater than 32 bits and some programming languages
-     *                              may have difficulty/silent defects in interpreting it. But it smaller than 52 bits,
-     *                              so a signed 64 bit integer or double-precision float type are safe for storing this
-     *                              identifier.
-     * @param pinned                Optional. Specified message was pinned. Note that the Message object in this field
-     *                              will not contain further reply_to_message fields even if it is itself a reply.
-     * @param connectedWebsite      Optional. The domain name of the website on which the user has logged in.
+     * @param id Unique message identifier
+     * @param from Optional. Sender, can be empty for messages sent to channels
+     * @param date Date the message was sent in Unix time
+     * @param chat Conversation the message belongs to
+     * @param forwardFrom Optional. For forwarded messages, sender of the original message
+     * @param forwardFromChat Optional. For messages forwarded from a channel, information about the original channel.
+     * @param forwardFromMessageId Optional. For forwarded channel posts, identifier of the original message in the channel.
+     * @param forwardSignature Optional. For messages forwarded from channels, signature of the post author if present.
+     * @param forwardSenderName Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages.
+     * @param forwardDate Optional. For forwarded messages, date the original message was sent in Unix time
+     * @param replyTo Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields
+     * even if it itself is a reply.
+     * @param editDate Optional. Date the message was last edited in Unix time
+     * @param mediaGroupId Optional. The unique identifier of a media message group this message belongs to.
+     * @param authorSignature Optional. Signature of the post author for messages in channels
+     * @param text Optional. For text messages, the actual UTF-8 text of the message
+     * @param entities Optional. Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
+     * @param captionEntities Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption.
+     * @param audio Optional. Message is an audio file, information about the file
+     * @param document Optional. Message is a general file, information about the file
+     * @param game Optional. Message is a game, information about the game.
+     * @param photo Optional. Message is a photo, available sizes of the photo.
+     * @param sticker Optional. Message is a sticker, information about the sticker.
+     * @param video Optional. Message is a video, information about the video.
+     * @param voice Optional. Message is a voice message, information about the file
+     * @param videoNote Optional. Message is a video note, information about the video message
+     * @param caption Optional. Caption for the document, photo or video, 0-200 characters
+     * @param contact Optional. Message is a shared contact, information about the contact
+     * @param location Optional. Message is a shared location, information about the location
+     * @param venue Optional. Message is a venue, information about the venue.
+     * @param poll Optional. Message is a native poll, information about the poll.
+     * @param newChatMembers Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these
+     * members)
+     * @param leftChatMember Optional. A member was removed from the group, information about them (this member may be the bot itself)
+     * @param newChatTitle Optional. A chat title was changed to this value
+     * @param newChatPhoto Optional. A chat photo was change to this value
+     * @param deleteChatPhoto Optional. Optional. Service message: the chat photo was deleted
+     * @param groupChatCreated Optional. Optional. Service message: the group has been created
+     * @param superGroupChatCreated Optional. Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming
+     * through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very
+     * first message in a directly created supergroup.
+     * @param channelChatCreated Optional. Optional. Service message: the channel has been created. This field can‘t be received in a message coming through
+     * updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first
+     * message in a channel.
+     * @param migrateToChatId Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and
+     * some programming languages may have difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a signed 64 bit integer or
+     * double-precision float type are safe for storing this identifier.
+     * @param migrateFromChatId Optional. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits
+     * and some programming languages may have difficulty/silent defects in interpreting it. But it smaller than 52 bits, so a signed 64 bit integer or
+     * double-precision float type are safe for storing this identifier.
+     * @param pinned Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if
+     * it is itself a reply.
+     * @param connectedWebsite Optional. The domain name of the website on which the user has logged in.
+     * @param replyMarkup Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
      */
     public Message(
             @JsonProperty("message_id") Long id,
@@ -193,7 +183,8 @@ public class Message {
             @JsonProperty("migrate_to_chat_id") final Long migrateToChatId,
             @JsonProperty("migrate_from_chat_id") final Long migrateFromChatId,
             @JsonProperty("pinned_message") final Message pinned,
-            @JsonProperty("connected_website") final String connectedWebsite) {
+            @JsonProperty("connected_website") final String connectedWebsite,
+            @JsonProperty("reply_markup") final InlineKeyboardMarkup replyMarkup) {
         notNull(id, "Message ID should be provided.");
         this.id = id;
         this.from = from;
@@ -238,6 +229,7 @@ public class Message {
         this.migrateFromChatId = migrateFromChatId;
         this.pinned = pinned;
         this.connectedWebsite = connectedWebsite;
+        this.replyMarkup = replyMarkup;
     }
 
     @JsonProperty("message_id")
@@ -450,11 +442,17 @@ public class Message {
         return connectedWebsite;
     }
 
+    @JsonProperty("reply_markup")
+    public InlineKeyboardMarkup getReplyMarkup() {
+        return replyMarkup;
+    }
+
     public String toJson() {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 
