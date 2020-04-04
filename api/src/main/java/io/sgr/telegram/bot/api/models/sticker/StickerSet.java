@@ -20,6 +20,7 @@ package io.sgr.telegram.bot.api.models.sticker;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
 import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
 
+import io.sgr.telegram.bot.api.models.PhotoSize;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -41,31 +42,39 @@ public class StickerSet {
 
     private final String name;
     private final String title;
+    private final boolean animated;
     private final boolean containsMasks;
     private final List<Sticker> stickers;
+    private final PhotoSize thumb;
 
     /**
-     * @param name          Sticker set name.
-     * @param title         Sticker set title.
+     * @param name Sticker set name.
+     * @param title Sticker set title.
+     * @param animated True, if the sticker set contains animated stickers.
      * @param containsMasks True, if the sticker set contains masks.
-     * @param stickers      List of all set stickers.
+     * @param stickers List of all set stickers.
+     * @param thumb Optional. Sticker set thumbnail in the .WEBP or .TGS format.
      */
     @JsonCreator
     public StickerSet(
-            @JsonProperty("name") String name,
-            @JsonProperty("title") String title,
-            @JsonProperty("contains_masks") boolean containsMasks,
-            @JsonProperty("stickers") List<Sticker> stickers) {
+            @JsonProperty("name") final String name,
+            @JsonProperty("title") final String title,
+            @JsonProperty("is_animated") final boolean animated,
+            @JsonProperty("contains_masks") final boolean containsMasks,
+            @JsonProperty("stickers") final List<Sticker> stickers,
+            @JsonProperty("thumb") final PhotoSize thumb) {
         notEmptyString(name, "Name should be provided");
         this.name = name;
         notEmptyString(title, "Title should be provided");
         this.title = title;
+        this.animated = animated;
         this.containsMasks = containsMasks;
         notNull(stickers, "Stickers should be provided");
         if (stickers.isEmpty()) {
             throw new IllegalArgumentException("Stickers should not be empty");
         }
         this.stickers = stickers;
+        this.thumb = thumb;
     }
 
     @JsonProperty("name")
@@ -78,6 +87,11 @@ public class StickerSet {
         return title;
     }
 
+    @JsonProperty("is_animated")
+    public boolean isAnimated() {
+        return animated;
+    }
+
     @JsonProperty("contains_masks")
     public boolean isContainsMasks() {
         return containsMasks;
@@ -88,11 +102,17 @@ public class StickerSet {
         return stickers == null ? null : Collections.unmodifiableList(stickers);
     }
 
+    @JsonProperty("thumb")
+    public PhotoSize getThumb() {
+        return thumb;
+    }
+
     public String toJson() {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 
