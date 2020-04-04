@@ -55,7 +55,7 @@ public class BotApplicationTest {
     public void testReceiveGoodUpdate() throws Exception {
         final Chat chat = new Chat(2L, ChatType.PRIVATE, null, null, null, null,
                 null, null, null, null,
-                null, null, null);
+                null, null, null, null);
         final Message message = new Message(1L, null, System.currentTimeMillis(), chat,
                 null, null, null, null,
                 null, null, null, null, null,

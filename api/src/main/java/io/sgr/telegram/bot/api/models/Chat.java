@@ -41,30 +41,31 @@ public class Chat {
     private final String username;
     private final String firstName;
     private final String lastName;
-    private final Boolean allMembersAreAdmins;
     private final ChatPhoto photo;
     private final String description;
     private final String inviteLink;
     private final Message pinnedMessage;
+    private final ChatPermissions permissions;
+    private final Integer slowModeDelay;
     private final String stickerSetName;
     private final Boolean canSetStickerSet;
 
     /**
-     * @param id                  Unique identifier for this chat should not exceeding 1e13 by absolute value.
-     * @param type                Type of chat.
-     * @param title               Optional. Title, for channels and group chats.
-     * @param username            Optional. Username, for private chats and channels if available.
-     * @param firstName           Optional. First name of the other party in a private chat.
-     * @param lastName            Optional. Last name of the other party in a private chat.
-     * @param allMembersAreAdmins Optional. True if a group has ‘All Members Are Admins’ enabled.
-     * @param photo               Optional. Chat photo. Returned only in getChat.
-     * @param description         Optional. Description, for supergroups and channel chats. Returned only in getChat.
-     * @param inviteLink          Optional. Chat invite link, for supergroups and channel chats. Returned only in
-     *                            getChat.
-     * @param pinnedMessage       Optional. Pinned message, for supergroups. Returned only in getChat.
-     * @param stickerSetName      Optional. For supergroups, name of group sticker set. Returned only in getChat.
-     * @param canSetStickerSet    Optional. True, if the bot can change the group sticker set. Returned only in
-     *                            getChat.
+     * @param id Unique identifier for this chat should not exceeding 1e13 by absolute value.
+     * @param type Type of chat.
+     * @param title Optional. Title, for channels and group chats.
+     * @param username Optional. Username, for private chats and channels if available.
+     * @param firstName Optional. First name of the other party in a private chat.
+     * @param lastName Optional. Last name of the other party in a private chat.
+     * @param photo Optional. Chat photo. Returned only in getChat.
+     * @param description Optional. Description, for supergroups and channel chats. Returned only in getChat.
+     * @param inviteLink Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
+     * @param pinnedMessage Optional. Pinned message, for supergroups. Returned only in getChat.
+     * @param permissions Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
+     * @param slowModeDelay Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in
+     * getChat.
+     * @param stickerSetName Optional. For supergroups, name of group sticker set. Returned only in getChat.
+     * @param canSetStickerSet Optional. True, if the bot can change the group sticker set. Returned only in
      */
     @JsonCreator
     public Chat(
@@ -74,11 +75,12 @@ public class Chat {
             @JsonProperty("username") String username,
             @JsonProperty("first_name") String firstName,
             @JsonProperty("last_name") String lastName,
-            @JsonProperty("all_members_are_administrators") Boolean allMembersAreAdmins,
             @JsonProperty("photo") ChatPhoto photo,
             @JsonProperty("description") String description,
             @JsonProperty("invite_link") String inviteLink,
             @JsonProperty("pinned_message") Message pinnedMessage,
+            @JsonProperty("permissions") ChatPermissions permissions,
+            @JsonProperty("slow_mode_delay") Integer slowModeDelay,
             @JsonProperty("sticker_set_name") String stickerSetName,
             @JsonProperty("can_set_sticker_set") Boolean canSetStickerSet) {
         notNull(id, "Chat ID should be provided.");
@@ -92,11 +94,12 @@ public class Chat {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.allMembersAreAdmins = allMembersAreAdmins;
         this.photo = photo;
         this.description = description;
         this.inviteLink = inviteLink;
         this.pinnedMessage = pinnedMessage;
+        this.permissions = permissions;
+        this.slowModeDelay = slowModeDelay;
         this.stickerSetName = stickerSetName;
         this.canSetStickerSet = canSetStickerSet;
     }
@@ -131,11 +134,6 @@ public class Chat {
         return this.lastName;
     }
 
-    @JsonProperty("all_members_are_administrators")
-    public Boolean getAllMembersAreAdmins() {
-        return this.allMembersAreAdmins;
-    }
-
     @JsonProperty("photo")
     public ChatPhoto getPhoto() {
         return this.photo;
@@ -156,6 +154,16 @@ public class Chat {
         return this.pinnedMessage;
     }
 
+    @JsonProperty("permissions")
+    public ChatPermissions getPermissions() {
+        return permissions;
+    }
+
+    @JsonProperty("slow_mode_delay")
+    public Integer getSlowModeDelay() {
+        return slowModeDelay;
+    }
+
     @JsonProperty("sticker_set_name")
     public String getStickerSetName() {
         return stickerSetName;
@@ -170,7 +178,8 @@ public class Chat {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 
