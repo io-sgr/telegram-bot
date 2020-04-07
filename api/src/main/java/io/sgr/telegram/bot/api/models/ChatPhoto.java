@@ -32,18 +32,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ChatPhoto {
 
     private final String smallFileId;
+    private final String smallFileUniqueId;
     private final String bigFileId;
+    private final String bigFileUniqueId;
 
     /**
-     * @param smallFileId Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo
-     *                    download.
-     * @param bigFileId   Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo
-     *                    download.
+     * @param smallFileId File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is
+     * not changed.
+     * @param smallFileUniqueId Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different bots. Can't
+     * be used to download or reuse the file.
+     * @param bigFileId File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not
+     * changed.
+     * @param bigFileUniqueId Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots. Can't be
+     * used to download or reuse the file.
      */
     @JsonCreator
-    public ChatPhoto(@JsonProperty("small_file_id") String smallFileId, @JsonProperty("big_file_id") String bigFileId) {
+    public ChatPhoto(
+            @JsonProperty("small_file_id") final String smallFileId,
+            @JsonProperty("small_file_unique_id") final String smallFileUniqueId,
+            @JsonProperty("big_file_id") final String bigFileId,
+            @JsonProperty("big_file_unique_id") final String bigFileUniqueId) {
         this.smallFileId = smallFileId;
+        this.smallFileUniqueId = smallFileUniqueId;
         this.bigFileId = bigFileId;
+        this.bigFileUniqueId = bigFileUniqueId;
     }
 
     @JsonProperty("small_file_id")
@@ -51,16 +63,27 @@ public class ChatPhoto {
         return smallFileId;
     }
 
+    @JsonProperty("small_file_unique_id")
+    public String getSmallFileUniqueId() {
+        return smallFileUniqueId;
+    }
+
     @JsonProperty("big_file_id")
     public String getBigFileId() {
         return bigFileId;
+    }
+
+    @JsonProperty("big_file_unique_id")
+    public String getBigFileUniqueId() {
+        return bigFileUniqueId;
     }
 
     public String toJson() {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

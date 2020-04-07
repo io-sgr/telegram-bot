@@ -36,24 +36,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PhotoSize {
 
     private final String fileId;
+    private final String fileUniqueId;
     private final int width;
     private final int height;
     private final int fileSize;
 
     /**
-     * @param fileId   Unique identifier for this file
-     * @param width    Photo width
-     * @param height   Photo height
-     * @param fileSize Optional. File size
+     * @param fileId Unique identifier for this file.
+     * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or
+     * reuse the file.
+     * @param width Photo width.
+     * @param height Photo height.
+     * @param fileSize Optional. File size.
      */
     @JsonCreator
     public PhotoSize(
-            @JsonProperty("file_id") String fileId,
-            @JsonProperty("width") int width,
-            @JsonProperty("height") int height,
-            @JsonProperty("file_size") Integer fileSize) {
+            @JsonProperty("file_id") final String fileId,
+            @JsonProperty("file_unique_id") final String fileUniqueId,
+            @JsonProperty("width") final int width,
+            @JsonProperty("height") final int height,
+            @JsonProperty("file_size") final Integer fileSize) {
         notEmptyString(fileId, "File ID should be provided.");
         this.fileId = fileId;
+        this.fileUniqueId = fileUniqueId;
         this.width = width;
         this.height = height;
         this.fileSize = fileSize;
@@ -62,6 +67,11 @@ public class PhotoSize {
     @JsonProperty("file_id")
     public String getFileId() {
         return fileId;
+    }
+
+    @JsonProperty("file_unique_id")
+    public String getFileUniqueId() {
+        return fileUniqueId;
     }
 
     @JsonProperty("width")
@@ -83,7 +93,8 @@ public class PhotoSize {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

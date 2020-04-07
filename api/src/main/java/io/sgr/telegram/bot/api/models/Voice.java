@@ -34,24 +34,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Voice {
 
     private final String fileId;
+    private final String fileUniqueId;
     private final long duration;
     private final String mimeType;
     private final long fileSize;
 
     /**
-     * @param fileId   Unique identifier for this file.
+     * @param fileId Unique identifier for this file.
+     * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or
+     * reuse the file.
      * @param duration Duration of the audio in seconds as defined by sender.
      * @param mimeType Optional. MIME type of the file as defined by sender.
      * @param fileSize Optional. File size
      */
     @JsonCreator
     public Voice(
-            @JsonProperty("file_id") String fileId,
-            @JsonProperty("duration") long duration,
-            @JsonProperty("mime_type") String mimeType,
-            @JsonProperty("file_size") long fileSize) {
+            @JsonProperty("file_id") final String fileId,
+            @JsonProperty("file_unique_id") final String fileUniqueId,
+            @JsonProperty("duration") final long duration,
+            @JsonProperty("mime_type") final String mimeType,
+            @JsonProperty("file_size") final long fileSize) {
         notEmptyString(fileId, "File ID should be provided");
         this.fileId = fileId;
+        this.fileUniqueId = fileUniqueId;
         if (duration < 0) {
             throw new IllegalArgumentException("Duration should be greater than or equal to zero");
         }
@@ -63,6 +68,11 @@ public class Voice {
     @JsonProperty("file_id")
     public String getFileId() {
         return fileId;
+    }
+
+    @JsonProperty("file_unique_id")
+    public String getFileUniqueId() {
+        return fileUniqueId;
     }
 
     @JsonProperty("duration")
@@ -84,7 +94,8 @@ public class Voice {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

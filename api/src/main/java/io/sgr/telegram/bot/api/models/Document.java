@@ -34,27 +34,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Document {
 
     private final String fileId;
+    private final String fileUniqueId;
     private final PhotoSize thumb;
     private final String fileName;
     private final String mimeType;
     private final long fileSize;
 
     /**
-     * @param fileId   Unique identifier for this file.
-     * @param thumb    Optional. Document thumbnail as defined by sender.
+     * @param fileId Unique identifier for this file.
+     * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or
+     * reuse the file.
+     * @param thumb Optional. Document thumbnail as defined by sender.
      * @param fileName Optional. Original filename as defined by sender.
      * @param mimeType Optional. MIME type of the file as defined by sender.
      * @param fileSize Optional. File size
      */
     @JsonCreator
     public Document(
-            @JsonProperty("file_id") String fileId,
-            @JsonProperty("thumb") PhotoSize thumb,
-            @JsonProperty("file_name") String fileName,
-            @JsonProperty("mime_type") String mimeType,
-            @JsonProperty("file_size") long fileSize) {
+            @JsonProperty("file_id") final String fileId,
+            @JsonProperty("file_unique_id") final String fileUniqueId,
+            @JsonProperty("thumb") final PhotoSize thumb,
+            @JsonProperty("file_name") final String fileName,
+            @JsonProperty("mime_type") final String mimeType,
+            @JsonProperty("file_size") final long fileSize) {
         notEmptyString(fileId, "File ID should be provided");
         this.fileId = fileId;
+        this.fileUniqueId = fileUniqueId;
         this.thumb = thumb;
         this.fileName = fileName;
         this.mimeType = mimeType;
@@ -64,6 +69,11 @@ public class Document {
     @JsonProperty("file_id")
     public String getFileId() {
         return fileId;
+    }
+
+    @JsonProperty("file_unique_id")
+    public String getFileUniqueId() {
+        return fileUniqueId;
     }
 
     @JsonProperty("thumb")
@@ -90,7 +100,8 @@ public class Document {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

@@ -17,6 +17,8 @@
 
 package io.sgr.telegram.bot.api.models;
 
+import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 import io.sgr.telegram.bot.api.utils.Preconditions;
 
@@ -32,20 +34,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class File {
 
     private final String fileId;
+    private final String fileUniqueId;
     private final Long fileSize;
     private final String filePath;
 
     /**
-     * @param fileId   Unique identifier for this file.
+     * @param fileId Unique identifier for this file.
+     * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or
+     * reuse the file.
      * @param fileSize Optional. File size, if known.
      * @param filePath Optional. File path. Use https://api.telegram.org/file/bot&lt;token&gt;/&lt;file_path&gt; to get the file.
      */
     public File(
-            @JsonProperty("file_id") String fileId,
-            @JsonProperty("file_size") Long fileSize,
-            @JsonProperty("file_path") String filePath) {
-        Preconditions.notEmptyString(fileId, "File ID should be provided");
+            @JsonProperty("file_id") final String fileId,
+            @JsonProperty("file_unique_id") final String fileUniqueId,
+            @JsonProperty("file_size") final Long fileSize,
+            @JsonProperty("file_path") final String filePath) {
+        notEmptyString(fileId, "File ID should be provided");
         this.fileId = fileId;
+        this.fileUniqueId = fileUniqueId;
         this.fileSize = fileSize;
         this.filePath = filePath;
     }
@@ -53,6 +60,11 @@ public class File {
     @JsonProperty("file_id")
     public String getFileId() {
         return fileId;
+    }
+
+    @JsonProperty("file_unique_id")
+    public String getFileUniqueId() {
+        return fileUniqueId;
     }
 
     @JsonProperty("file_size")
@@ -69,7 +81,8 @@ public class File {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

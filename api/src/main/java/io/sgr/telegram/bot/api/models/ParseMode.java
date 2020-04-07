@@ -23,6 +23,7 @@ package io.sgr.telegram.bot.api.models;
 public enum ParseMode {
 
     MARKDOWN,
+    MARKDOWNV2,
     HTML,
     ;
 

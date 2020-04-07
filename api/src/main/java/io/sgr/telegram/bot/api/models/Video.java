@@ -34,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Video {
 
     private final String fileId;
+    private final String fileUniqueId;
     private final int width;
     private final int height;
     private final long duration;
@@ -42,25 +43,29 @@ public class Video {
     private final long fileSize;
 
     /**
-     * @param fileId   Unique identifier for this file.
-     * @param width    Video width as defined by sender.
-     * @param height   Video height as defined by sender.
+     * @param fileId Unique identifier for this file.
+     * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or
+     * reuse the file.
+     * @param width Video width as defined by sender.
+     * @param height Video height as defined by sender.
      * @param duration Duration of the video in seconds as defined by sender.
-     * @param thumb    Optional. Video thumbnail.
+     * @param thumb Optional. Video thumbnail.
      * @param mimeType Optional. MIME type of the file as defined by sender.
      * @param fileSize Optional. File size
      */
     @JsonCreator
     public Video(
-            @JsonProperty("file_id") String fileId,
-            @JsonProperty("width") int width,
-            @JsonProperty("height") int height,
-            @JsonProperty("duration") long duration,
-            @JsonProperty("thumb") PhotoSize thumb,
-            @JsonProperty("mime_type") String mimeType,
-            @JsonProperty("file_size") long fileSize) {
+            @JsonProperty("file_id") final String fileId,
+            @JsonProperty("file_unique_id") final String fileUniqueId,
+            @JsonProperty("width") final int width,
+            @JsonProperty("height") final int height,
+            @JsonProperty("duration") final long duration,
+            @JsonProperty("thumb") final PhotoSize thumb,
+            @JsonProperty("mime_type") final String mimeType,
+            @JsonProperty("file_size") final long fileSize) {
         notEmptyString(fileId, "File ID should be provided");
         this.fileId = fileId;
+        this.fileUniqueId = fileUniqueId;
         if (width < 0) {
             throw new IllegalArgumentException("Width should be greater than or equal to zero");
         }
@@ -81,6 +86,11 @@ public class Video {
     @JsonProperty("file_id")
     public String getFileId() {
         return fileId;
+    }
+
+    @JsonProperty("file_unique_id")
+    public String getFileUniqueId() {
+        return fileUniqueId;
     }
 
     @JsonProperty("width")
@@ -117,7 +127,8 @@ public class Video {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 
