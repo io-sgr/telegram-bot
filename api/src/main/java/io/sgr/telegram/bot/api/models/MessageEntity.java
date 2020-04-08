@@ -39,24 +39,27 @@ public class MessageEntity {
     private final Integer length;
     private final String url;
     private final User user;
+    private final String language;
 
     /**
-     * @param type   Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email,
-     *               phone_number, bold (bold text), italic (italic text), code (monowidth string),
-     *               pre (monowidth block), text_link (for clickable text URLs),
-     *               text_mention (for users without usernames)
+     * @param type Type of the entity. Can be “mention” (@username), “hashtag” (#hashtag), “cashtag” ($USD), “bot_command” (/start@jobs_bot), “url”
+     * (https://telegram.org), “email” (do-not-reply@telegram.org), “phone_number” (+1-212-555-0123), “bold” (bold text), “italic” (italic text), “underline”
+     * (underlined text), “strikethrough” (strikethrough text), “code” (monowidth string), “pre” (monowidth block), “text_link” (for clickable text URLs),
+     * “text_mention” (for users without usernames).
      * @param offset Offset in UTF-16 code units to the start of the entity.
      * @param length Length of the entity in UTF-16 code units.
-     * @param url    Optional. For “text_link” only, url that will be opened after user taps on the text.
-     * @param user   Optional. For “text_mention” only, the mentioned user.
+     * @param url Optional. For “text_link” only, url that will be opened after user taps on the text.
+     * @param user Optional. For “text_mention” only, the mentioned user.
+     * @param language Optional. For “pre” only, the programming language of the entity text.
      */
     @JsonCreator
     public MessageEntity(
-            @JsonProperty("type") String type,
-            @JsonProperty("offset") Integer offset,
-            @JsonProperty("length") Integer length,
-            @JsonProperty("url") String url,
-            @JsonProperty("user") User user) {
+            @JsonProperty("type") final String type,
+            @JsonProperty("offset") final Integer offset,
+            @JsonProperty("length") final Integer length,
+            @JsonProperty("url") final String url,
+            @JsonProperty("user") final User user,
+            @JsonProperty("language") final String language) {
         notEmptyString(type, "Message entity type should be provided.");
         this.type = type;
         notNull(offset, "Message entity offset should be provided.");
@@ -65,6 +68,7 @@ public class MessageEntity {
         this.length = length;
         this.url = url;
         this.user = user;
+        this.language = language;
     }
 
     @JsonProperty("type")
@@ -92,11 +96,17 @@ public class MessageEntity {
         return user;
     }
 
+    @JsonProperty("language")
+    public String getLanguage() {
+        return language;
+    }
+
     public String toJson() {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

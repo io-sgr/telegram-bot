@@ -41,24 +41,44 @@ public class User {
     private final String lastName;
     private final String username;
     private final String languageCode;
+    private final Boolean canJoinGroups;
+    private final Boolean canReadAllGroupMessages;
+    private final Boolean supportInlineQueries;
 
     /**
-     * @param id           Unique identifier for this user or bot.
-     * @param isBot        True, if this user is a bot.
-     * @param firstName    User's or bot's first name.
-     * @param lastName     Optional. User's or bot's last name.
-     * @param username     Optional. User's or bot's username.
+     * @param id Unique identifier for this user or bot.
+     * @param isBot True, if this user is a bot.
+     * @param firstName User's or bot's first name.
+     * @param lastName Optional. User's or bot's last name.
+     * @param username Optional. User's or bot's username.
      * @param languageCode Optional. IETF language tag of the user's language.
+     */
+    public User(long id, boolean isBot, String firstName, String lastName, String username, String languageCode) {
+        this(id, isBot, firstName, lastName, username, languageCode, null, null, null);
+    }
+
+    /**
+     * @param id Unique identifier for this user or bot.
+     * @param isBot True, if this user is a bot.
+     * @param firstName User's or bot's first name.
+     * @param lastName Optional. User's or bot's last name.
+     * @param username Optional. User's or bot's username.
+     * @param languageCode Optional. IETF language tag of the user's language.
+     * @param canJoinGroups Optional. True, if the bot can be invited to groups. Returned only in getMe.
+     * @param canReadAllGroupMessages Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+     * @param supportInlineQueries Optional. True, if the bot supports inline queries. Returned only in getMe.
      */
     @JsonCreator
     public User(
-            @JsonProperty("id") Long id,
-            @JsonProperty("is_bot") boolean isBot,
-            @JsonProperty("first_name") String firstName,
-            @JsonProperty("last_name") String lastName,
-            @JsonProperty("username") String username,
-            @JsonProperty("language_code") String languageCode) {
-        notNull(id, "User's or bot's ID should be provided.");
+            @JsonProperty("id") final long id,
+            @JsonProperty("is_bot") final boolean isBot,
+            @JsonProperty("first_name") final String firstName,
+            @JsonProperty("last_name") final String lastName,
+            @JsonProperty("username") final String username,
+            @JsonProperty("language_code") final String languageCode,
+            @JsonProperty("can_join_groups") final Boolean canJoinGroups,
+            @JsonProperty("can_read_all_group_messages") final Boolean canReadAllGroupMessages,
+            @JsonProperty("supports_inline_queries") final Boolean supportInlineQueries) {
         this.id = id;
         this.isBot = isBot;
         notNull(firstName, "User's or bot's first name should be provided.");
@@ -66,6 +86,9 @@ public class User {
         this.lastName = lastName;
         this.username = username;
         this.languageCode = languageCode;
+        this.canJoinGroups = canJoinGroups;
+        this.canReadAllGroupMessages = canReadAllGroupMessages;
+        this.supportInlineQueries = supportInlineQueries;
     }
 
     @JsonProperty("id")
@@ -98,11 +121,27 @@ public class User {
         return languageCode;
     }
 
+    @JsonProperty("can_join_groups")
+    public Boolean canJoinGroups() {
+        return canJoinGroups;
+    }
+
+    @JsonProperty("can_read_all_group_messages")
+    public Boolean canReadAllGroupMessages() {
+        return canReadAllGroupMessages;
+    }
+
+    @JsonProperty("supports_inline_queries")
+    public Boolean supportInlineQueries() {
+        return supportInlineQueries;
+    }
+
     public String toJson() {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 
