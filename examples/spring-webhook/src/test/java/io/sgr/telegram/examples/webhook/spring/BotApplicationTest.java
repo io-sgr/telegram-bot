@@ -41,8 +41,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BotApplication.class)
 @AutoConfigureMockMvc
-@TestPropertySource(
-        locations = "classpath:application-test.yaml")
+@TestPropertySource(locations = "classpath:application-test.yaml")
 public class BotApplicationTest {
 
     @Value("${bot.apiToken}")
@@ -66,7 +65,7 @@ public class BotApplicationTest {
                 null, null, null, null, null,
                 null, null, null, null,
                 null, null, null, null, null);
-        final Update update = new Update(0L, message, null, null, null, null, null, null, null);
+        final Update update = new Update(0L, message, null, null, null, null, null, null, null, null);
         mvc.perform(post("/update/" + botApiToken)
                 .content(JsonUtil.toJson(update))
                 .contentType(MediaType.APPLICATION_JSON))

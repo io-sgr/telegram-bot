@@ -46,20 +46,19 @@ public class Update {
     private final ChosenInlineResult chosenInlineResult;
     private final CallbackQuery callbackQuery;
     private final Poll poll;
+    private final PollAnswer pollAnswer;
 
     /**
-     * @param id                 The update's unique identifier. Update identifiers start from a certain positive number
-     *                           and increase sequentially.
-     * @param message            Optional. New incoming message of any kind — text, photo, sticker, etc.
-     * @param editedMessage      Optional. New version of a message that is known to the bot and was edited
-     * @param channelPost        Optional. New incoming channel post of any kind — text, photo, sticker, etc.
-     * @param editedChannelPost  Optional. New version of a channel post that is known to the bot and was edited.
-     * @param inlineQuery        Optional. New incoming inline query.
-     * @param chosenInlineResult Optional. The result of a inline query that was chosen by a user and sent to their chat
-     *                           partner.
-     * @param callbackQuery      Optional. New incoming callback query.
-     * @param poll               Optional. New poll state. Bots receive only updates about stopped polls and polls,
-     *                           which are sent by the bot.
+     * @param id The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially.
+     * @param message Optional. New incoming message of any kind — text, photo, sticker, etc.
+     * @param editedMessage Optional. New version of a message that is known to the bot and was edited
+     * @param channelPost Optional. New incoming channel post of any kind — text, photo, sticker, etc.
+     * @param editedChannelPost Optional. New version of a channel post that is known to the bot and was edited.
+     * @param inlineQuery Optional. New incoming inline query.
+     * @param chosenInlineResult Optional. The result of a inline query that was chosen by a user and sent to their chat partner.
+     * @param callbackQuery Optional. New incoming callback query.
+     * @param poll Optional. New poll state. Bots receive only updates about stopped polls and polls,
+     * @param pollAnswer Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
      */
     @JsonCreator
     public Update(
@@ -71,7 +70,8 @@ public class Update {
             @JsonProperty("inline_query") final InlineQuery inlineQuery,
             @JsonProperty("chosen_inline_result") final ChosenInlineResult chosenInlineResult,
             @JsonProperty("callback_query") final CallbackQuery callbackQuery,
-            @JsonProperty("poll") final Poll poll) {
+            @JsonProperty("poll") final Poll poll,
+            @JsonProperty("poll_answer") final PollAnswer pollAnswer) {
         notNull(id, "Update ID should be provided.");
         this.id = id;
         this.message = message;
@@ -82,6 +82,7 @@ public class Update {
         this.chosenInlineResult = chosenInlineResult;
         this.callbackQuery = callbackQuery;
         this.poll = poll;
+        this.pollAnswer = pollAnswer;
     }
 
     @JsonProperty("update_id")
@@ -133,7 +134,8 @@ public class Update {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

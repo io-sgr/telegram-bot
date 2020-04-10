@@ -23,6 +23,7 @@ import io.sgr.telegram.bot.api.http.DefaultCallAdapterFactory;
 import io.sgr.telegram.bot.api.models.Chat;
 import io.sgr.telegram.bot.api.models.ChatMember;
 import io.sgr.telegram.bot.api.models.Message;
+import io.sgr.telegram.bot.api.models.Poll;
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.models.User;
 import io.sgr.telegram.bot.api.models.WebhookInfo;
@@ -39,6 +40,8 @@ import io.sgr.telegram.bot.api.models.http.EditMessageTextPayload;
 import io.sgr.telegram.bot.api.models.http.ForwardMessagePayload;
 import io.sgr.telegram.bot.api.models.http.GetUpdatesPayload;
 import io.sgr.telegram.bot.api.models.http.SendMessagePayload;
+import io.sgr.telegram.bot.api.models.http.SendPollPayload;
+import io.sgr.telegram.bot.api.models.http.StopPollPayload;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 import okhttp3.OkHttpClient;
@@ -92,6 +95,12 @@ public interface BotApi {
 
     @POST("answerInlineQuery")
     CompletableFuture<Boolean> answerInlineQuery(@Body AnswerInlineQueryPayload payload);
+
+    @POST("sendPoll")
+    CompletableFuture<Message> sendPoll(@Body SendPollPayload payload);
+
+    @POST("stopPoll")
+    CompletableFuture<Poll> stopPoll(@Body StopPollPayload payload);
 
     @FormUrlEncoded
     @POST("kickChatMember")
@@ -171,11 +180,13 @@ public interface BotApi {
 
     @FormUrlEncoded
     @POST("pinChatMessage")
-    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") String chatId, @Field("message_id") long messageId);
+    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") String chatId, @Field("message_id") long messageId,
+            @Field("disable_notification") Boolean disableNotification);
 
     @FormUrlEncoded
     @POST("pinChatMessage")
-    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") long chatId, @Field("message_id") long messageId);
+    CompletableFuture<Boolean> pinChatMessage(@Field("chat_id") long chatId, @Field("message_id") long messageId,
+            @Field("disable_notification") Boolean disableNotification);
 
     @FormUrlEncoded
     @POST("unpinChatMessage")
