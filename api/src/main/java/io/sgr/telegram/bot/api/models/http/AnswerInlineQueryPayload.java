@@ -41,19 +41,25 @@ public class AnswerInlineQueryPayload {
     private final Integer cacheTime;
     private final Boolean personal;
     private final String nextOffset;
+    private final String switchPmText;
+    private final String switchPmParameter;
 
     /**
-     * @param queryId    Unique identifier for the answered query
-     * @param results    An array of results for the inline query. No more than 50 results per query are allowed.
-     * @param cacheTime  Optional. The maximum amount of time in seconds that the result of the inline query may be
-     *                   cached on the server. Defaults to 300.
-     * @param personal   Optional. Pass True, if results may be cached on the server side only for the user that sent
-     *                   the query. By default, results may be returned to any user who sends the same query
-     * @param nextOffset Optional. Pass the offset that a client should send in the next query with the same text to
-     *                   receive more results. Pass an empty string if there are no more results or if you don‘t support
-     *                   pagination. Offset length can’t exceed 64 bytes.
+     * @param queryId Unique identifier for the answered query
+     * @param results An array of results for the inline query. No more than 50 results per query are allowed.
+     * @param cacheTime Optional. The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.
+     * @param personal Optional. Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be
+     * returned to any user who sends the same query
+     * @param nextOffset Optional. Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string
+     * if there are no more results or if you don‘t support
+     * @param switchPmText Optional. If passed, clients will display a button with specified text that switches the user to a private chat with the bot and
+     * sends the bot a start message with the parameter switch_pm_parameter.
+     * @param switchPmParameter Optional. Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters,
+     * only A-Z, a-z, 0-9, _ and - are allowed.
      */
-    public AnswerInlineQueryPayload(String queryId, Collection<InlineQueryResult> results, Integer cacheTime, Boolean personal, String nextOffset) {
+    public AnswerInlineQueryPayload(
+            String queryId, Collection<InlineQueryResult> results, Integer cacheTime, Boolean personal, String nextOffset,
+            String switchPmText, String switchPmParameter) {
         notEmptyString(queryId, "Answered query ID should be provided.");
         this.queryId = queryId;
         notNull(results, "Results should be provided.");
@@ -64,6 +70,8 @@ public class AnswerInlineQueryPayload {
         this.cacheTime = cacheTime;
         this.personal = personal;
         this.nextOffset = nextOffset;
+        this.switchPmText = switchPmText;
+        this.switchPmParameter = switchPmParameter;
     }
 
     /**
@@ -116,4 +124,19 @@ public class AnswerInlineQueryPayload {
         return this.nextOffset;
     }
 
+    /**
+     * @return the switchPmText
+     */
+    @JsonProperty("switch_pm_text")
+    public String getSwitchPmText() {
+        return switchPmText;
+    }
+
+    /**
+     * @return the switchPmParameter
+     */
+    @JsonProperty("switch_pm_parameter")
+    public String getSwitchPmParameter() {
+        return switchPmParameter;
+    }
 }
