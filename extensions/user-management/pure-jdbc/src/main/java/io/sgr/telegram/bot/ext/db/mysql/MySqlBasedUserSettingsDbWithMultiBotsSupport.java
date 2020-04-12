@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.ext.db.mysql;
 
-import io.sgr.telegram.bot.api.utils.Preconditions;
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import io.sgr.telegram.bot.ext.db.UserSettingsWithMultiBotsSupport;
 
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public abstract class MySqlBasedUserSettingsDbWithMultiBotsSupport implements Us
 
     @Override
     public void saveRobotSettings(long botId, long userId, String propKey, String propValue) {
-        if (Preconditions.isEmptyString(propKey) || Preconditions.isEmptyString(propValue)) {
+        if (isNullOrEmpty(propKey) || isNullOrEmpty(propValue)) {
             return;
         }
         String sql = "INSERT INTO " + getTableName() + "(bot_id, user_id, prop_key, prop_value)"
@@ -82,7 +83,7 @@ public abstract class MySqlBasedUserSettingsDbWithMultiBotsSupport implements Us
 
     @Override
     public String getRobotSettings(long botId, long userId, String propKey) {
-        if (Preconditions.isEmptyString(propKey)) {
+        if (isNullOrEmpty(propKey)) {
             return null;
         }
         String sql = "SELECT prop_value FROM " + getTableName() + " WHERE bot_id = ? AND user_id = ? AND prop_key = ?";
@@ -123,7 +124,7 @@ public abstract class MySqlBasedUserSettingsDbWithMultiBotsSupport implements Us
 
     @Override
     public void deleteRobotSettings(long botId, long userId, String propKey) {
-        if (Preconditions.isEmptyString(propKey)) {
+        if (isNullOrEmpty(propKey)) {
             return;
         }
         String sql = "DELETE FROM " + getTableName() + " WHERE bot_id = ? AND user_id = ? AND prop_key = ?";

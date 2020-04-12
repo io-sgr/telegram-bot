@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.Objects.nonNull;
 
 import io.sgr.telegram.bot.api.models.inline.InlineQueryResult;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -60,12 +61,9 @@ public class AnswerInlineQueryPayload {
     public AnswerInlineQueryPayload(
             String queryId, Collection<InlineQueryResult> results, Integer cacheTime, Boolean personal, String nextOffset,
             String switchPmText, String switchPmParameter) {
-        notEmptyString(queryId, "Answered query ID should be provided.");
+        checkArgument(!isNullOrEmpty(queryId), "Answered query ID should be provided.");
         this.queryId = queryId;
-        notNull(results, "Results should be provided.");
-        if (results.size() > 50) {
-            throw new IllegalArgumentException("No more than 50 results per query are allowed.");
-        }
+        checkArgument(nonNull(results) && results.size() < 50, "No more than 50 results per query are allowed.");
         this.results = results;
         this.cacheTime = cacheTime;
         this.personal = personal;

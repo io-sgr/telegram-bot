@@ -17,8 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
@@ -64,15 +64,14 @@ public class InlineQueryResultCachedVideo implements InlineQueryResult, CachedIt
             final String title, final String description,
             final String caption, final ParseMode parseMode,
             final InlineKeyboardMarkup replyMarkup, final InputMessageContent inputMessageContent) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        notEmptyString(fileId, "Missing video URL");
+        checkArgument(!isNullOrEmpty(fileId), "Missing video URL");
         this.fileId = fileId;
         this.title = title;
         this.description = description;
-        if (!isEmptyString(caption) && caption.length() > 200) {
-            throw new IllegalArgumentException(String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
-        }
+        checkArgument(isNullOrEmpty(caption) || caption.length() <= 200,
+                String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
         this.caption = caption;
         this.parseMode = parseMode;
         this.replyMarkup = replyMarkup;

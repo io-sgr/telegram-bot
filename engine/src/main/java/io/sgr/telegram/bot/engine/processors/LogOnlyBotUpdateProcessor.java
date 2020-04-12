@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.engine.processors;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.models.Update;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -36,9 +36,8 @@ public class LogOnlyBotUpdateProcessor implements BotUpdateProcessor {
 
     private final Logger logger;
 
-    public LogOnlyBotUpdateProcessor(final Logger logger) {
-        notNull(logger, "Missing logger.");
-        this.logger = logger;
+    public LogOnlyBotUpdateProcessor(@Nonnull final Logger logger) {
+        this.logger = checkNotNull(logger, "Missing logger.");
     }
 
     @Override public boolean handleUpdate(@Nonnull final Update update) {

@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -57,8 +58,9 @@ public class Document {
             @JsonProperty("file_name") final String fileName,
             @JsonProperty("mime_type") final String mimeType,
             @JsonProperty("file_size") final long fileSize) {
-        notEmptyString(fileId, "File ID should be provided");
+        checkArgument(!isNullOrEmpty(fileId), "File ID should be provided");
         this.fileId = fileId;
+        checkArgument(!isNullOrEmpty(fileUniqueId), "File unique ID should be provided");
         this.fileUniqueId = fileUniqueId;
         this.thumb = thumb;
         this.fileName = fileName;

@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.game.http;
 
-import io.sgr.telegram.bot.api.utils.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -52,11 +53,9 @@ public class GetGameScorePayload {
 
     private GetGameScorePayload(long userId, Long chatId, Long messageId, String inlineMessageId) {
         this.userId = userId;
-        if (Preconditions.isEmptyString(inlineMessageId)) {
-            Preconditions.notNull(chatId, "Chat ID should be provided");
-            this.chatId = chatId;
-            Preconditions.notNull(messageId, "Message ID should be provided");
-            this.messageId = messageId;
+        if (isNullOrEmpty(inlineMessageId)) {
+            this.chatId = checkNotNull(chatId, "Chat ID should be provided");
+            this.messageId = checkNotNull(messageId, "Message ID should be provided");
             this.inlineMessageId = null;
         } else {
             this.chatId = null;

@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.game;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.models.User;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -50,15 +51,10 @@ public class GameHighScore {
             @JsonProperty("position") int position,
             @JsonProperty("user") User user,
             @JsonProperty("score") long score) {
-        if (position <= 0) {
-            throw new IllegalArgumentException(String.format("Position should be greater than zero, but got %d", position));
-        }
+        checkArgument(position > 0, String.format("Position should be greater than zero, but got %d", position));
         this.position = position;
-        notNull(user, "User should be provided");
-        this.user = user;
-        if (score < 0) {
-            throw new IllegalArgumentException(String.format("Score should be greater than or equal to zero, but got %d", score));
-        }
+        this.user = checkNotNull(user, "User should be provided");
+        checkArgument(score >= 0, String.format("Score should be greater than or equal to zero, but got %d", score));
         this.score = score;
     }
 

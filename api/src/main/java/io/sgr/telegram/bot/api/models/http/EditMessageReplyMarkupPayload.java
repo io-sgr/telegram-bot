@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -40,15 +41,13 @@ public class EditMessageReplyMarkupPayload {
     private final ReplyMarkup replyMarkup;
 
     /**
-     * @param chatId      Unique identifier for the target chat or username of the target channel (in the
-     *                    format @channelusername)
-     * @param messageId   Identifier of the sent message.
+     * @param chatId Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+     * @param messageId Identifier of the sent message.
      * @param replyMarkup Optional. A JSON-serialized object for an inline keyboard.
      */
-    public EditMessageReplyMarkupPayload(String chatId, Long messageId, ReplyMarkup replyMarkup) {
-        notEmptyString(chatId, "Chat ID should be provided");
+    public EditMessageReplyMarkupPayload(final String chatId, final long messageId, final ReplyMarkup replyMarkup) {
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        notNull(messageId, "Message ID should be provided");
         this.messageId = messageId;
         this.inlineMessageId = null;
         this.replyMarkup = replyMarkup;
@@ -56,13 +55,12 @@ public class EditMessageReplyMarkupPayload {
 
     /**
      * @param inlineMessageId Identifier of the inline message.
-     * @param replyMarkup     Optional. A JSON-serialized object for an inline keyboard.
+     * @param replyMarkup Optional. A JSON-serialized object for an inline keyboard.
      */
-    public EditMessageReplyMarkupPayload(String inlineMessageId, ReplyMarkup replyMarkup) {
+    public EditMessageReplyMarkupPayload(final String inlineMessageId, final ReplyMarkup replyMarkup) {
         this.chatId = null;
         this.messageId = null;
-        notNull(inlineMessageId, "Inline message ID should be provided");
-        this.inlineMessageId = inlineMessageId;
+        this.inlineMessageId = checkNotNull(inlineMessageId, "Inline message ID should be provided");
         this.replyMarkup = replyMarkup;
     }
 

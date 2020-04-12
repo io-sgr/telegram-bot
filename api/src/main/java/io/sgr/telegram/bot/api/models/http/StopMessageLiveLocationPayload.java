@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 
@@ -45,11 +46,10 @@ public class StopMessageLiveLocationPayload {
     public StopMessageLiveLocationPayload(
             final String chatId, final Long messageId, final String inlineMessageId,
             final InlineKeyboardMarkup replyMarkup) {
-        if (isEmptyString(inlineMessageId)) {
-            notEmptyString(chatId, "Chat ID is required if inline_message_id is not specified");
+        if (isNullOrEmpty(inlineMessageId)) {
+            checkArgument(!isNullOrEmpty(chatId), "Chat ID is required if inline_message_id is not specified");
             this.chatId = chatId;
-            notEmptyString(chatId, "Message ID is required if inline_message_id is not specified");
-            this.messageId = messageId;
+            this.messageId = checkNotNull(messageId, "Message ID is required if inline_message_id is not specified");
             this.inlineMessageId = null;
         } else {
             this.chatId = null;

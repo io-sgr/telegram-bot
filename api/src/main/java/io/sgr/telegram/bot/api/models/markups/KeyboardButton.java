@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.markups;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -53,7 +54,7 @@ public class KeyboardButton {
             @JsonProperty("text") String text,
             @JsonProperty("request_contact") Boolean requestContact,
             @JsonProperty("request_location") Boolean requestLocation) {
-        notEmptyString(text, "Text should be provided.");
+        checkArgument(!isNullOrEmpty(text), "Text should be provided.");
         this.text = text;
         this.requestContact = requestContact;
         this.requestLocation = requestLocation;

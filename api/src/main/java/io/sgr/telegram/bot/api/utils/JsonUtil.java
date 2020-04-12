@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.utils;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,7 +64,7 @@ public class JsonUtil {
      * @throws IllegalArgumentException if the object is null
      */
     public static <T> String toJson(T object) {
-        notNull(object, "Cannot convert NULL object!");
+        checkNotNull(object, "Cannot convert NULL object!");
         try {
             return getObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {

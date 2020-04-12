@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.Objects.nonNull;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 
@@ -50,10 +51,10 @@ public class EditMessageLiveLocationPayload {
             final String chatId, final Long messageId, final String inlineMessageId,
             final float latitude, final float longitude,
             final InlineKeyboardMarkup replyMarkup) {
-        if (isEmptyString(inlineMessageId)) {
-            notEmptyString(chatId, "Chat ID is required if inline_message_id is not specified");
+        if (isNullOrEmpty(inlineMessageId)) {
+            checkArgument(!isNullOrEmpty(chatId), "Chat ID is required if inline_message_id is not specified");
             this.chatId = chatId;
-            notEmptyString(chatId, "Message ID is required if inline_message_id is not specified");
+            checkArgument(nonNull(messageId), "Message ID is required if inline_message_id is not specified");
             this.messageId = messageId;
             this.inlineMessageId = null;
         } else {
@@ -61,7 +62,9 @@ public class EditMessageLiveLocationPayload {
             this.messageId = null;
             this.inlineMessageId = inlineMessageId;
         }
+        checkArgument(Math.abs(latitude) <= 90, String.format("Invalid latitude: %f", latitude));
         this.latitude = latitude;
+        checkArgument(Math.abs(longitude) <= 180, String.format("Invalid longitude: %f", longitude));
         this.longitude = longitude;
         this.replyMarkup = replyMarkup;
     }

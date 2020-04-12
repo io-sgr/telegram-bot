@@ -17,8 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
@@ -72,19 +72,18 @@ public class InlineQueryResultGif implements InlineQueryResult, ItemWithCaption 
             final ParseMode parseMode,
             final InlineKeyboardMarkup replyMarkup,
             final InputMessageContent inputMessageContent) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        notEmptyString(gifUrl, "Missing gif URL");
+        checkArgument(!isNullOrEmpty(gifUrl), "Missing gif URL");
         this.gifUrl = gifUrl;
         this.gifWidth = gifWidth;
         this.gifHeight = gifHeight;
         this.gifDuration = gifDuration;
-        notEmptyString(thumbUrl, "Missing thumb URL");
+        checkArgument(!isNullOrEmpty(thumbUrl), "Missing thumb URL");
         this.thumbUrl = thumbUrl;
         this.title = title;
-        if (!isEmptyString(caption) && caption.length() > 200) {
-            throw new IllegalArgumentException(String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
-        }
+        checkArgument(isNullOrEmpty(caption) || caption.length() <= 200,
+                String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
         this.caption = caption;
         this.parseMode = parseMode;
         this.replyMarkup = replyMarkup;

@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -69,15 +70,11 @@ public class InlineQueryResultVenue implements InlineQueryResult, ItemWithThumb 
             final String title, final String address, final String foursquareId,
             final String foursquareType, final InlineKeyboardMarkup replyMarkup, final InputMessageContent inputMessageContent,
             final String thumbUrl, final Integer thumbWidth, final Integer thumbHeight) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        if (Math.abs(latitude) > 90) {
-            throw new IllegalArgumentException(String.format("Invalid latitude %f", latitude));
-        }
+        checkArgument(Math.abs(latitude) <= 90, String.format("Invalid latitude: %f", latitude));
         this.latitude = latitude;
-        if (Math.abs(longitude) > 180) {
-            throw new IllegalArgumentException(String.format("Invalid longitude %f", longitude));
-        }
+        checkArgument(Math.abs(longitude) <= 180, String.format("Invalid longitude: %f", longitude));
         this.longitude = longitude;
         this.title = title;
         this.address = address;

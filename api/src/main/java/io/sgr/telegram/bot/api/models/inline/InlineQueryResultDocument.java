@@ -17,8 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
@@ -73,17 +73,16 @@ public class InlineQueryResultDocument implements InlineQueryResult, ItemWithCap
             final String documentUrl, final String mimeType, final String description,
             final InlineKeyboardMarkup replyMarkup, final InputMessageContent inputMessageContent,
             final String thumbUrl, final Integer thumbWidth, final Integer thumbHeight) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
         this.title = title;
-        if (!isEmptyString(caption) && caption.length() > 200) {
-            throw new IllegalArgumentException(String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
-        }
+        checkArgument(isNullOrEmpty(caption) || caption.length() <= 200,
+                String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
         this.caption = caption;
         this.parseMode = parseMode;
-        notEmptyString(documentUrl, "Missing document URL");
+        checkArgument(!isNullOrEmpty(documentUrl), "Missing document URL");
         this.documentUrl = documentUrl;
-        notEmptyString(mimeType, "Missing document mime type");
+        checkArgument(!isNullOrEmpty(mimeType), "Missing document mime type");
         this.mimeType = mimeType;
         this.description = description;
         this.replyMarkup = replyMarkup;

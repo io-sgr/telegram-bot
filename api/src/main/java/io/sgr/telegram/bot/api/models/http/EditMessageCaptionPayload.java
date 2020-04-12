@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -47,10 +48,9 @@ public class EditMessageCaptionPayload {
      * @param caption     Optional. New caption of the message
      * @param replyMarkup Optional. A JSON-serialized object for an inline keyboard.
      */
-    public EditMessageCaptionPayload(String chatId, Long messageId, String caption, ReplyMarkup replyMarkup) {
-        notEmptyString(chatId, "Chat ID should be provided");
+    public EditMessageCaptionPayload(String chatId, long messageId, String caption, ReplyMarkup replyMarkup) {
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        notNull(messageId, "Message ID should be provided");
         this.messageId = messageId;
         this.inlineMessageId = null;
         this.caption = caption;
@@ -65,8 +65,7 @@ public class EditMessageCaptionPayload {
     public EditMessageCaptionPayload(String inlineMessageId, String caption, ReplyMarkup replyMarkup) {
         this.chatId = null;
         this.messageId = null;
-        notNull(inlineMessageId, "Inline message ID should be provided");
-        this.inlineMessageId = inlineMessageId;
+        this.inlineMessageId = checkNotNull(inlineMessageId, "Inline message ID should be provided");
         this.caption = caption;
         this.replyMarkup = replyMarkup;
     }

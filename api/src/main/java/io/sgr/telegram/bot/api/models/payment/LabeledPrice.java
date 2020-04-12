@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.payment;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -49,11 +50,9 @@ public class LabeledPrice {
     public LabeledPrice(
             @JsonProperty("label") final String label,
             @JsonProperty("amount") final int amount) {
-        notEmptyString(label, "Missing label.");
+        checkArgument(!isNullOrEmpty(label), "Missing label.");
         this.label = label;
-        if (amount < 0) {
-            throw new IllegalArgumentException(String.format("Amount should be greater than or equal to zero, but got: %d", amount));
-        }
+        checkArgument(amount >= 0, String.format("Amount should be greater than or equal to zero, but got: %d", amount));
         this.amount = amount;
     }
 

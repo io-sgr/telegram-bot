@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -45,9 +46,9 @@ public class InlineQueryResultGame implements InlineQueryResult {
      * @param replyMarkup   Optional. Inline keyboard attached to the message.
      */
     public InlineQueryResultGame(final String id, final String gameShortName, final InlineKeyboardMarkup replyMarkup) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        notEmptyString(gameShortName, "Missing game short name");
+        checkArgument(!isNullOrEmpty(gameShortName), "Missing game short name");
         this.gameShortName = gameShortName;
         this.replyMarkup = replyMarkup;
     }

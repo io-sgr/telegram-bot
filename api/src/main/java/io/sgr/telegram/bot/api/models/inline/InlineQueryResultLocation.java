@@ -17,7 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.Objects.isNull;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -65,20 +67,15 @@ public class InlineQueryResultLocation implements InlineQueryResult, ItemWithThu
             final String title, final Integer livePeriod,
             final InlineKeyboardMarkup replyMarkup, final InputMessageContent inputMessageContent,
             final String thumbUrl, final Integer thumbWidth, final Integer thumbHeight) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        if (Math.abs(latitude) > 90) {
-            throw new IllegalArgumentException(String.format("Invalid latitude %f", latitude));
-        }
+        checkArgument(Math.abs(latitude) <= 90, String.format("Invalid latitude: %f", latitude));
         this.latitude = latitude;
-        if (Math.abs(longitude) > 180) {
-            throw new IllegalArgumentException(String.format("Invalid longitude %f", longitude));
-        }
+        checkArgument(Math.abs(longitude) <= 180, String.format("Invalid longitude: %f", longitude));
         this.longitude = longitude;
         this.title = title;
-        if (livePeriod != null && (livePeriod < 60 || livePeriod > 86400)) {
-            throw new IllegalArgumentException(String.format("Live period should between 60 and 86400, but it's %d", livePeriod));
-        }
+        checkArgument(isNull(livePeriod) || (livePeriod >= 60 && livePeriod <= 86400),
+                String.format("Invalid live in period: %d, should be between 60 and 86400", livePeriod));
         this.livePeriod = livePeriod;
         this.replyMarkup = replyMarkup;
         this.inputMessageContent = inputMessageContent;

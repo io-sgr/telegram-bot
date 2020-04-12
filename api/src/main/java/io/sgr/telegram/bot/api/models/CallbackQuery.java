@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -65,13 +66,12 @@ public class CallbackQuery {
             @JsonProperty("chat_instance") String chatInstance,
             @JsonProperty("data") String data,
             @JsonProperty("game_short_name") String gameShortName) {
-        notEmptyString(id, "ID should be provided");
+        checkArgument(!isNullOrEmpty(id), "ID should be provided");
         this.id = id;
-        notNull(from, "Sender should be provided");
-        this.from = from;
+        this.from = checkNotNull(from, "Sender should be provided");
         this.message = message;
         this.inlineMessageId = inlineMessageId;
-        notEmptyString(chatInstance, "Chat instance should be provided");
+        checkArgument(!isNullOrEmpty(chatInstance), "Chat instance should be provided");
         this.chatInstance = chatInstance;
         this.data = data;
         this.gameShortName = gameShortName;

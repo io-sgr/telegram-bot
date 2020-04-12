@@ -17,8 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
@@ -81,18 +81,17 @@ public class InlineQueryResultVideo implements InlineQueryResult, ItemWithCaptio
             final Integer videoWidth, final Integer videoHeight, final Integer videoDuration,
             final String description, final InlineKeyboardMarkup replyMarkup,
             final InputMessageContent inputMessageContent) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        notEmptyString(videoUrl, "Missing video URL");
+        checkArgument(!isNullOrEmpty(videoUrl), "Missing video URL");
         this.videoUrl = videoUrl;
-        notEmptyString(mimeType, "Missing video mime type");
+        checkArgument(!isNullOrEmpty(mimeType), "Missing video mime type");
         this.mimeType = mimeType;
-        notEmptyString(thumbUrl, "Missing thumb URL");
+        checkArgument(!isNullOrEmpty(thumbUrl), "Missing thumb URL");
         this.thumbUrl = thumbUrl;
         this.title = title;
-        if (!isEmptyString(caption) && caption.length() > 200) {
-            throw new IllegalArgumentException(String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
-        }
+        checkArgument(isNullOrEmpty(caption) || caption.length() <= 200,
+                String.format("Caption should be shorter than 200 characters, but it's %d", caption.length()));
         this.caption = caption;
         this.parseMode = parseMode;
         this.videoWidth = videoWidth;

@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -56,8 +57,9 @@ public class PhotoSize {
             @JsonProperty("width") final int width,
             @JsonProperty("height") final int height,
             @JsonProperty("file_size") final Integer fileSize) {
-        notEmptyString(fileId, "File ID should be provided.");
+        checkArgument(!isNullOrEmpty(fileId), "File ID should be provided.");
         this.fileId = fileId;
+        checkArgument(!isNullOrEmpty(fileUniqueId), "File unique ID should be provided");
         this.fileUniqueId = fileUniqueId;
         this.width = width;
         this.height = height;

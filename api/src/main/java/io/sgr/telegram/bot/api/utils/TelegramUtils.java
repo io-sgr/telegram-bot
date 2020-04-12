@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.utils;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import java.util.regex.Pattern;
 
@@ -35,7 +36,7 @@ public class TelegramUtils {
      *         The token to verify.
      */
     public static void verifyToken(final String token) {
-        notEmptyString(token, "Token can not be null or empty string!");
+        checkArgument(!isNullOrEmpty(token), "Token can not be null or empty string!");
         if (!TOKEN_PATTERN.matcher(token).matches()) {
             throw new IllegalArgumentException("Invalid token: " + token);
         }

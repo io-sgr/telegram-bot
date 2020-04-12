@@ -17,7 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.Objects.isNull;
 
 import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
 
@@ -39,35 +41,26 @@ public class SendLocationPayload {
     private final ReplyMarkup replyMarkup;
 
     /**
-     * @param chatId              Unique identifier for the target chat or username of the target channel (in the
-     *                            format
-     * @param latitude            Latitude of the location
-     * @param longitude           Longitude of the location
-     * @param livePeriod          Optional. Period in seconds for which the location will be updated (see Live
-     *                            Locations, should be between 60 and 86400.
-     * @param disableNotification Optional. Sends the message silently. Users will receive a notification with no
-     *                            sound.
-     * @param replyTo             Optional. If the message is a reply, ID of the original message.
-     * @param replyMarkup         Optional. Additional interface options. A JSON-serialized object for an inline
-     *                            keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a
-     *                            reply from the user.
+     * @param chatId Unique identifier for the target chat or username of the target channel (in the format
+     * @param latitude Latitude of the location
+     * @param longitude Longitude of the location
+     * @param livePeriod Optional. Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
+     * @param disableNotification Optional. Sends the message silently. Users will receive a notification with no sound.
+     * @param replyTo Optional. If the message is a reply, ID of the original message.
+     * @param replyMarkup Optional. Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove
+     * reply keyboard or to force a reply from the user.
      */
     public SendLocationPayload(
             String chatId, float latitude, float longitude, Integer livePeriod,
             Boolean disableNotification, Long replyTo, ReplyMarkup replyMarkup) {
-        notEmptyString(chatId, "Chat ID should be provided");
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        if (Math.abs(latitude) > 90) {
-            throw new IllegalArgumentException(String.format("Invalid latitude: %f", latitude));
-        }
+        checkArgument(Math.abs(latitude) <= 90, String.format("Invalid latitude: %f", latitude));
         this.latitude = latitude;
-        if (Math.abs(longitude) > 180) {
-            throw new IllegalArgumentException(String.format("Invalid longitude: %f", longitude));
-        }
+        checkArgument(Math.abs(longitude) <= 180, String.format("Invalid longitude: %f", longitude));
         this.longitude = longitude;
-        if (livePeriod != null && (livePeriod < 60 || livePeriod > 86400)) {
-            throw new IllegalArgumentException(String.format("Invalid live in period: %d, should be between 60 and 86400", livePeriod));
-        }
+        checkArgument(isNull(livePeriod) || (livePeriod >= 60 && livePeriod <= 86400),
+                String.format("Invalid live in period: %d, should be between 60 and 86400", livePeriod));
         this.livePeriod = livePeriod;
         this.disableNotification = disableNotification;
         this.replyTo = replyTo;

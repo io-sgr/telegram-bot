@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.models.Location;
 import io.sgr.telegram.bot.api.models.User;
@@ -60,12 +60,10 @@ public class ChosenInlineResult {
             @JsonProperty("inline_message_id") String inlineMessageId,
             @JsonProperty("query") String query) {
         this.resultId = resultId;
-        notNull(from, "The user that chose the result cannot be null!");
-        this.from = from;
+        this.from = checkNotNull(from, "The user that chose the result cannot be null!");
         this.location = location;
         this.inlineMessageId = inlineMessageId;
-        notNull(query, "The query that was used to obtain the result cannot be null!");
-        this.query = query;
+        this.query = checkNotNull(query, "The query that was used to obtain the result cannot be null!");
     }
 
     @JsonProperty("result_id")

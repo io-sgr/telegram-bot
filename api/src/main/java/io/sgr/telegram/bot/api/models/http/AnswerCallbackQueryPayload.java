@@ -17,9 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-
-import io.sgr.telegram.bot.api.utils.Preconditions;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -63,11 +62,9 @@ public class AnswerCallbackQueryPayload {
             Boolean showAlert,
             String url,
             Integer cacheTime) {
-        notEmptyString(callbackQueryId, "Callback query ID should be provided");
+        checkArgument(!isNullOrEmpty(callbackQueryId), "Callback query ID should be provided");
         this.callbackQueryId = callbackQueryId;
-        if (!Preconditions.isEmptyString(text) && (text.trim().length() > 200)) {
-            throw new IllegalArgumentException("The length of text should be between 1-200");
-        }
+        checkArgument(isNullOrEmpty(text) || text.length() < 200, "Callback text should be 0-200 characters");
         this.text = text;
         this.showAlert = showAlert;
         this.url = url;

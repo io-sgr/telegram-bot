@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -69,7 +69,7 @@ public class Chat {
      */
     @JsonCreator
     public Chat(
-            @JsonProperty("id") Long id,
+            @JsonProperty("id") long id,
             @JsonProperty("type") ChatType type,
             @JsonProperty("title") String title,
             @JsonProperty("username") String username,
@@ -83,13 +83,11 @@ public class Chat {
             @JsonProperty("slow_mode_delay") Integer slowModeDelay,
             @JsonProperty("sticker_set_name") String stickerSetName,
             @JsonProperty("can_set_sticker_set") Boolean canSetStickerSet) {
-        notNull(id, "Chat ID should be provided.");
         if (Math.abs(id) > 1e13) {
             throw new IllegalArgumentException(String.format("Unique identifier for this chat should not exceeding 1e13 by absolute value, but got %d", id));
         }
         this.id = id;
-        notNull(type, "ChatType should be provided.");
-        this.type = type;
+        this.type = checkNotNull(type, "ChatType should be provided.");
         this.title = title;
         this.username = username;
         this.firstName = firstName;

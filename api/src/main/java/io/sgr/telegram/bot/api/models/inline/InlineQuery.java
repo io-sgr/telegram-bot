@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.Location;
 import io.sgr.telegram.bot.api.models.User;
@@ -30,8 +31,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This object represents an incoming inline query. When the user sends an empty query, your bot could return some
- * default or trending results.
+ * This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
  *
  * @author SgrAlpha
  */
@@ -46,11 +46,11 @@ public class InlineQuery {
     private final String offset;
 
     /**
-     * @param id       Unique identifier for this query
-     * @param from     Sender
+     * @param id Unique identifier for this query
+     * @param from Sender
      * @param location Optional. Sender location, only for bots that request user location
-     * @param query    Text of the query
-     * @param offset   Optional. Offset of the results to be returned, can be controlled by the bot
+     * @param query Text of the query
+     * @param offset Optional. Offset of the results to be returned, can be controlled by the bot
      */
     @JsonCreator
     public InlineQuery(
@@ -59,13 +59,11 @@ public class InlineQuery {
             @JsonProperty("location") Location location,
             @JsonProperty("query") String query,
             @JsonProperty("offset") String offset) {
-        notEmptyString(id, "Inline query ID should be provided.");
+        checkArgument(!isNullOrEmpty(id), "Inline query ID should be provided.");
         this.id = id;
-        notNull(from, "Sender should be provided.");
-        this.from = from;
+        this.from = checkNotNull(from, "Sender should be provided.");
         this.location = location;
-        notNull(query, "Text of the query should be provided.");
-        this.query = query;
+        this.query = checkNotNull(query, "Text of the query should be provided.");
         this.offset = offset;
     }
 
@@ -98,7 +96,8 @@ public class InlineQuery {
         return JsonUtil.toJson(this);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.toJson();
     }
 

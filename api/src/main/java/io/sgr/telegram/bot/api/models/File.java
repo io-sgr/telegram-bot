@@ -17,10 +17,10 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -50,8 +50,9 @@ public class File {
             @JsonProperty("file_unique_id") final String fileUniqueId,
             @JsonProperty("file_size") final Long fileSize,
             @JsonProperty("file_path") final String filePath) {
-        notEmptyString(fileId, "File ID should be provided");
+        checkArgument(!isNullOrEmpty(fileId), "File ID should be provided");
         this.fileId = fileId;
+        checkArgument(!isNullOrEmpty(fileUniqueId), "File unique ID should be provided");
         this.fileUniqueId = fileUniqueId;
         this.fileSize = fileSize;
         this.filePath = filePath;

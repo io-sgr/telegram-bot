@@ -73,14 +73,16 @@ public class CompletableFutureBasedCallAdapterTest<T> {
         verify(mockCall, times(1)).cancel();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void testConstructWithoutResponseTye() {
-        new CompletableFutureBasedCallAdapter(null, true, null);
+        new CompletableFutureBasedCallAdapter<>(null, true, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void testConstructWithoutLogger() {
-        new CompletableFutureBasedCallAdapter(Object.class, true, null);
+        new CompletableFutureBasedCallAdapter<>(Object.class, true, null);
     }
 
 }

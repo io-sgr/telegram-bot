@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.ext.db.mysql;
 
-import io.sgr.telegram.bot.api.utils.Preconditions;
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import io.sgr.telegram.bot.ext.db.UserSettings;
 
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public abstract class MySqlBasedUserSettingsDb implements UserSettings {
 
     @Override
     public void saveRobotSettings(long userId, String propKey, String propValue) {
-        if (Preconditions.isEmptyString(propKey) || Preconditions.isEmptyString(propValue)) {
+        if (isNullOrEmpty(propKey) || isNullOrEmpty(propValue)) {
             return;
         }
         String sql = "INSERT INTO " + getTableName()
@@ -80,7 +81,7 @@ public abstract class MySqlBasedUserSettingsDb implements UserSettings {
 
     @Override
     public String getRobotSettings(long userId, String propKey) {
-        if (Preconditions.isEmptyString(propKey)) {
+        if (isNullOrEmpty(propKey)) {
             return null;
         }
         String sql = "SELECT prop_value FROM " + getTableName() + " WHERE user_id = ? AND prop_key = ?";
@@ -119,7 +120,7 @@ public abstract class MySqlBasedUserSettingsDb implements UserSettings {
 
     @Override
     public void deleteRobotSettings(long userId, String propKey) {
-        if (Preconditions.isEmptyString(propKey)) {
+        if (isNullOrEmpty(propKey)) {
             return;
         }
         String sql = "DELETE FROM " + getTableName() + " WHERE user_id = ? AND prop_key = ?";

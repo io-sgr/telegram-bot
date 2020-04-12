@@ -17,10 +17,9 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.models.game.Game;
-import io.sgr.telegram.bot.api.models.markups.InlineKeyboardButton;
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.models.sticker.Sticker;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -142,7 +141,7 @@ public class Message {
      * @param replyMarkup Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
      */
     public Message(
-            @JsonProperty("message_id") Long id,
+            @JsonProperty("message_id") long id,
             @JsonProperty("from") final User from,
             @JsonProperty("date") final Long date,
             @JsonProperty("chat") final Chat chat,
@@ -185,11 +184,9 @@ public class Message {
             @JsonProperty("pinned_message") final Message pinned,
             @JsonProperty("connected_website") final String connectedWebsite,
             @JsonProperty("reply_markup") final InlineKeyboardMarkup replyMarkup) {
-        notNull(id, "Message ID should be provided.");
         this.id = id;
         this.from = from;
-        notNull(date, "Message sent date should be provided.");
-        this.date = date;
+        this.date = checkNotNull(date, "Message sent date should be provided.");
         this.chat = chat;
         this.forwardFrom = forwardFrom;
         this.forwardFromChat = forwardFromChat;

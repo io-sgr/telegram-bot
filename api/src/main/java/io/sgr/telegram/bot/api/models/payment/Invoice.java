@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.payment;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -58,15 +59,13 @@ public class Invoice {
             @JsonProperty("start_parameter") final String startParameter,
             @JsonProperty("currency") final String currency,
             @JsonProperty("total_amount") final int totalAmount) {
-        notEmptyString(title, "Missing product name.");
+        checkArgument(!isNullOrEmpty(title), "Missing product name.");
         this.title = title;
         this.description = description;
         this.startParameter = startParameter;
-        notEmptyString(currency, "Missing currency.");
+        checkArgument(!isNullOrEmpty(currency), "Missing currency.");
         this.currency = currency;
-        if (totalAmount < 0) {
-            throw new IllegalArgumentException(String.format("Total amount should be greater than or equal to zero, but got: %d", totalAmount));
-        }
+        checkArgument(totalAmount >= 0, String.format("Total amount should be greater than or equal to zero, but got: %d", totalAmount));
         this.totalAmount = totalAmount;
     }
 

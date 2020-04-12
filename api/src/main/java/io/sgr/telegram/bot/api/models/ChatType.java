@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -42,7 +43,7 @@ public enum ChatType {
      */
     @JsonCreator
     public static ChatType fromString(final String str) {
-        notEmptyString(str, "Cannot parse ChatType from null or empty string!");
+        checkArgument(!isNullOrEmpty(str), "Cannot parse ChatType from null or empty string!");
         return ChatType.valueOf(str.toUpperCase(Locale.ENGLISH));
     }
 

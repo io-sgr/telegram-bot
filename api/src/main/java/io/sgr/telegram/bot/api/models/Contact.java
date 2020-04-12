@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -55,9 +56,9 @@ public class Contact {
             @JsonProperty("last_name") String lastName,
             @JsonProperty("user_id") Long userId,
             @JsonProperty("vcard") final String vCard) {
-        notEmptyString(phoneNumber, "Phone number should be provided.");
+        checkArgument(!isNullOrEmpty(phoneNumber), "Phone number should be provided.");
         this.phoneNumber = phoneNumber;
-        notEmptyString(phoneNumber, "First name should be provided.");
+        checkArgument(!isNullOrEmpty(firstName), "First name should be provided.");
         this.firstName = firstName;
         this.lastName = lastName;
         this.userId = userId;

@@ -41,7 +41,8 @@ public class LogOnlyBotUpdateProcessorTest {
     @Mock
     private Logger mockLogger;
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void testInitWithNullLogger() {
         new LogOnlyBotUpdateProcessor(null);
     }

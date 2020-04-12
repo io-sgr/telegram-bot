@@ -17,8 +17,10 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,9 +43,9 @@ public class InputContactMessageContent implements InputMessageContent {
      * @param lastName    Optional. Contact's last name
      */
     public InputContactMessageContent(String phoneNumber, String firstName, String lastName) {
-        Preconditions.notEmptyString(phoneNumber, "Contact's phone number should be provided.");
+        checkArgument(!isNullOrEmpty(phoneNumber), "Contact's phone number should be provided.");
         this.phoneNumber = phoneNumber;
-        Preconditions.notEmptyString(firstName, "Contact's first name should be provided.");
+        checkArgument(!isNullOrEmpty(firstName), "Contact's first name should be provided.");
         this.firstName = firstName;
         this.lastName = lastName;
     }

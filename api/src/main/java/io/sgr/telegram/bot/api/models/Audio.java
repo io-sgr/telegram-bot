@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -63,12 +64,11 @@ public class Audio {
             @JsonProperty("mime_type") final String mimeType,
             @JsonProperty("file_size") final long fileSize,
             @JsonProperty("thumb") final PhotoSize thumb) {
-        notEmptyString(fileId, "File ID should be provided");
+        checkArgument(!isNullOrEmpty(fileId), "File ID should be provided");
         this.fileId = fileId;
+        checkArgument(!isNullOrEmpty(fileUniqueId), "File unique ID should be provided");
         this.fileUniqueId = fileUniqueId;
-        if (duration < 0) {
-            throw new IllegalArgumentException("Duration should be greater than or equal to zero");
-        }
+        checkArgument(duration >= 0, "Duration should be greater than or equal to zero");
         this.duration = duration;
         this.performer = performer;
         this.title = title;

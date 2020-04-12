@@ -17,12 +17,11 @@
 
 package io.sgr.telegram.bot.api.models.markups;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.LoginUrl;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -72,29 +71,27 @@ public class InlineKeyboardButton {
             @JsonProperty("callback_data") final String callbackData,
             @JsonProperty("switch_inline_query") final String switchInlineQuery,
             @JsonProperty("switch_inline_query_current_chat") final String switchInlineQueryCurrentChat) {
-        this.loginUrl = loginUrl;
-        notEmptyString(text, "Text should be provided.");
+        checkArgument(!isNullOrEmpty(text), "Text should be provided.");
         this.text = text;
         int optionalFieldCnt = 0;
-        if (!isEmptyString(url)) {
+        if (!isNullOrEmpty(url)) {
             optionalFieldCnt++;
         }
-        if (!isEmptyString(callbackData)) {
+        if (!isNullOrEmpty(callbackData)) {
             optionalFieldCnt++;
         }
-        if (!isEmptyString(switchInlineQuery)) {
+        if (!isNullOrEmpty(switchInlineQuery)) {
             optionalFieldCnt++;
         }
-        if (!isEmptyString(switchInlineQueryCurrentChat)) {
+        if (!isNullOrEmpty(switchInlineQueryCurrentChat)) {
             optionalFieldCnt++;
         }
         if (optionalFieldCnt != 1) {
             throw new IllegalArgumentException("You must use exactly one of the optional fields.");
         }
         this.url = url;
-        if (!isEmptyString(callbackData) && callbackData.length() > 64) {
-            throw new IllegalArgumentException("The length of callback data should between 1-64");
-        }
+        this.loginUrl = loginUrl;
+        checkArgument(isNullOrEmpty(callbackData) || callbackData.length() < 64, "The length of callback data should between 1-64");
         this.callbackData = callbackData;
         this.switchInlineQuery = switchInlineQuery;
         this.switchInlineQueryCurrentChat = switchInlineQueryCurrentChat;

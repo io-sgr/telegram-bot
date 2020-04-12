@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.sticker;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.PhotoSize;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -63,16 +64,14 @@ public class StickerSet {
             @JsonProperty("contains_masks") final boolean containsMasks,
             @JsonProperty("stickers") final List<Sticker> stickers,
             @JsonProperty("thumb") final PhotoSize thumb) {
-        notEmptyString(name, "Name should be provided");
+        checkArgument(!isNullOrEmpty(name), "Name should be provided");
         this.name = name;
-        notEmptyString(title, "Title should be provided");
+        checkArgument(!isNullOrEmpty(title), "Title should be provided");
         this.title = title;
         this.animated = animated;
         this.containsMasks = containsMasks;
-        notNull(stickers, "Stickers should be provided");
-        if (stickers.isEmpty()) {
-            throw new IllegalArgumentException("Stickers should not be empty");
-        }
+        checkNotNull(stickers, "Stickers should be provided");
+        checkArgument(!stickers.isEmpty(), "Stickers should not be empty");
         this.stickers = stickers;
         this.thumb = thumb;
     }

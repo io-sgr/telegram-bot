@@ -17,8 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,17 +30,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DeleteMessagePayload {
 
     private final String chatId;
-    private final Long messageId;
+    private final long messageId;
 
     /**
      * @param chatId         Unique identifier for the target chat or username of the target channel (in the
      *                       format @channelusername)
      * @param messageId      Identifier of the message to delete
      */
-    public DeleteMessagePayload(String chatId, Long messageId) {
-        notEmptyString(chatId, "Chat ID should be provided");
+    public DeleteMessagePayload(final String chatId, final long messageId) {
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        notNull(messageId, "Message ID should be provided");
         this.messageId = messageId;
     }
 
@@ -56,7 +55,7 @@ public class DeleteMessagePayload {
      * @return the messageId
      */
     @JsonProperty("message_id")
-    public Long getMessageId() {
+    public long getMessageId() {
         return this.messageId;
     }
 

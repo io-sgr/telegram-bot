@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -100,10 +100,8 @@ public class ChatMember {
             @JsonProperty("can_send_polls") final Boolean canSendPolls,
             @JsonProperty("can_send_other_messages") final Boolean canSendOtherMessage,
             @JsonProperty("can_add_web_page_previews") final Boolean canAddWebPagePreviews) {
-        notNull(user, "User should be provided.");
-        this.user = user;
-        notNull(status, "Chat isMember status should be provided.");
-        this.status = status;
+        this.user = checkNotNull(user, "User should be provided.");
+        this.status = checkNotNull(status, "Chat isMember status should be provided.");
         this.customTitle = customTitle;
         this.untilDate = untilDate;
         this.canBeEdited = canBeEdited;

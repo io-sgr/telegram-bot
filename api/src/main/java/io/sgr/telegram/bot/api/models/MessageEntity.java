@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -60,12 +61,10 @@ public class MessageEntity {
             @JsonProperty("url") final String url,
             @JsonProperty("user") final User user,
             @JsonProperty("language") final String language) {
-        notEmptyString(type, "Message entity type should be provided.");
+        checkArgument(!isNullOrEmpty(type), "Message entity type should be provided.");
         this.type = type;
-        notNull(offset, "Message entity offset should be provided.");
-        this.offset = offset;
-        notNull(length, "Message entity length should be provided.");
-        this.length = length;
+        this.offset = checkNotNull(offset, "Message entity offset should be provided.");
+        this.length = checkNotNull(length, "Message entity length should be provided.");
         this.url = url;
         this.user = user;
         this.language = language;

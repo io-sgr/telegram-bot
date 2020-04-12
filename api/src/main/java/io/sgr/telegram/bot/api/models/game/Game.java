@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.game;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.MessageEntity;
 import io.sgr.telegram.bot.api.models.PhotoSize;
@@ -68,12 +69,11 @@ public class Game {
             @JsonProperty("text") String text,
             @JsonProperty("text_entities") List<MessageEntity> textEntities,
             @JsonProperty("animation") Animation animation) {
-        notEmptyString(title, "Title should be provided");
+        checkArgument(!isNullOrEmpty(title), "Title should be provided");
         this.title = title;
-        notEmptyString(description, "Description should be provided");
+        checkArgument(!isNullOrEmpty(description), "Description should be provided");
         this.description = description;
-        notNull(photo, "Photo should be provided");
-        this.photo = photo;
+        this.photo = checkNotNull(photo, "Photo should be provided");
         this.text = text;
         this.textEntities = textEntities;
         this.animation = animation;

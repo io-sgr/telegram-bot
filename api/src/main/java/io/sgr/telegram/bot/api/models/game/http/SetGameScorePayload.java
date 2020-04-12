@@ -17,7 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.game.http;
 
-import io.sgr.telegram.bot.api.utils.Preconditions;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -66,17 +68,13 @@ public class SetGameScorePayload {
 
     private SetGameScorePayload(long userId, long score, Boolean force, Boolean disableEditMessage, Long chatId, Long messageId, String inlineMessageId) {
         this.userId = userId;
-        if (score < 0) {
-            throw new IllegalArgumentException(String.format("Score should be greater than or equal to zero, but got %d", score));
-        }
+        checkArgument(score >= 0,String.format("Score should be greater than or equal to zero, but got %d", score));
         this.score = score;
         this.force = force;
         this.disableEditMessage = disableEditMessage;
-        if (Preconditions.isEmptyString(inlineMessageId)) {
-            Preconditions.notNull(chatId, "Chat ID should be provided");
-            this.chatId = chatId;
-            Preconditions.notNull(messageId, "Message ID should be provided");
-            this.messageId = messageId;
+        if (isNullOrEmpty(inlineMessageId)) {
+            this.chatId = checkNotNull(chatId, "Chat ID should be provided");
+            this.messageId = checkNotNull(messageId, "Message ID should be provided");
             this.inlineMessageId = null;
         } else {
             this.chatId = null;

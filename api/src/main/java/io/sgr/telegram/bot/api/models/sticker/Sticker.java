@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.sticker;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.PhotoSize;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -72,16 +73,13 @@ public class Sticker {
             @JsonProperty("set_name") final String setName,
             @JsonProperty("mask_position") final MaskPosition maskPosition,
             @JsonProperty("file_size") final long fileSize) {
-        this.fileUniqueId = fileUniqueId;
-        notEmptyString(fileId, "File ID should be provided");
+        checkArgument(!isNullOrEmpty(fileId), "File ID should be provided");
         this.fileId = fileId;
-        if (width <= 0) {
-            throw new IllegalArgumentException("Width should be greater than zero");
-        }
+        checkArgument(!isNullOrEmpty(fileUniqueId), "File unique ID should be provided");
+        this.fileUniqueId = fileUniqueId;
+        checkArgument(width >= 0, "Width should be greater than or equal to zero");
         this.width = width;
-        if (height <= 0) {
-            throw new IllegalArgumentException("Height should be greater than zero");
-        }
+        checkArgument(height >= 0, "Height should be greater than or equal to zero");
         this.height = height;
         this.animated = animated;
         this.thumb = thumb;

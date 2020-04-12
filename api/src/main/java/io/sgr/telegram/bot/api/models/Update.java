@@ -17,8 +17,6 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
-
 import io.sgr.telegram.bot.api.models.inline.ChosenInlineResult;
 import io.sgr.telegram.bot.api.models.inline.InlineQuery;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -72,7 +70,6 @@ public class Update {
             @JsonProperty("callback_query") final CallbackQuery callbackQuery,
             @JsonProperty("poll") final Poll poll,
             @JsonProperty("poll_answer") final PollAnswer pollAnswer) {
-        notNull(id, "Update ID should be provided.");
         this.id = id;
         this.message = message;
         this.editedMessage = editedMessage;
@@ -128,6 +125,11 @@ public class Update {
     @JsonProperty("poll")
     public Poll getPoll() {
         return poll;
+    }
+
+    @JsonProperty("poll_answer")
+    public PollAnswer getPollAnswer() {
+        return pollAnswer;
     }
 
     public String toJson() {

@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.engine;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import java.util.Locale;
 
@@ -36,7 +37,7 @@ public class Command {
      * @param argument argument for command
      */
     public Command(final String type, final String toBot, final String argument) {
-        notEmptyString(type, "Command type cannot be null or empty string!");
+        checkArgument(!isNullOrEmpty(type), "Command type cannot be null or empty string!");
         this.type = type.toLowerCase(Locale.ENGLISH);
         this.toBot = toBot;
         this.argument = argument;

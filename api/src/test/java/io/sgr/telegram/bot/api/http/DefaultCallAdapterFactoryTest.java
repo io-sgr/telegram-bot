@@ -79,7 +79,8 @@ public class DefaultCallAdapterFactoryTest {
         assertNull(factory.get(Object.class, new Annotation[0], null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void testConstructWithoutLogger() {
         new DefaultCallAdapterFactory(true, null);
     }

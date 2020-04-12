@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.models.http.ApiResponse;
 
@@ -37,11 +37,9 @@ class CompletableFutureBasedCallAdapter<T> implements CallAdapter<ApiResponse<T>
     private final Logger logger;
 
     CompletableFutureBasedCallAdapter(@Nonnull final Type responseType, final boolean retry, @Nonnull final Logger logger) {
-        notNull(responseType, "Missing response type!");
-        this.responseType = responseType;
+        this.responseType = checkNotNull(responseType, "Missing response type!");
         this.retry = retry;
-        notNull(logger, "Missing logger!");
-        this.logger = logger;
+        this.logger = checkNotNull(logger, "Missing logger!");
     }
 
     @Nonnull

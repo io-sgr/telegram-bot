@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,9 +44,9 @@ public class ForwardMessagePayload {
      * @param messageId           Optional. Message identifier in the chat specified in from_chat_id.
      */
     public ForwardMessagePayload(String chatId, String fromChatId, Boolean disableNotification, long messageId) {
-        notEmptyString(chatId, "Chat ID should be provided");
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        notEmptyString(fromChatId, "Content of the message should be provided");
+        checkArgument(!isNullOrEmpty(fromChatId), "Content of the message should be provided");
         this.fromChatId = fromChatId;
         this.disableNotification = disableNotification;
         this.messageId = messageId;

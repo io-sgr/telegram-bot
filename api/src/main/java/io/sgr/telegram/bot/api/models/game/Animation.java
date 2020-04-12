@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.game;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.PhotoSize;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -38,27 +39,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Animation {
 
     private final String fileId;
+    private final String fileUniqueId;
+    private final int width;
+    private final int height;
+    private final long duration;
     private final PhotoSize thumb;
     private final String fileName;
     private final String mimeType;
-    private final long fileSize;
+    private final Long fileSize;
 
     /**
-     * @param fileId   Unique identifier for this file.
-     * @param thumb    Optional. Animation thumbnail as defined by sender.
+     * @param fileId Unique identifier for this file.
+     * @param fileUniqueId Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or
+     * reuse the file.
+     * @param width Video width as defined by sender.
+     * @param height Video height as defined by sender.
+     * @param duration Duration of the video in seconds as defined by sender.
+     * @param thumb Optional. Animation thumbnail as defined by sender.
      * @param fileName Optional. Original animation filename as defined by sender.
      * @param mimeType Optional. MIME type of the file as defined by sender.
      * @param fileSize Optional. File size.
      */
     @JsonCreator
     public Animation(
-            @JsonProperty("file_id") String fileId,
-            @JsonProperty("thumb") PhotoSize thumb,
-            @JsonProperty("file_name") String fileName,
-            @JsonProperty("mime_type") String mimeType,
-            @JsonProperty("file_size") long fileSize) {
-        notEmptyString(fileId, "File ID should be provided");
+            @JsonProperty("file_id") final String fileId,
+            @JsonProperty("file_unique_id") final String fileUniqueId,
+            @JsonProperty("width") final int width,
+            @JsonProperty("height") final int height,
+            @JsonProperty("duration") final long duration,
+            @JsonProperty("thumb") final PhotoSize thumb,
+            @JsonProperty("file_name") final String fileName,
+            @JsonProperty("mime_type") final String mimeType,
+            @JsonProperty("file_size") final Long fileSize) {
+        checkArgument(!isNullOrEmpty(fileId), "File ID should be provided");
         this.fileId = fileId;
+        checkArgument(!isNullOrEmpty(fileUniqueId), "File unique ID should be provided");
+        this.fileUniqueId = fileUniqueId;
+        checkArgument(width >= 0, "Width should be greater than or equal to zero");
+        this.width = width;
+        checkArgument(height >= 0, "Height should be greater than or equal to zero");
+        this.height = height;
+        checkArgument(duration >= 0, "Duration should be greater than or equal to zero");
+        this.duration = duration;
         this.thumb = thumb;
         this.fileName = fileName;
         this.mimeType = mimeType;
@@ -68,6 +90,26 @@ public class Animation {
     @JsonProperty("file_id")
     public String getFileId() {
         return fileId;
+    }
+
+    @JsonProperty("file_unique_id")
+    public String getFileUniqueId() {
+        return fileUniqueId;
+    }
+
+    @JsonProperty("width")
+    public int getWidth() {
+        return width;
+    }
+
+    @JsonProperty("height")
+    public int getHeight() {
+        return height;
+    }
+
+    @JsonProperty("duration")
+    public long getDuration() {
+        return duration;
     }
 
     @JsonProperty("thumb")
@@ -86,7 +128,7 @@ public class Animation {
     }
 
     @JsonProperty("file_size")
-    public long getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 

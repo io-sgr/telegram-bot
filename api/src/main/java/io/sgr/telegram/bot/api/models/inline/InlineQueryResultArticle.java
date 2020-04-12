@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -94,12 +95,11 @@ public class InlineQueryResultArticle implements InlineQueryResult, ItemWithThum
             @JsonProperty("thumb_url") String thumbUrl,
             @JsonProperty("thumb_url") Integer thumbWidth,
             @JsonProperty("thumb_height") Integer thumbHeight) {
-        notEmptyString(id, "Article ID should be provided.");
+        checkArgument(!isNullOrEmpty(id), "Article ID should be provided.");
         this.id = id;
-        notEmptyString(title, "Article title should be provided.");
+        checkArgument(!isNullOrEmpty(title), "Article title should be provided.");
         this.title = title;
-        notNull(inputMessageContent, "Message content should be provided.");
-        this.inputMessageContent = inputMessageContent;
+        this.inputMessageContent = checkNotNull(inputMessageContent, "Message content should be provided.");
         this.replyMarkup = replyMarkup;
         this.url = url;
         this.hideUrl = hideUrl;

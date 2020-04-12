@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -50,11 +50,8 @@ public class UserProfilePhotos {
     public UserProfilePhotos(
             @JsonProperty("total_count") int totalCount,
             @JsonProperty("photos") List<List<PhotoSize>> photos) {
-        if (totalCount < 0) {
-            throw new IllegalArgumentException("Total count should be greater or equal to zero");
-        }
+        checkArgument(totalCount >= 0, "Total count should be greater or equal to zero");
         this.totalCount = totalCount;
-        notNull(photos, "Photos should be provided");
         this.photos = photos;
     }
 

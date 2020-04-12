@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -62,11 +63,11 @@ public class InlineQueryResultContact implements InlineQueryResult, ItemWithThum
             final String phoneNumber, final String firstName, final String lastName,
             final InlineKeyboardMarkup replyMarkup, final InputMessageContent inputMessageContent,
             final String thumbUrl, final Integer thumbWidth, final Integer thumbHeight) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        notEmptyString(phoneNumber, "Missing phone number");
+        checkArgument(!isNullOrEmpty(phoneNumber), "Missing phone number");
         this.phoneNumber = phoneNumber;
-        notEmptyString(firstName, "Missing first name");
+        checkArgument(!isNullOrEmpty(firstName), "Missing first name");
         this.firstName = firstName;
         this.lastName = lastName;
         this.replyMarkup = replyMarkup;

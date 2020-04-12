@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.exceptions.ApiCallException;
 import io.sgr.telegram.bot.api.models.http.ApiErrorResponse;
@@ -43,11 +43,9 @@ class CompletableFutureBasedCallback<T> implements Callback<ApiResponse<T>> {
     private final Logger logger;
 
     CompletableFutureBasedCallback(@Nonnull final CompletableFuture<T> future, final boolean retry, @Nonnull final Logger logger) {
-        notNull(future, "Missing future!");
-        this.future = future;
+        this.future = checkNotNull(future, "Missing future!");
         this.retry = retry;
-        notNull(logger, "Missing logger!");
-        this.logger = logger;
+        this.logger = checkNotNull(logger, "Missing logger!");
     }
 
     @Override public void onResponse(@Nonnull final Call<ApiResponse<T>> call, @Nonnull final Response<ApiResponse<T>> response) {

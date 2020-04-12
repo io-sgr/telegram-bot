@@ -17,8 +17,6 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
-
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -44,12 +42,10 @@ public class TelegramError {
      */
     @JsonCreator
     public TelegramError(
-            @JsonProperty("ok") Boolean ok,
-            @JsonProperty("error_code") Integer errorCode,
+            @JsonProperty("ok") boolean ok,
+            @JsonProperty("error_code") int errorCode,
             @JsonProperty("description") String description) {
-        notNull(ok, "Status should be provided.");
         this.ok = ok;
-        notNull(ok, "Error code should be provided.");
         this.errorCode = errorCode;
         this.description = description;
     }

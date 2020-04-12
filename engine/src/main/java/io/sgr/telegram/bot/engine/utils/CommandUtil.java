@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.engine.utils;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.engine.Command;
 
@@ -33,7 +33,7 @@ public class CommandUtil {
      * @return An instance of command
      */
     public static Command parseCommandFromText(final String text) {
-        if (isEmptyString(text) || !text.startsWith(CMD_PREFIX)) {
+        if (isNullOrEmpty(text) || !text.startsWith(CMD_PREFIX)) {
             return null;
         }
         String[] tmp = text.split(" ", 2);
@@ -44,7 +44,7 @@ public class CommandUtil {
         }
         tmp = cmdToBot.split("@", 2);
         final String type = tmp[0];
-        if (isEmptyString(type)) {
+        if (isNullOrEmpty(type)) {
             return null;
         }
         final String toBot = tmp.length > 1 ? tmp[1] : null;

@@ -17,7 +17,7 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -81,8 +81,7 @@ public class User {
             @JsonProperty("supports_inline_queries") final Boolean supportInlineQueries) {
         this.id = id;
         this.isBot = isBot;
-        notNull(firstName, "User's or bot's first name should be provided.");
-        this.firstName = firstName;
+        this.firstName = checkNotNull(firstName, "User's or bot's first name should be provided.");
         this.lastName = lastName;
         this.username = username;
         this.languageCode = languageCode;

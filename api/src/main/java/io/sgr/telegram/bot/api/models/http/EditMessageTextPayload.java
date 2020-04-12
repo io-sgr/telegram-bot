@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
@@ -67,13 +68,12 @@ public class EditMessageTextPayload {
      * @param disablePreview Optional. Disables link previews for links in this message.
      * @param replyMarkup    Optional. A JSON-serialized object for an inline keyboard.
      */
-    public EditMessageTextPayload(String chatId, Long messageId, String text, ParseMode parseMode, Boolean disablePreview, ReplyMarkup replyMarkup) {
-        notEmptyString(chatId, "Chat ID should be provided");
+    public EditMessageTextPayload(String chatId, long messageId, String text, ParseMode parseMode, Boolean disablePreview, ReplyMarkup replyMarkup) {
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        notNull(messageId, "Message ID should be provided");
         this.messageId = messageId;
         this.inlineMessageId = null;
-        notEmptyString(text, "New text should be provided");
+        checkArgument(!isNullOrEmpty(text), "New text should be provided");
         this.text = text;
         this.parseMode = parseMode;
         this.disablePreview = disablePreview;
@@ -91,9 +91,8 @@ public class EditMessageTextPayload {
     public EditMessageTextPayload(String inlineMessageId, String text, ParseMode parseMode, Boolean disablePreview, ReplyMarkup replyMarkup) {
         this.chatId = null;
         this.messageId = null;
-        notNull(inlineMessageId, "Inline message ID should be provided");
-        this.inlineMessageId = inlineMessageId;
-        notEmptyString(text, "New text should be provided");
+        this.inlineMessageId = checkNotNull(inlineMessageId, "Inline message ID should be provided");
+        checkArgument(!isNullOrEmpty(text), "New text should be provided");
         this.text = text;
         this.parseMode = parseMode;
         this.disablePreview = disablePreview;

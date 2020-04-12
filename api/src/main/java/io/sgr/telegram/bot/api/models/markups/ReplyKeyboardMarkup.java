@@ -17,8 +17,10 @@
 
 package io.sgr.telegram.bot.api.models.markups;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import io.sgr.telegram.bot.api.utils.JsonUtil;
-import io.sgr.telegram.bot.api.utils.Preconditions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * This object represents a custom keyboard with reply options.
@@ -55,14 +60,12 @@ public class ReplyKeyboardMarkup implements ReplyMarkup {
      *                        a reply (has reply_to_message_id), sender of the original message.
      */
     public ReplyKeyboardMarkup(
-            @JsonProperty("keyboard") List<KeyboardButton[]> keyboard,
-            @JsonProperty("resize_keyboard") Boolean resizeKeyboard,
-            @JsonProperty("one_time_Keyboard") Boolean oneTimeKeyboard,
-            @JsonProperty("selective") Boolean selective) {
-        Preconditions.notNull(keyboard, "Keyboard should be provided.");
-        if (keyboard.isEmpty()) {
-            throw new IllegalArgumentException("Keyboard should have at least one KeyButton.");
-        }
+            @JsonProperty("keyboard") @Nonnull final List<KeyboardButton[]> keyboard,
+            @JsonProperty("resize_keyboard") @Nullable final Boolean resizeKeyboard,
+            @JsonProperty("one_time_Keyboard") @Nullable final Boolean oneTimeKeyboard,
+            @JsonProperty("selective") @Nullable final Boolean selective) {
+        checkNotNull(keyboard, "Keyboard should be provided.");
+        checkArgument(!keyboard.isEmpty(), "Keyboard should have at least one KeyButton.");
         this.keyboard = keyboard;
         this.resizeKeyboard = resizeKeyboard;
         this.oneTimeKeyboard = oneTimeKeyboard;

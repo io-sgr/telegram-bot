@@ -23,12 +23,14 @@ import java.util.concurrent.CompletableFuture;
 
 public class CompletableFutureBasedCallbackTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void testConstructWithoutResponseTye() {
         new CompletableFutureBasedCallback<>(null, true, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void testConstructWithoutLogger() {
         new CompletableFutureBasedCallback<>(new CompletableFuture<>(), true, null);
     }

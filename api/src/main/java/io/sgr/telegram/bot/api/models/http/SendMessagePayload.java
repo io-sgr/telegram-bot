@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.http;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.models.markups.ReplyMarkup;
@@ -98,9 +99,9 @@ public class SendMessagePayload {
     public SendMessagePayload(String chatId, String text, ParseMode parseMode,
                               Boolean disablePreview, Boolean disableNotification,
                               Long replyTo, ReplyMarkup replyMarkup) {
-        notEmptyString(chatId, "Chat ID should be provided");
+        checkArgument(!isNullOrEmpty(chatId), "Chat ID should be provided");
         this.chatId = chatId;
-        notEmptyString(text, "Content of the message should be provided");
+        checkArgument(!isNullOrEmpty(text), "Content of the message should be provided");
         this.text = text;
         this.parseMode = parseMode;
         this.disablePreview = disablePreview;

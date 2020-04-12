@@ -17,8 +17,9 @@
 
 package io.sgr.telegram.bot.api.models;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.utils.JsonUtil;
 
@@ -51,9 +52,8 @@ public class Venue {
             @JsonProperty("title") String title,
             @JsonProperty("address") String address,
             @JsonProperty("foursquare_id") String foursquareId) {
-        notNull(location, "Location should be provided");
-        this.location = location;
-        notEmptyString(title, "Title should be provided");
+        this.location = checkNotNull(location, "Location should be provided");
+        checkArgument(!isNullOrEmpty(title), "Title should be provided");
         this.title = title;
         this.address = address;
         this.foursquareId = foursquareId;

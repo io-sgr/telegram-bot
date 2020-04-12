@@ -17,8 +17,8 @@
 
 package io.sgr.telegram.bot.engine;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.isEmptyString;
-import static io.sgr.telegram.bot.api.utils.Preconditions.notNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.Objects.isNull;
 
 import io.sgr.telegram.bot.api.BotApi;
@@ -80,8 +80,7 @@ public class BotEngine implements Runnable {
      * @param botApi             Telegram bot API client.
      */
     public BotEngine(final BotApi botApi) {
-        notNull(botApi, "Telegram bot API should be specified");
-        this.botApi = botApi;
+        this.botApi = checkNotNull(botApi, "Telegram bot API should be specified");
     }
 
     @Override public void run() {
@@ -105,7 +104,7 @@ public class BotEngine implements Runnable {
             return;
         }
         LOGGER.info("The given API token has been verified successfully.");
-        if (!isEmptyString(hookInfo.getUrl())) {
+        if (!isNullOrEmpty(hookInfo.getUrl())) {
             LOGGER.error("Conflict detected! Webhook has been set to '{}', remove it before start engine! Details: {}", hookInfo.getUrl(), hookInfo);
             this.setStopped(true);
             return;

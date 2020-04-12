@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.ParseMode;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -51,7 +52,7 @@ public class InputTextMessageContent implements InputMessageContent {
      * @param disableWebPagePreview Optional. Disables link previews for links in the sent message
      */
     public InputTextMessageContent(String text, ParseMode parseMode, Boolean disableWebPagePreview) {
-        notEmptyString(text, "Text of message should be provided");
+        checkArgument(!isNullOrEmpty(text), "Text of message should be provided");
         this.text = text.length() > 4096 ? text.substring(0, 4096) : text;
         this.parseMode = parseMode;
         this.disableWebPagePreview = disableWebPagePreview;

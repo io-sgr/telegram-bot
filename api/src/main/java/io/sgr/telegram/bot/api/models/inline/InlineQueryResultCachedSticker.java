@@ -17,7 +17,8 @@
 
 package io.sgr.telegram.bot.api.models.inline;
 
-import static io.sgr.telegram.bot.api.utils.Preconditions.notEmptyString;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import io.sgr.telegram.bot.api.models.markups.InlineKeyboardMarkup;
 import io.sgr.telegram.bot.api.utils.JsonUtil;
@@ -51,9 +52,9 @@ public class InlineQueryResultCachedSticker implements InlineQueryResult, Cached
     public InlineQueryResultCachedSticker(
             final String id, final String fileId,
             final InlineKeyboardMarkup replyMarkup, final InputMessageContent inputMessageContent) {
-        notEmptyString(id, "Missing ID");
+        checkArgument(!isNullOrEmpty(id), "Missing ID");
         this.id = id;
-        notEmptyString(fileId, "Missing photo URL");
+        checkArgument(!isNullOrEmpty(fileId), "Missing photo URL");
         this.fileId = fileId;
         this.replyMarkup = replyMarkup;
         this.inputMessageContent = inputMessageContent;
