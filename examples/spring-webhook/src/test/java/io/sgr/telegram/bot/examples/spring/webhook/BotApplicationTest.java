@@ -15,7 +15,7 @@
  *
  */
 
-package io.sgr.telegram.examples.webhook.spring;
+package io.sgr.telegram.bot.examples.spring.webhook;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

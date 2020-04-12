@@ -26,4 +26,4 @@ management:
       base-path: /internal/management
 
 bot:
-  apiToken: "bot_token"
+  apiToken: "000000:your-token"
