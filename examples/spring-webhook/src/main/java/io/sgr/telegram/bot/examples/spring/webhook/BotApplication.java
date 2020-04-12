@@ -15,7 +15,7 @@
  *
  */
 
-package io.sgr.telegram.bot.examples.webhook.spring;
+package io.sgr.telegram.bot.examples.spring.webhook;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

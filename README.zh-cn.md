@@ -5,50 +5,25 @@
 
 *用其他语言阅读: [English](README.md), [简体中文](README.zh-cn.md).*
 
-## 别废话，上 code ！
-[HelloTelegramBot.java](examples/hello/src/main/java/io/sgr/telegram/bot/examples/hello/HelloTelegramBot.java)
-```java
-public class HelloTelegramBot {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloTelegramBot.class);
-
-    public static void main(String... args) {
-        final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = BotApi.newBuilder(botApiToken).setLogger(LOGGER).build();
-        final BotEngine engine = new BotEngine(botApi).setBotUpdateProcessor((Update update) -> {
-            if (update.getMessage() == null) {
-                // Not what we want, ignored, but still send a success signal so it can deal with the next update.
-                return true;
-            }
-            final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-            botApi.sendMessage(payload) // Send response message asynchronously without blocking next incoming update.
-                    .exceptionally(e -> {
-                        // Something wrong when sending message, you might want to at least log it.
-                        final Throwable cause = e.getCause();
-                        if (cause instanceof ApiCallException) {
-                            final String message = ((ApiCallException) cause).getErrorResponse()
-                                    .flatMap(ApiErrorResponse::getDescription)
-                                    .orElse(cause.getMessage());
-                            LOGGER.error(message, e);
-                        } else {
-                            LOGGER.error(e.getMessage(), e);
-                        }
-                        return null;    // Return null because no message been sent.
-                    })
-                    .thenAccept(message -> {
-                        // Nullable. Do anything you want with sent message here, or ignore it directly.
-                    });
-            return true;
-        });
-        engine.start();
-    }
-
-}
+## How to Use
+在你项目的 `pom.xml` 加入如下依赖：
+```xml
+<dependency>
+    <groupId>io.sgr.telegram</groupId>
+    <artifactId>telegram-bot.engine</artifactId>
+    <version>1.1.1</version>
+</dependency>
 ```
+如果你使用 Gradle 来构建你的应用，引入依赖的方法是类似的，你应该知道该怎么做。
 
-# 许可协议
+这里有几个例子：
+* [示例：基于 Java 命令行的 Telegram 机器人](examples/hello/README.zh-cn.md)。
+* [示例：基于 Spring Boot 的 Telegram 机器人(Webhook)](examples/spring-webhook/README.zh-cn.md)。
+* 示例：基于 Spring Boot 的 Telegram 机器人(CLI) - 尚未完成。
 
-    Copyright 2017-2019 SgrAlpha
+## 许可协议
+
+    Copyright 2017-2020 SgrAlpha
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

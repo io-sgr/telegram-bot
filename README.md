@@ -5,50 +5,25 @@ A java library which help you build Telegram Bots in a fashion way.
 
 *Read this in other languages: [English](README.md), [简体中文](README.zh-cn.md).*
 
-## CUT THE CRAP AND SHOW ME THE CODE!!!
-[HelloTelegramBot.java](examples/hello/src/main/java/io/sgr/telegram/bot/examples/hello/HelloTelegramBot.java)
-```java
-public class HelloTelegramBot {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloTelegramBot.class);
-
-    public static void main(String... args) {
-        final String botApiToken = System.getenv("BOT_API_TOKEN");
-        final BotApi botApi = BotApi.newBuilder(botApiToken).setLogger(LOGGER).build();
-        final BotEngine engine = new BotEngine(botApi).setBotUpdateProcessor((Update update) -> {
-            if (update.getMessage() == null) {
-                // Not what we want, ignored, but still send a success signal so it can deal with the next update.
-                return true;
-            }
-            final SendMessagePayload payload = new SendMessagePayload(update.getMessage().getChat().getId(), "Hello Telegram!");
-            botApi.sendMessage(payload) // Send response message asynchronously without blocking next incoming update.
-                    .exceptionally(e -> {
-                        // Something wrong when sending message, you might want to at least log it.
-                        final Throwable cause = e.getCause();
-                        if (cause instanceof ApiCallException) {
-                            final String message = ((ApiCallException) cause).getErrorResponse()
-                                    .flatMap(ApiErrorResponse::getDescription)
-                                    .orElse(cause.getMessage());
-                            LOGGER.error(message, e);
-                        } else {
-                            LOGGER.error(e.getMessage(), e);
-                        }
-                        return null;    // Return null because no message been sent.
-                    })
-                    .thenAccept(message -> {
-                        // Nullable. Do anything you want with sent message here, or ignore it directly.
-                    });
-            return true;
-        });
-        engine.start();
-    }
-
-}
+## How to Use
+Include following dependency in your `pom.xml`
+```xml
+<dependency>
+    <groupId>io.sgr.telegram</groupId>
+    <artifactId>telegram-bot.engine</artifactId>
+    <version>1.1.1</version>
+</dependency>
 ```
+Gradle is similar, I'm pretty sure you will know what to do.
 
-# License
+We have several examples:
+* [Example: Java Application Based Telegram Bot](examples/hello/README.md).
+* [Example: Spring Boot Based Telegram Bot (Webhook)](examples/spring-webhook/README.md).
+* Example: Spring Boot Based Telegram Bot (CLI) - under construction.
 
-    Copyright 2017-2019 SgrAlpha
+## License
+
+    Copyright 2017-2020 SgrAlpha
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
