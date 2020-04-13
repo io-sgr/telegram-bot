@@ -27,7 +27,7 @@
     <artifactId>telegram-bot.examples.hello</artifactId>
     <packaging>jar</packaging>
 
-    <name>Telegram Bot Examples - Hello</name>
+    <name>Telegram Bot Examples - Java Application</name>
 
     <dependencies>
         <dependency>

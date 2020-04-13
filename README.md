@@ -16,10 +16,11 @@ Include following dependency in your `pom.xml`
 ```
 Gradle is similar, I'm pretty sure you will know what to do.
 
+## Examples
 We have several examples:
-* [Example: Java Application Based Telegram Bot](examples/hello/README.md).
-* [Example: Spring Boot Based Telegram Bot (Webhook)](examples/spring-webhook/README.md).
-* Example: Spring Boot Based Telegram Bot (CLI) - under construction.
+* [Java Application Based Telegram Bot](examples/hello/README.md).
+* [Spring Boot Based Telegram Bot (Webhook)](examples/spring-webhook/README.md).
+* [Spring Boot Based Telegram Bot (CLI)](examples/spring-cli/README.md).
 
 ## License
 

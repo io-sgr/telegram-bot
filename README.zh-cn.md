@@ -5,7 +5,7 @@
 
 *用其他语言阅读: [English](README.md), [简体中文](README.zh-cn.md).*
 
-## How to Use
+##如何使用
 在你项目的 `pom.xml` 加入如下依赖：
 ```xml
 <dependency>
@@ -16,10 +16,11 @@
 ```
 如果你使用 Gradle 来构建你的应用，引入依赖的方法是类似的，你应该知道该怎么做。
 
+##示例程序
 这里有几个例子：
-* [示例：基于 Java 命令行的 Telegram 机器人](examples/hello/README.zh-cn.md)。
-* [示例：基于 Spring Boot 的 Telegram 机器人(Webhook)](examples/spring-webhook/README.zh-cn.md)。
-* 示例：基于 Spring Boot 的 Telegram 机器人(CLI) - 尚未完成。
+* [基于 Java 命令行的 Telegram 机器人](examples/hello/README.zh-cn.md)。
+* [基于 Spring Boot 的 Telegram 机器人(Webhook)](examples/spring-webhook/README.zh-cn.md)。
+* [基于 Spring Boot 的 Telegram 机器人(CLI)](examples/spring-cli/README.zh-cn.md)。
 
 ## 许可协议
 
